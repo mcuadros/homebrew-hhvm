@@ -32,7 +32,7 @@ class Hhvm < Formula
   depends_on 'ncurses'
   depends_on 'curl'
 
-  depends_on 'gcc47' => ['enable-cxx', 'use-llvm']
+  depends_on 'gcc47' => ['enable-cxx']
   depends_on 'cclient'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
@@ -74,5 +74,6 @@ class Hhvm < Formula
 
     system "cmake", *args
     system "make -j4"
+    system "make install"
   end
 end
