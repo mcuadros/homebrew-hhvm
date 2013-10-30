@@ -7,7 +7,7 @@ Requirements
 ------------
 
 * Homebrew
-* Mountain Lion and Mavericks
+* Mountain Lion and Mavericks (requires [use this workarround](https://github.com/mxcl/homebrew/issues/23687#issuecomment-27339429))
 * homebrew/dupes
 
 Installation
