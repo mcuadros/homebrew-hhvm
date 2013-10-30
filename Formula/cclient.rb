@@ -3,7 +3,7 @@ require 'formula'
 class Cclient <Formula
   url 'ftp://ftp.cac.washington.edu/mail/imap.tar.Z'
   homepage 'http://www.washington.edu/imap/'
-  md5 'd9f7fd4e1d93ad9fca1df8717a79d1c5'
+  sha1 '1c9935e5a261baec85dadcbc0c514b66fa3ce0a5'
   version '2007e'
 
   def patches; DATA; end
