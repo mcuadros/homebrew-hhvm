@@ -32,7 +32,7 @@ class Hhvm < Formula
   depends_on 'ncurses'
   depends_on 'curl'
 
-  depends_on 'gcc48'
+  depends_on 'gcc47' => ['enable-cxx', 'use-llvm']
   depends_on 'cclient'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
@@ -42,9 +42,9 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/g++-4.7",
+      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/gcc-4.7",
+      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/gcc-4.7",
       "-DBINUTIL_LIB=#{Formula.factory('binutils').opt_prefix}/lib/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"/usr/local/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"/usr/local/lib:/usr/lib\"",
