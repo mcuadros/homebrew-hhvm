@@ -11,7 +11,7 @@ class Libeventfb < Formula
   depends_on :libtool
 
   def patches
-    "https://raw.github.com/facebook/hiphop-php/master/hphp/third_party/libevent-1.4.14.fb-changes.diff"
+    "https://raw.github.com/facebook/hhvm/HHVM-2.2/hphp/third_party/libevent-1.4.14.fb-changes.diff"
   end 
 
   def install
