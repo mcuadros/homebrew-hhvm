@@ -5,6 +5,8 @@ class Hhvm < Formula
   homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.2'
   sha1 'e6b3fc5363f1b9a688748ef3a1cb6e0623e0c51b'
 
+  head 'https://github.com/facebook/hhvm.git'
+
   depends_on 'cmake' => :build
   depends_on 'gettext'
   depends_on 'cmake'
@@ -32,7 +34,7 @@ class Hhvm < Formula
   depends_on 'ncurses'
   depends_on 'curl'
 
-  depends_on 'gcc47' => ['enable-cxx']
+  depends_on 'gcc48' => ['enable-cxx']
   depends_on 'cclient'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
@@ -42,9 +44,9 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/g++-4.7",
-      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/gcc-4.7",
-      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc47').opt_prefix}/bin/gcc-4.7",
+      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
+      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DBINUTIL_LIB=#{Formula.factory('binutils').opt_prefix}/lib/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"/usr/local/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"/usr/local/lib:/usr/lib\"",
@@ -69,11 +71,11 @@ class Hhvm < Formula
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include"
     ]
-
+   
     ENV['HPHP_HOME'] = Dir.pwd
 
     system "cmake", *args
-    system "make -j4"
+    system "make", "-j#{ENV.make_jobs}"
     system "make install"
   end
 end
