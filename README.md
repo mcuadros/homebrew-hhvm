@@ -5,7 +5,7 @@ A repository with all formulas related to install [HHVM](http://www.hiphop-php.c
 Supported OSX
 ------------
 * Mountain Lion
-* (wip) Mavericks (requires [use this workarround](https://github.com/mxcl/homebrew/issues/23687#issuecomment-27339429))
+* Mavericks (only HEAD)
 
 Requirements
 ------------
@@ -32,11 +32,17 @@ brew tap mcuadros/homebrew-hhvm
 Usage
 -----
 
+Install the last stable version (2.2.0)
+
 ```sh
 brew install hhvm
 ```
 
+or the current master
 
+```sh
+brew install hhvm --HEAD
+```
 
 License
 -------
