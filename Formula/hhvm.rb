@@ -34,7 +34,7 @@ class Hhvm < Formula
   depends_on 'ncurses'
   depends_on 'curl'
 
-  depends_on 'gcc48' => ['enable-cxx']
+  depends_on 'gcc48'
   depends_on 'cclient'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
