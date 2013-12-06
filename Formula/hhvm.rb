@@ -24,7 +24,6 @@ class Hhvm < Formula
   depends_on 'gd'
   depends_on 'icu4c'
   depends_on 'libmemcached'
-  depends_on 'mysql-connector-c'
   depends_on 'pkg-config'
   depends_on 'tbb'
   depends_on 'boost'
@@ -33,6 +32,10 @@ class Hhvm < Formula
   depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'curl'
+
+  if MacOS.version < :mavericks
+    depends_on 'mysql-connector-c'
+  end
 
   depends_on 'gcc48'
   depends_on 'cclient'
