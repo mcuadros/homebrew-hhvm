@@ -8,23 +8,23 @@ class Hhvm < Formula
   head 'https://github.com/facebook/hhvm.git'
 
   depends_on 'cmake' => :build
+  depends_on 'libtool' => :build 
+  depends_on 'autoconf' => :build
+  depends_on 'automake' => :build
+  depends_on 'pkg-config' => :build
+
   depends_on 'gettext'
-  depends_on 'cmake'
-  depends_on 'libtool' 
   depends_on 'mcrypt'
   depends_on 'glog'
   depends_on 'oniguruma'
   depends_on 're2c'
-  depends_on 'autoconf'
   depends_on 'libelf'
   depends_on 'readline'
-  depends_on 'automake'
   depends_on 'mysql'
   depends_on 'pcre'
   depends_on 'gd'
   depends_on 'icu4c'
   depends_on 'libmemcached'
-  depends_on 'pkg-config'
   depends_on 'tbb'
   depends_on 'boost'
   depends_on 'imagemagick'
@@ -73,7 +73,7 @@ class Hhvm < Formula
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include"
     ]
-   
+
     if MacOS.version < :mavericks
       args << "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty.a"
     else 
