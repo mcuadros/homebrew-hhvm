@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-2.2.zip'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.2'
-  sha1 'e6b3fc5363f1b9a688748ef3a1cb6e0623e0c51b'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-2.3.1.zip'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.3.1'
+  sha1 'c6a66a3b69e14b60eb52526d608c244de7a7aced'
 
   head 'https://github.com/facebook/hhvm.git'
 
@@ -32,6 +32,7 @@ class Hhvm < Formula
   depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'curl'
+  depends_on 'folly'
 
   if MacOS.version < :mavericks
     depends_on 'mysql-connector-c'
@@ -81,6 +82,9 @@ class Hhvm < Formula
     end
 
     ENV['HPHP_HOME'] = Dir.pwd
+
+    system "unlink hphp/third_party/folly/folly"
+    system "ln -s #{Formula.factory('folly').opt_prefix}/folly hphp/third_party/folly/folly"
 
     system "cmake", *args
     system "make", "-j#{ENV.make_jobs}"
