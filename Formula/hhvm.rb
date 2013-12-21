@@ -46,11 +46,7 @@ class Hhvm < Formula
   depends_on 'boostfb'
 
   def patches
-<<<<<<< HEAD
     "https://gist.github.com/scannell/bcf5f13ecea6a6b3a7ea/raw/4cc96df182456e6ae60104cd4ec56de8877a1755/gistfile1.diff" unless build.head?
-=======
-    "https://gist.github.com/scannell/bcf5f13ecea6a6b3a7ea/raw/4cc96df182456e6ae60104cd4ec56de8877a1755/gistfile1.diff"
->>>>>>> 00b3972d92e19b1e6472726bd9bbe261173d15bf
   end
 
   def install
