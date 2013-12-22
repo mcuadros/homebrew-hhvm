@@ -32,14 +32,14 @@ class Hhvm < Formula
   depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'curl'
-  depends_on 'folly'
+  depends_on 'imap-uw'
 
   if MacOS.version < :mavericks
     depends_on 'mysql-connector-c'
   end
 
   depends_on 'gcc48'
-  depends_on 'cclient'
+  depends_on 'folly'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
