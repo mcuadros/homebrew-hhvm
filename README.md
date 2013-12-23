@@ -44,6 +44,10 @@ or the current master
 brew install hhvm --HEAD
 ```
 
+HHVM requires MySQL to compile, by default will use `mysql` formula, but 
+you can use `--with-mariadb` or `--with-percona-server` to compile with other
+mysql alternatives.
+
 License
 -------
 

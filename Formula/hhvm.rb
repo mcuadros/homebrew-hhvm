@@ -13,6 +13,7 @@ class Hhvm < Formula
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
 
+  #Standard packages
   depends_on 'gettext'
   depends_on 'mcrypt'
   depends_on 'glog'
@@ -20,7 +21,6 @@ class Hhvm < Formula
   depends_on 're2c'
   depends_on 'libelf'
   depends_on 'readline'
-  depends_on 'mysql'
   depends_on 'pcre'
   depends_on 'gd'
   depends_on 'icu4c'
@@ -28,22 +28,32 @@ class Hhvm < Formula
   depends_on 'tbb'
   depends_on 'boost'
   depends_on 'imagemagick'
-  depends_on 'mysql-connector-c++'
   depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'curl'
   depends_on 'imap-uw'
-
-  if MacOS.version < :mavericks
-    depends_on 'mysql-connector-c'
-  end
-
   depends_on 'gcc48'
+
+  #Custome packages
   depends_on 'folly'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
   depends_on 'boostfb'
+
+  #MySQL packages
+  depends_on 'mysql-connector-c++' 
+
+  if build.include? 'with-mariadb'
+    depends_on 'mariadb'
+  elsif build.include? 'with-percona-server'
+    depends_on 'percona-server'
+  else
+    depends_on 'mysql'
+    if MacOS.version < :mavericks
+      depends_on 'mysql-connector-c'
+    end
+  end
 
   def patches
     "https://gist.github.com/scannell/bcf5f13ecea6a6b3a7ea/raw/4cc96df182456e6ae60104cd4ec56de8877a1755/gistfile1.diff" unless build.head?
