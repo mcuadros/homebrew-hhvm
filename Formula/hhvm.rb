@@ -65,6 +65,7 @@ class Hhvm < Formula
       "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
       "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
+      "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"/usr/local/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"/usr/local/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
@@ -88,12 +89,6 @@ class Hhvm < Formula
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include"
     ]
-
-    if MacOS.version < :mavericks
-      args << "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty.a"
-    else 
-      args << "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a"
-    end
 
     ENV['HPHP_HOME'] = Dir.pwd
 
