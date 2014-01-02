@@ -14,11 +14,11 @@ end
 
 class Boostfb < Formula
   homepage 'http://www.boost.org'
-  url 'http://downloads.sourceforge.net/project/boost/boost/1.53.0/boost_1_53_0.tar.bz2'
-  sha1 'e6dd1b62ceed0a51add3dda6f3fc3ce0f636a7f3'
+  url 'http://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
+  sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
 
   env :userpaths
-  
+
   keg_only 'We dont want to interfere with normal boost.'
 
   def install
@@ -27,7 +27,7 @@ class Boostfb < Formula
     ENV['CC'] = '/usr/local/bin/gcc-4.8'
     ENV['LD'] = '/usr/local/bin/gcc-4.8'
     ENV['CXX'] = '/usr/local/bin/g++-4.8'
-  
+
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
     # non-/usr/local location.
