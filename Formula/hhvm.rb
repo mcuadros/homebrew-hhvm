@@ -1,14 +1,14 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-2.3.1.zip'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.3.1'
-  sha1 'c6a66a3b69e14b60eb52526d608c244de7a7aced'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-2.3.2.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.3.2'
+  sha1 'a9b7f3946c04d0aa86b38af1f09e9752162506ef'
 
   head 'https://github.com/facebook/hhvm.git'
 
   depends_on 'cmake' => :build
-  depends_on 'libtool' => :build 
+  depends_on 'libtool' => :build
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
@@ -42,7 +42,7 @@ class Hhvm < Formula
   depends_on 'boostfb'
 
   #MySQL packages
-  depends_on 'mysql-connector-c++' 
+  depends_on 'mysql-connector-c++'
 
   if build.include? 'with-mariadb'
     depends_on 'mariadb'
