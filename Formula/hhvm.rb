@@ -35,7 +35,10 @@ class Hhvm < Formula
   depends_on 'gcc48'
 
   #Custome packages
-  depends_on 'folly'
+  if build.stable? 
+    depends_on 'folly'
+  end
+
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
@@ -92,8 +95,10 @@ class Hhvm < Formula
 
     ENV['HPHP_HOME'] = Dir.pwd
 
-    system "unlink hphp/third_party/folly/folly"
-    system "ln -s #{Formula.factory('folly').opt_prefix}/folly hphp/third_party/folly/folly"
+    if build.stable? 
+      system "rm -rf hphp/submodules/folly"
+      system "ln -s #{Formula.factory('folly').opt_prefix} hphp/submodules/folly"
+    end
 
     system "cmake", *args
     system "make", "-j#{ENV.make_jobs}"
