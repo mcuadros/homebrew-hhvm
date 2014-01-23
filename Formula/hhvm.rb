@@ -14,6 +14,7 @@ class Hhvm < Formula
   depends_on 'pkg-config' => :build
 
   #Standard packages
+  depends_on 'freetype'
   depends_on 'gettext'
   depends_on 'mcrypt'
   depends_on 'glog'
