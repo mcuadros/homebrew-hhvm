@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-2.3.3.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.3.3'
-  sha1 '1513f1d876d4ae80bd57a35ab6d7e7d64a7fcbfd'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.0.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.0'
+  sha1 '8c98a600ceddd57370e6a87d0f2954bbae170816'
 
   head 'https://github.com/facebook/hhvm.git'
 
@@ -57,10 +57,6 @@ class Hhvm < Formula
     if MacOS.version < :mavericks
       depends_on 'mysql-connector-c'
     end
-  end
-
-  def patches
-    "https://gist.github.com/scannell/bcf5f13ecea6a6b3a7ea/raw/4cc96df182456e6ae60104cd4ec56de8877a1755/gistfile1.diff" unless build.head?
   end
 
   def install

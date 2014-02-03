@@ -2,9 +2,9 @@ require 'formula'
 
 class Folly < Formula
   homepage 'https://github.com/facebook/folly'
-  url 'https://github.com/facebook/folly/archive/8e8b5e75d573305b7a9c34f4a405be5df0f17738.zip'
-  sha1 '48a7dad3ced18670d796870b382f173093748efe'
-  version '8e8b5e'
+  url 'https://github.com/facebook/folly/archive/a247c8d3ff52e65c097170614ecb0639edebc569.zip'
+  sha1 '80e099d6083d7aa68143d172e4217a31e7767f30'
+  version 'a247c8'
 
   def install
     prefix.install Dir['*']
