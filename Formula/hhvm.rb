@@ -66,6 +66,7 @@ class Hhvm < Formula
       "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
+      "-DLIBIBERTY_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"/usr/local/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"/usr/local/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
