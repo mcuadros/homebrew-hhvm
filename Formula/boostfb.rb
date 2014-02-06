@@ -24,9 +24,9 @@ class Boostfb < Formula
   def install
     # Force gcc 4.7 due to the following bug:
     # http://stackoverflow.com/questions/12470118/malloc-error-using-boost-with-osx
-    ENV['CC'] = '/usr/local/bin/gcc-4.8'
-    ENV['LD'] = '/usr/local/bin/gcc-4.8'
-    ENV['CXX'] = '/usr/local/bin/g++-4.8'
+    ENV['CC'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.8"
+    ENV['LD'] = "#{HOMEBREW_PREFIX}/bin/gcc-4.8"
+    ENV['CXX'] = "#{HOMEBREW_PREFIX}/bin/g++-4.8"
 
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a
