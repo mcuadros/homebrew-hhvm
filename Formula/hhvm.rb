@@ -36,7 +36,7 @@ class Hhvm < Formula
   depends_on 'gcc48'
 
   #Custome packages
-  if build.stable? 
+  if build.stable?
     depends_on 'folly'
   end
 
@@ -67,8 +67,8 @@ class Hhvm < Formula
       "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DLIBIBERTY_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-DCMAKE_INCLUDE_PATH=\"/usr/local/include:/usr/include\"",
-      "-DCMAKE_LIBRARY_PATH=\"/usr/local/lib:/usr/lib\"",
+      "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
+      "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula.factory('libeventfb').opt_prefix}/include",
       "-DICU_INCLUDE_DIR=#{Formula.factory('icu4c').opt_prefix}/include",
@@ -89,13 +89,15 @@ class Hhvm < Formula
       "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
+      "-DMYSQL_INCLUDE_DIR=#{Formula.factory('mysql').opt_prefix}/include/mysql",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include/libelf",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2/",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
     ENV['HPHP_HOME'] = Dir.pwd
 
-    if build.stable? 
+    if build.stable?
       system "rm -rf hphp/submodules/folly"
       system "ln -s #{Formula.factory('folly').opt_prefix} hphp/submodules/folly"
     end
