@@ -88,7 +88,9 @@ class Hhvm < Formula
       "-DLIBINTL_LIBRARIES=#{Formula.factory('gettext').opt_prefix}/lib/libintl.dylib",
       "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include"
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2/",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
     ENV['HPHP_HOME'] = Dir.pwd
