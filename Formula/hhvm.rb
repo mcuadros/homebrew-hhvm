@@ -36,7 +36,7 @@ class Hhvm < Formula
   depends_on 'gcc48'
 
   #Custome packages
-  if build.stable? 
+  if build.stable?
     depends_on 'folly'
   end
 
@@ -91,11 +91,13 @@ class Hhvm < Formula
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
       "-DMYSQL_INCLUDE_DIR=#{Formula.factory('mysql').opt_prefix}/include/mysql",
       "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include/libelf",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2/",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
     ENV['HPHP_HOME'] = Dir.pwd
 
-    if build.stable? 
+    if build.stable?
       system "rm -rf hphp/submodules/folly"
       system "ln -s #{Formula.factory('folly').opt_prefix} hphp/submodules/folly"
     end
