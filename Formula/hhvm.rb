@@ -89,9 +89,7 @@ class Hhvm < Formula
       "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
-      "-DMYSQL_INCLUDE_DIR=#{Formula.factory('mysql').opt_prefix}/include/mysql",
       "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include/libelf",
-      "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2/",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
