@@ -46,8 +46,6 @@ class Hhvm < Formula
   depends_on 'boostfb'
 
   #MySQL packages
-  depends_on 'mysql-connector-c++'
-
   if build.include? 'with-mariadb'
     depends_on 'mariadb'
   elsif build.include? 'with-percona-server'
@@ -58,6 +56,8 @@ class Hhvm < Formula
       depends_on 'mysql-connector-c'
     end
   end
+
+  depends_on 'mysql-connector-c++'
 
   def install
     args = [
