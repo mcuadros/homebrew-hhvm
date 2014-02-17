@@ -48,6 +48,25 @@ HHVM requires MySQL to compile, by default will use `mysql` formula, but
 you can use `--with-mariadb` or `--with-percona-server` to compile with other
 mysql alternatives.
 
+Caveats
+-------
+
+If you have XQuartz (X11) installed, you have to temporarily remove a symbolic link at '/usr/X11R6' in order to successfully install HHVM.
+
+You can use the following command:
+```sh
+sudo rm /usr/X11R6
+```
+
+It's the root-owned file so your login password will be asked.
+
+After the install, you could return it with the command:
+```sh
+sudo ln -s /opt/X11 /usr/X11R6
+```
+
+For full reference, please see the issue [#28](https://github.com/mcuadros/homebrew-hhvm/issues/28).
+
 License
 -------
 
