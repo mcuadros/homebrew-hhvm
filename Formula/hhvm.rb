@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.0.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.0'
-  sha1 '8c98a600ceddd57370e6a87d0f2954bbae170816'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.1.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.1'
+  sha1 '03991f64245b87f6d7783c446559379a7349ed3a'
 
   head 'https://github.com/facebook/hhvm.git'
 
