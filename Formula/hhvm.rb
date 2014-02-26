@@ -31,6 +31,7 @@ class Hhvm < Formula
   depends_on 'imagemagick'
   depends_on 'binutils'
   depends_on 'ncurses'
+  depends_on 'libssh2'
   depends_on 'curl'
   depends_on 'imap-uw'
   depends_on 'gcc48'
