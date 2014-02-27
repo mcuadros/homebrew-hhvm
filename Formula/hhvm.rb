@@ -24,6 +24,7 @@ class Hhvm < Formula
   depends_on 'readline'
   depends_on 'pcre'
   depends_on 'gd'
+  depends_on 'imagemagick'
   depends_on 'icu4c'
   depends_on 'libmemcached'
   depends_on 'tbb'
@@ -70,6 +71,8 @@ class Hhvm < Formula
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula.factory('libeventfb').opt_prefix}/include",
+      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula.factory('imagemagick').opt_prefix}/include/ImageMagick-6"
+      "-DLIBMAGICKWAND_LIBRARIES=#{Formula.factory('imagemagick').opt_prefix}/lib/libMagickWand-6.Q16.dylib"
       "-DICU_INCLUDE_DIR=#{Formula.factory('icu4c').opt_prefix}/include",
       "-DICU_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicuuc.dylib",
       "-DICU_I18N_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicui18n.dylib",
