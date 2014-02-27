@@ -52,12 +52,11 @@ class Hhvm < Formula
     depends_on 'percona-server'
   else
     depends_on 'mysql'
+    depends_on 'mysql-connector-c++'
     if MacOS.version < :mavericks
       depends_on 'mysql-connector-c'
     end
   end
-
-  depends_on 'mysql-connector-c++'
 
   def install
     args = [
