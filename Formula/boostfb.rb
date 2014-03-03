@@ -62,7 +62,7 @@ class Boostfb < Formula
     bargs << "--with-toolset=clang" if build.with? "c++11"
 
     if build.with? 'icu'
-      icu4c_prefix = Formula.factory('icu4c').opt_prefix
+      icu4c_prefix = Formula['icu4c'].opt_prefix
       bargs << "--with-icu=#{icu4c_prefix}"
     else
       bargs << '--without-icu'

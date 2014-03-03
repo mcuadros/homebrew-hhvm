@@ -62,34 +62,34 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
-      "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-DLIBIBERTY_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
+      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
+      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DBINUTIL_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
+      "-DLIBIBERTY_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
-      "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
-      "-DLIBEVENT_INCLUDE_DIR=#{Formula.factory('libeventfb').opt_prefix}/include",
-      "-DICU_INCLUDE_DIR=#{Formula.factory('icu4c').opt_prefix}/include",
-      "-DICU_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicuuc.dylib",
-      "-DICU_I18N_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicui18n.dylib",
-      "-DICU_DATA_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicudata.dylib",
-      "-DREADLINE_INCLUDE_DIR=#{Formula.factory('readline').opt_prefix}/include",
-      "-DREADLINE_LIBRARY=#{Formula.factory('readline').opt_prefix}/lib/libreadline.dylib",
-      "-DNCURSES_LIBRARY=#{Formula.factory('ncurses').opt_prefix}/lib/libncurses.dylib",
-      "-DCURL_INCLUDE_DIR=#{Formula.factory('curl').opt_prefix}/include",
-      "-DCURL_LIBRARY=#{Formula.factory('curl').opt_prefix}/lib/libcurl.dylib",
-      "-DBOOST_INCLUDEDIR=#{Formula.factory('boostfb').opt_prefix}/include",
-      "-DBOOST_LIBRARYDIR=#{Formula.factory('boostfb').opt_prefix}/lib",
+      "-DLIBEVENT_LIB=#{Formula['libeventfb'].opt_prefix}/lib/libevent.dylib",
+      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libeventfb'].opt_prefix}/include",
+      "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_prefix}/include",
+      "-DICU_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicuuc.dylib",
+      "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicui18n.dylib",
+      "-DICU_DATA_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicudata.dylib",
+      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_prefix}/include",
+      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_prefix}/lib/libreadline.dylib",
+      "-DNCURSES_LIBRARY=#{Formula['ncurses'].opt_prefix}/lib/libncurses.dylib",
+      "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_prefix}/include",
+      "-DCURL_LIBRARY=#{Formula['curl'].opt_prefix}/lib/libcurl.dylib",
+      "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].opt_prefix}/include",
+      "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].opt_prefix}/lib",
       "-DBoost_USE_STATIC_LIBS=ON",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula.factory('jemallocfb').opt_prefix}/include",
-      "-DJEMALLOC_LIB=#{Formula.factory('jemallocfb').opt_prefix}/lib/libjemalloc.dylib",
-      "-DLIBINTL_LIBRARIES=#{Formula.factory('gettext').opt_prefix}/lib/libintl.dylib",
-      "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
-      "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
-      "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include/libelf",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
+      "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
+      "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_prefix}/lib/libintl.dylib",
+      "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include",
+      "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_prefix}/lib/libdwarf.3.dylib",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_prefix}/include",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
@@ -97,7 +97,7 @@ class Hhvm < Formula
 
     if build.stable?
       system "rm -rf hphp/submodules/folly"
-      system "ln -s #{Formula.factory('folly').opt_prefix} hphp/submodules/folly"
+      system "ln -s #{Formula['folly'].opt_prefix} hphp/submodules/folly"
     end
 
     system "cmake", *args
