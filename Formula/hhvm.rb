@@ -36,6 +36,9 @@ class Hhvm < Formula
   depends_on 'curl'
   depends_on 'imap-uw'
   depends_on 'gcc48'
+  depends_on 'jpeg'
+  depends_on 'libpng'
+  depends_on 'unixodbc'
 
   #Custome packages
   if build.stable?
@@ -63,13 +66,22 @@ class Hhvm < Formula
   def install
     args = [
       ".",
+      "-DCMAKE_INCLUDE_PATH=#{Formula.factory('binutils').opt_prefix}/include",
+      "-DCCLIENT_INCLUDE_PATH=#{Formula.factory('imap-uw').opt_prefix}/include/imap",
+      "-DLIBGLOG_INCLUDE_DIR=#{Formula.factory('glog').opt_prefix}/include",
+      "-DLIBJPEG_INCLUDE_DIRS=#{Formula.factory('jpeg').opt_prefix}/include",
+      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula.factory('libmemcached').opt_prefix}/include",
+      "-DLIBODBC_INCLUDE_DIRS=#{Formula.factory('unixodbc').opt_prefix}/include",
+      "-DLIBPNG_INCLUDE_DIRS=#{Formula.factory('libpng').opt_prefix}/include",
+      "-DMcrypt_INCLUDE_DIR=#{Formula.factory('mcrypt').opt_prefix}/include",
+      "-DONIGURUMA_INCLUDE_DIR=#{Formula.factory('oniguruma').opt_prefix}/include",
+      "-DPCRE_INCLUDE_DIR=#{Formula.factory('pcre').opt_prefix}/include",
+      "-DTBB_INCLUDE_DIRS=#{Formula.factory('tbb').opt_prefix}/include",
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula.factory('tbb').opt_prefix}/include",
       "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
       "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
       "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-DLIBIBERTY_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
-      "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula.factory('libeventfb').opt_prefix}/include",
       "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula.factory('imagemagick').opt_prefix}/include/ImageMagick-6",
@@ -91,8 +103,10 @@ class Hhvm < Formula
       "-DLIBINTL_LIBRARIES=#{Formula.factory('gettext').opt_prefix}/lib/libintl.dylib",
       "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula.factory('libdwarf').opt_prefix}/include",
-      "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include/libelf",
+      "-DDWARF_INCLUDE_DIR=#{Formula.factory('libdwarf').opt_prefix}/include",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include;#{Formula.factory('libelf').opt_prefix}/include/libelf",
+      "-DMYSQL_INCLUDE_DIR=#{Formula.factory('mysql').opt_prefix}/include/mysql",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
@@ -123,4 +137,38 @@ class Hhvm < Formula
         Select Percona-Server: --with-percona-server
     EOS
   end
+
+  def patches
+    DATA
+  end
 end
+
+__END__
+diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
+index e2a511b..c1a63be 100644
+--- a/hphp/runtime/ext/gd/libgd/gdft.cpp
++++ b/hphp/runtime/ext/gd/libgd/gdft.cpp
+@@ -61,7 +61,7 @@
+ #else
+
+ #include "gdcache.h"
+-#include <freetype/config/ftheader.h>
++#include <ft2build.h>
+ #include FT_FREETYPE_H
+ #include FT_GLYPH_H
+
+diff --git a/CMake/HPHPFindLibs.cmake b/CMake/HPHPFindLibs.cmake
+index 2a1905c..429514d 100644
+--- a/CMake/HPHPFindLibs.cmake
++++ b/CMake/HPHPFindLibs.cmake
+@@ -27,6 +27,10 @@ if (LIBDL_INCLUDE_DIRS)
+  endif()
+ endif()
+
++foreach(path ${CMAKE_INCLUDE_PATH})
++  include_directories(${path})
++endforeach()
++
+ # boost checks
+ find_package(Boost 1.49.0 COMPONENTS system program_options filesystem regex REQUIRED)
+ include_directories(${Boost_INCLUDE_DIRS})
