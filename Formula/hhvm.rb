@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.1.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.1'
-  sha1 '03991f64245b87f6d7783c446559379a7349ed3a'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.2.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.2'
+  sha1 '6d731d5ebd09ec268115f963973d17adf8391c29'
 
   head 'https://github.com/facebook/hhvm.git'
 
@@ -55,58 +55,61 @@ class Hhvm < Formula
     depends_on 'mariadb'
   elsif build.include? 'with-percona-server'
     depends_on 'percona-server'
-  else
+  elsif !build.include? 'with-system-mysql'
     depends_on 'mysql'
-    depends_on 'mysql-connector-c++'
     if MacOS.version < :mavericks
       depends_on 'mysql-connector-c'
     end
   end
 
+  depends_on 'mysql-connector-c++'
+
   def install
     args = [
       ".",
-      "-DCMAKE_INCLUDE_PATH=#{Formula.factory('binutils').opt_prefix}/include",
-      "-DCCLIENT_INCLUDE_PATH=#{Formula.factory('imap-uw').opt_prefix}/include/imap",
-      "-DLIBGLOG_INCLUDE_DIR=#{Formula.factory('glog').opt_prefix}/include",
-      "-DLIBJPEG_INCLUDE_DIRS=#{Formula.factory('jpeg').opt_prefix}/include",
-      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula.factory('libmemcached').opt_prefix}/include",
-      "-DLIBODBC_INCLUDE_DIRS=#{Formula.factory('unixodbc').opt_prefix}/include",
-      "-DLIBPNG_INCLUDE_DIRS=#{Formula.factory('libpng').opt_prefix}/include",
-      "-DMcrypt_INCLUDE_DIR=#{Formula.factory('mcrypt').opt_prefix}/include",
-      "-DONIGURUMA_INCLUDE_DIR=#{Formula.factory('oniguruma').opt_prefix}/include",
-      "-DPCRE_INCLUDE_DIR=#{Formula.factory('pcre').opt_prefix}/include",
-      "-DTBB_INCLUDE_DIRS=#{Formula.factory('tbb').opt_prefix}/include",
-      "-DTEST_TBB_INCLUDE_DIR=#{Formula.factory('tbb').opt_prefix}/include",
-      "-DCMAKE_CXX_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula.factory('gcc48').opt_prefix}/bin/gcc-4.8",
-      "-DBINUTIL_LIB=#{Formula.factory('gcc48').opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-DLIBEVENT_LIB=#{Formula.factory('libeventfb').opt_prefix}/lib/libevent.dylib",
-      "-DLIBEVENT_INCLUDE_DIR=#{Formula.factory('libeventfb').opt_prefix}/include",
-      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula.factory('imagemagick').opt_prefix}/include/ImageMagick-6",
-      "-DLIBMAGICKWAND_LIBRARIES=#{Formula.factory('imagemagick').opt_prefix}/lib/libMagickWand-6.Q16.dylib",
-      "-DICU_INCLUDE_DIR=#{Formula.factory('icu4c').opt_prefix}/include",
-      "-DICU_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicuuc.dylib",
-      "-DICU_I18N_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicui18n.dylib",
-      "-DICU_DATA_LIBRARY=#{Formula.factory('icu4c').opt_prefix}/lib/libicudata.dylib",
-      "-DREADLINE_INCLUDE_DIR=#{Formula.factory('readline').opt_prefix}/include",
-      "-DREADLINE_LIBRARY=#{Formula.factory('readline').opt_prefix}/lib/libreadline.dylib",
-      "-DNCURSES_LIBRARY=#{Formula.factory('ncurses').opt_prefix}/lib/libncurses.dylib",
-      "-DCURL_INCLUDE_DIR=#{Formula.factory('curl').opt_prefix}/include",
-      "-DCURL_LIBRARY=#{Formula.factory('curl').opt_prefix}/lib/libcurl.dylib",
-      "-DBOOST_INCLUDEDIR=#{Formula.factory('boostfb').opt_prefix}/include",
-      "-DBOOST_LIBRARYDIR=#{Formula.factory('boostfb').opt_prefix}/lib",
+      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
+      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DLIBIBERTY_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
+      "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
+      "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
+      "-DLIBEVENT_LIB=#{Formula['libeventfb'].opt_prefix}/lib/libevent.dylib",
+      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libeventfb'].opt_prefix}/include",
+      "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_prefix}/include",
+      "-DICU_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicuuc.dylib",
+      "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicui18n.dylib",
+      "-DICU_DATA_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicudata.dylib",
+      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_prefix}/include",
+      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_prefix}/lib/libreadline.dylib",
+      "-DNCURSES_LIBRARY=#{Formula['ncurses'].opt_prefix}/lib/libncurses.dylib",
+      "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_prefix}/include",
+      "-DCURL_LIBRARY=#{Formula['curl'].opt_prefix}/lib/libcurl.dylib",
+      "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].opt_prefix}/include",
+      "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].opt_prefix}/lib",
       "-DBoost_USE_STATIC_LIBS=ON",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula.factory('jemallocfb').opt_prefix}/include",
-      "-DJEMALLOC_LIB=#{Formula.factory('jemallocfb').opt_prefix}/lib/libjemalloc.dylib",
-      "-DLIBINTL_LIBRARIES=#{Formula.factory('gettext').opt_prefix}/lib/libintl.dylib",
-      "-DLIBINTL_INCLUDE_DIR=#{Formula.factory('gettext').opt_prefix}/include",
-      "-DLIBDWARF_LIBRARIES=#{Formula.factory('libdwarf').opt_prefix}/lib/libdwarf.3.dylib",
-      "-DDWARF_INCLUDE_DIR=#{Formula.factory('libdwarf').opt_prefix}/include",
-      "-DLIBELF_INCLUDE_DIRS=#{Formula.factory('libelf').opt_prefix}/include;#{Formula.factory('libelf').opt_prefix}/include/libelf",
-      "-DMYSQL_INCLUDE_DIR=#{Formula.factory('mysql').opt_prefix}/include/mysql",
-      "-DFREETYPE_INCLUDE_DIRS=#{Formula.factory('freetype').opt_prefix}/include/freetype2",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
+      "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
+      "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_prefix}/lib/libintl.dylib",
+      "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include",
+      "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_prefix}/lib/libdwarf.3.dylib",
+      "-DDWARF_INCLUDE_DIR=#{Formula['libdwarf'].opt_prefix}/include",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
+      "-DCMAKE_INCLUDE_PATH=#{Formula['binutils'].opt_prefix}/include",
+      "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_prefix}/include/imap",
+      "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_prefix}/include",
+      "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_prefix}/include",
+      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula['libmemcached'].opt_prefix}/include",
+      "-DLIBODBC_INCLUDE_DIRS=#{Formula['unixodbc'].opt_prefix}/include",
+      "-DLIBPNG_INCLUDE_DIRS=#{Formula['libpng'].opt_prefix}/include",
+      "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_prefix}/include",
+      "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_prefix}/include",
+      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
+      "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_prefix}/include",
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include",
+      "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_prefix}/include/freetype2",
+      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_prefix}/include/ImageMagick-6",
+      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_prefix}/lib/libMagickWand-6.Q16.dylib",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
@@ -114,7 +117,7 @@ class Hhvm < Formula
 
     if build.stable?
       system "rm -rf hphp/submodules/folly"
-      system "ln -s #{Formula.factory('folly').opt_prefix} hphp/submodules/folly"
+      system "ln -s #{Formula['folly'].opt_prefix} hphp/submodules/folly"
     end
 
     system "cmake", *args

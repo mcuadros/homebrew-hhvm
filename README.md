@@ -32,7 +32,7 @@ brew tap mcuadros/homebrew-hhvm
 Usage
 -----
 
-Install the last stable version (2.4.0)
+Install the last stable version (2.4.2)
 
 ```sh
 brew install hhvm
@@ -46,7 +46,7 @@ brew install hhvm --HEAD
 
 HHVM requires MySQL to compile, by default will use `mysql` formula, but 
 you can use `--with-mariadb` or `--with-percona-server` to compile with other
-mysql alternatives.
+mysql alternatives. You can use `--with-system-mysql` if mysql is already installed.
 
 Caveats
 -------
