@@ -144,7 +144,10 @@ class Hhvm < Formula
   end
 
   def patches
-    DATA
+    [
+      'https://gist.githubusercontent.com/denji/d1fe14215fd4ca74de2f/raw/hhvm-2.4.2-fix-cmake.patch',
+      DATA
+    ]
   end
 end
 
