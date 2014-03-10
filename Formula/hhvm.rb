@@ -6,6 +6,11 @@ class Hhvm < Formula
   sha1 '6d731d5ebd09ec268115f963973d17adf8391c29'
   head 'https://github.com/facebook/hhvm.git'
 
+  option 'with-debug', 'Enable debug build.'
+  option 'with-mariadb', 'Use mariadb as mysql package.'
+  option 'with-percona-server', 'Use percona-server as mysql package.'
+  option 'with-system-mysql', 'Try to use the mysql package installed on your system.'
+
   depends_on 'cmake' => :build
   depends_on 'libtool' => :build
   depends_on 'autoconf' => :build
@@ -50,11 +55,11 @@ class Hhvm < Formula
   depends_on 'boostfb'
 
   #MySQL packages
-  if build.with? 'with-mariadb'
+  if build.with? 'mariadb'
     depends_on 'mariadb'
-  elsif build.with? 'with-percona-server'
+  elsif build.with? 'percona-server'
     depends_on 'percona-server'
-  elsif build.without? 'with-system-mysql'
+  elsif build.without? 'system-mysql'
     depends_on 'mysql'
     depends_on 'mysql-connector-c++'
     if MacOS.version < :mavericks
@@ -69,7 +74,7 @@ class Hhvm < Formula
       "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
       "-DLIBIBERTY_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-BINUTIL_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
+      "-DBINUTIL_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].opt_prefix}/lib/libevent.dylib",
@@ -112,6 +117,10 @@ class Hhvm < Formula
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
 
+    if build.with? 'debug'
+      args << '-DCMAKE_BUILD_TYPE=Debug'
+    end
+
     ENV['HPHP_HOME'] = Dir.pwd
 
     if build.stable?
@@ -132,11 +141,6 @@ class Hhvm < Formula
 
         $ sudo rm /usr/X11R6
         $ sudo ln -s /opt/X11 /usr/X11R6
-
-      MySQL to compile, by default will use Oracle MySQL
-        Select MariaDB: --with-mariadb
-         or
-        Select Percona-Server: --with-percona-server
     EOS
   end
 
