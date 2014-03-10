@@ -69,7 +69,7 @@ class Hhvm < Formula
       "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
       "-DLIBIBERTY_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
-      "-BINUTIL_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a"
+      "-BINUTIL_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].opt_prefix}/lib/libevent.dylib",
