@@ -62,8 +62,10 @@ class Hhvm < Formula
     end
   end
 
-  depends_on 'mysql-connector-c++'
-
+  if !build.include? 'with-system-mysql'
+    depends_on 'mysql-connector-c++'
+  end
+  
   def install
     args = [
       ".",
