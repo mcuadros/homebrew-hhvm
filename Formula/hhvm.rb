@@ -61,7 +61,7 @@ class Hhvm < Formula
       depends_on 'mysql-connector-c'
     end
   end
-  
+
   def install
     args = [
       ".",
