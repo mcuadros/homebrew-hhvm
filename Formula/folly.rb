@@ -8,5 +8,5 @@ class Folly < Formula
 
   def install
     prefix.install Dir['*']
-  end 
+  end
 end

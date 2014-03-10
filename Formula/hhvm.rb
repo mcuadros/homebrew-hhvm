@@ -4,7 +4,6 @@ class Hhvm < Formula
   url 'https://github.com/facebook/hhvm/archive/HHVM-2.4.2.tar.gz'
   homepage 'https://github.com/facebook/hhvm/tree/HHVM-2.4.2'
   sha1 '6d731d5ebd09ec268115f963973d17adf8391c29'
-
   head 'https://github.com/facebook/hhvm.git'
 
   depends_on 'cmake' => :build
@@ -51,21 +50,18 @@ class Hhvm < Formula
   depends_on 'boostfb'
 
   #MySQL packages
-  if build.include? 'with-mariadb'
+  if build.with? 'with-mariadb'
     depends_on 'mariadb'
-  elsif build.include? 'with-percona-server'
+  elsif build.with? 'with-percona-server'
     depends_on 'percona-server'
-  elsif !build.include? 'with-system-mysql'
+  elsif build.without? 'with-system-mysql'
     depends_on 'mysql'
+    depends_on 'mysql-connector-c++'
     if MacOS.version < :mavericks
       depends_on 'mysql-connector-c'
     end
   end
 
-  if !build.include? 'with-system-mysql'
-    depends_on 'mysql-connector-c++'
-  end
-  
   def install
     args = [
       ".",
