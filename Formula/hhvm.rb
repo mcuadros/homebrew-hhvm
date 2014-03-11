@@ -110,12 +110,19 @@ class Hhvm < Formula
       "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
       "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_prefix}/include",
       "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include",
-      "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_prefix}/include/freetype2",
       "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_prefix}/include/ImageMagick-6",
       "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_prefix}/lib/libMagickWand-6.Q16.dylib",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}"
     ]
+
+    if build.with? 'mariadb'
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mariadb'].include}/mysql"
+    elsif build.with? 'percona-server'
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['percona-server'].include}/mysql"
+    elsif build.without? 'system-mysql'
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].include}/mysql"
+    end
 
     if build.with? 'debug'
       args << '-DCMAKE_BUILD_TYPE=Debug'
