@@ -39,10 +39,10 @@ class Hhvm < Formula
   depends_on 'libssh2'
   depends_on 'curl'
   depends_on 'imap-uw'
-  depends_on 'gcc48'
   depends_on 'jpeg'
   depends_on 'libpng'
   depends_on 'unixodbc'
+  depends_on 'boost'
 
   #Custome packages
   if build.stable?
@@ -52,7 +52,6 @@ class Hhvm < Formula
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
-  depends_on 'boostfb'
 
   #MySQL packages
   if build.with? 'mariadb'
@@ -67,14 +66,17 @@ class Hhvm < Formula
     end
   end
 
+  def patches
+    DATA
+  end
+
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].bin}/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
-      "-DLIBIBERTY_LIB=#{Formula['gcc48'].lib}/x86_64/libiberty-4.8.a",
-      "-DBINUTIL_LIB=#{Formula['gcc48'].lib}/x86_64/libiberty-4.8.a",
+      "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
+      "-DCMAKE_C_COMPILER=/usr/bin/clang",
+      "-DCMAKE_ASM_COMPILER=/usr/bin/clang",
+      "-DLIBIBERTY_LIB=#{Formula['binutils'].lib}/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].lib}/libevent.dylib",
@@ -88,8 +90,8 @@ class Hhvm < Formula
       "-DNCURSES_LIBRARY=#{Formula['ncurses'].lib}/libncurses.dylib",
       "-DCURL_INCLUDE_DIR=#{Formula['curl'].include}",
       "-DCURL_LIBRARY=#{Formula['curl'].lib}/libcurl.dylib",
-      "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].include}",
-      "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].lib}",
+      "-DBOOST_INCLUDEDIR=#{Formula['boost'].include}",
+      "-DBOOST_LIBRARYDIR=#{Formula['boost'].lib}",
       "-DBoost_USE_STATIC_LIBS=ON",
       "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].include}",
       "-DJEMALLOC_LIB=#{Formula['jemallocfb'].lib}/libjemalloc.dylib",
@@ -150,10 +152,6 @@ class Hhvm < Formula
         $ sudo ln -s /opt/X11 /usr/X11R6
     EOS
   end
-
-  def patches
-    DATA
-  end
 end
 
 __END__
@@ -170,14 +168,14 @@ index e2a511b..c1a63be 100644
  #include FT_FREETYPE_H
  #include FT_GLYPH_H
 
-diff --git a/CMake/HPHPFindLibs.cmake b/CMake/HPHPFindLibs.cmake
-index 2a1905c..429514d 100644
---- a/CMake/HPHPFindLibs.cmake
-+++ b/CMake/HPHPFindLibs.cmake
+diff --git a/HPHPFindLibs.cmake b/HPHPFindLibs.cmake
+index d4ec7c1..2d0a2b3 100644
+--- a/HPHPFindLibs.cmake
++++ b/HPHPFindLibs.cmake
 @@ -27,6 +27,10 @@ if (LIBDL_INCLUDE_DIRS)
-  endif()
+ 	endif()
  endif()
-
+ 
 +foreach(path ${CMAKE_INCLUDE_PATH})
 +  include_directories(${path})
 +endforeach()
@@ -185,3 +183,30 @@ index 2a1905c..429514d 100644
  # boost checks
  find_package(Boost 1.49.0 COMPONENTS system program_options filesystem regex REQUIRED)
  include_directories(${Boost_INCLUDE_DIRS})
+@@ -380,14 +384,14 @@ if (LINUX OR APPLE)
+ endif()
+ 
+ FIND_LIBRARY (BFD_LIB bfd)
+-FIND_LIBRARY (BINUTIL_LIB iberty)
++FIND_LIBRARY (LIBIBERTY_LIB iberty)
+ 
+ if (NOT BFD_LIB)
+ 	message(FATAL_ERROR "You need to install binutils")
+ endif()
+ 
+-if (NOT BINUTIL_LIB)
+-	message(FATAL_ERROR "You need to install binutils")
++if (NOT LIBIBERTY_LIB)
++	message(FATAL_ERROR "You need to install libiberty (usually bundled with binutils)")
+ endif()
+ 
+ if (FREEBSD)
+@@ -474,7 +478,7 @@ if (APPLE)
+ endif()
+ 
+ 	target_link_libraries(${target} ${BFD_LIB})
+-	target_link_libraries(${target} ${BINUTIL_LIB})
++	target_link_libraries(${target} ${LIBIBERTY_LIB})
+ if (${LIBPTHREAD_LIBRARIES})
+ 	target_link_libraries(${target} ${LIBPTHREAD_LIBRARIES})
+ endif()
