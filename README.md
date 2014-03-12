@@ -1,4 +1,4 @@
-# Homebrew-HHVM
+# Homebrew-HHVM  [![Build Status](https://travis-ci.org/mcuadros/homebrew-hhvm.png?branch=master)](https://travis-ci.org/mcuadros/homebrew-hhvm)
 
 A repository with all formulas related to install [HHVM](http://www.hiphop-php.com/blog/), based on [Building and installing HHVM on OSX 10.8](https://github.com/facebook/hhvm/wiki/Building-and-installing-HHVM-on-OSX-10.8) by [Daniel Sloof](https://github.com/danslo)
 
