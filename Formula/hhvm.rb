@@ -34,7 +34,7 @@ class Hhvm < Formula
   depends_on 'tbb'
   depends_on 'boost'
   depends_on 'imagemagick'
-  depends_on 'binutils'
+#  depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'libssh2'
   depends_on 'curl'
@@ -52,6 +52,7 @@ class Hhvm < Formula
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
+  depends_on 'binutilsfb'
 
   #MySQL packages
   if build.with? 'mariadb'
