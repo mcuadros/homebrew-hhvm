@@ -34,7 +34,7 @@ class Hhvm < Formula
   depends_on 'tbb'
   depends_on 'boost'
   depends_on 'imagemagick'
-  depends_on 'binutils'
+#  depends_on 'binutils'
   depends_on 'ncurses'
   depends_on 'libssh2'
   depends_on 'curl'
@@ -52,6 +52,7 @@ class Hhvm < Formula
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
   depends_on 'libeventfb'
+  depends_on 'binutilsfb'
 
   #MySQL packages
   if build.with? 'mariadb'
@@ -76,7 +77,7 @@ class Hhvm < Formula
       "-DCMAKE_CXX_COMPILER=/usr/bin/clang++",
       "-DCMAKE_C_COMPILER=/usr/bin/clang",
       "-DCMAKE_ASM_COMPILER=/usr/bin/clang",
-      "-DLIBIBERTY_LIB=#{Formula['binutils'].lib}/x86_64/libiberty.a",
+      "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].lib}/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].lib}/libevent.dylib",
@@ -100,7 +101,7 @@ class Hhvm < Formula
       "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].lib}/libdwarf.3.dylib",
       "-DDWARF_INCLUDE_DIR=#{Formula['libdwarf'].include}",
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].include}/libelf",
-      "-DCMAKE_INCLUDE_PATH=#{Formula['binutils'].include}",
+      "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].include}",
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].include}/imap",
       "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].include}",
       "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].include}",
