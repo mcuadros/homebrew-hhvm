@@ -156,23 +156,10 @@ class Hhvm < Formula
 end
 
 __END__
-diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
-index e2a511b..c1a63be 100644
---- a/hphp/runtime/ext/gd/libgd/gdft.cpp
-+++ b/hphp/runtime/ext/gd/libgd/gdft.cpp
-@@ -61,7 +61,7 @@
- #else
-
- #include "gdcache.h"
--#include <freetype/config/ftheader.h>
-+#include <ft2build.h>
- #include FT_FREETYPE_H
- #include FT_GLYPH_H
-
-diff --git a/HPHPFindLibs.cmake b/HPHPFindLibs.cmake
+diff --git a/CMake/HPHPFindLibs.cmake b/CMake/HPHPFindLibs.cmake
 index d4ec7c1..2d0a2b3 100644
---- a/HPHPFindLibs.cmake
-+++ b/HPHPFindLibs.cmake
+--- a/CMake/HPHPFindLibs.cmake
++++ b/CMake/HPHPFindLibs.cmake
 @@ -27,6 +27,10 @@ if (LIBDL_INCLUDE_DIRS)
  	endif()
  endif()
@@ -182,7 +169,7 @@ index d4ec7c1..2d0a2b3 100644
 +endforeach()
 +
  # boost checks
- find_package(Boost 1.49.0 COMPONENTS system program_options filesystem regex REQUIRED)
+ find_package(Boost 1.48.0 COMPONENTS system program_options filesystem regex REQUIRED)
  include_directories(${Boost_INCLUDE_DIRS})
 @@ -380,14 +384,14 @@ if (LINUX OR APPLE)
  endif()
@@ -211,3 +198,16 @@ index d4ec7c1..2d0a2b3 100644
  if (${LIBPTHREAD_LIBRARIES})
  	target_link_libraries(${target} ${LIBPTHREAD_LIBRARIES})
  endif()
+diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
+index 30db78f..0c73a06 100644
+--- a/hphp/runtime/ext/gd/libgd/gdft.cpp
++++ b/hphp/runtime/ext/gd/libgd/gdft.cpp
+@@ -61,7 +61,7 @@ gdImageStringFT (gdImage * im, int *brect, int fg, char *fontlist,
+ #else
+ 
+ #include "gdcache.h"
+-#include <freetype/config/ftheader.h>
++#include <ft2build.h>
+ #include FT_FREETYPE_H
+ #include FT_GLYPH_H
+ 
