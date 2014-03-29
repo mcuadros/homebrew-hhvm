@@ -146,14 +146,8 @@ class Hhvm < Formula
       If you have XQuartz (X11) installed:
         To temporarily remove a symbolic link at '/usr/X11R6' in order
         to successfully install HHVM.
-
-        $ sudo rm /usr/X11R6
-        $ sudo ln -s /opt/X11 /usr/X11R6
-
-      MySQL to compile, by default will use Oracle MySQL
-        Select MariaDB: --with-mariadb
-         or
-        Select Percona-Server: --with-percona-server
+          $ sudo rm /usr/X11R6
+          $ sudo ln -s /opt/X11 /usr/X11R6
     EOS
   end
 
