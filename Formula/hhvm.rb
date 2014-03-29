@@ -35,7 +35,7 @@ class Hhvm < Formula
   depends_on 'tbb'
   depends_on 'boost'
   depends_on 'imagemagick'
-  depends_on 'binutils'
+  depends_on 'binutilsfb'
   depends_on 'ncurses'
   depends_on 'libssh2'
   depends_on 'curl'
@@ -77,7 +77,7 @@ class Hhvm < Formula
       "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].bin}/g++-4.8",
       "-DCMAKE_C_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
-      "-DLIBIBERTY_LIB=#{Formula['gcc48'].lib}/x86_64/libiberty-4.8.a",
+      "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].lib}/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].lib}/libevent.dylib",
@@ -101,7 +101,9 @@ class Hhvm < Formula
       "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].lib}/libdwarf.3.dylib",
       "-DDWARF_INCLUDE_DIR=#{Formula['libdwarf'].include}",
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].include}/libelf",
-      "-DCMAKE_INCLUDE_PATH=#{Formula['binutils'].include}",
+      "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].include}",
+      "-DFBD_LIB=#{Formula['binutilsfb'].lib}/libbfd.a",
+      "-DBINUTIL_LIB=#{Formula['binutilsfb'].lib}/libbfd.a",
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].include}/imap",
       "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].include}",
       "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].include}",
