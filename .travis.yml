@@ -8,14 +8,12 @@ install:
   - ln -s $PWD $(brew --repo)/Library/Taps/homebrew-hhvm
   - brew tap --repair
 env:
-  - PACKAGE=folly
-  - PACKAGE=jemallocfb
-  - PACKAGE=libdwarf
-  - PACKAGE=libeventfb
-  - PACKAGE=hhvm
+  - MODULE=""
+  - MODULE="mariadb"
+  - MODULE="percona-server"
+  - MODULE="system-mysql"
 script:
-  - brew audit $PACKAGE
-  - brew install -v $PACKAGE
-  - '! brew cat $PACKAGE | grep -q "test do" || brew test -v $PACKAGE'
+  - brew audit hhvm
+  - brew install -v hhvm --with-$MODULE
 matrix:
   fast_finish: true
