@@ -77,7 +77,7 @@ class Hhvm < Formula
       "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].bin}/g++-4.8",
       "-DCMAKE_C_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
       "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].bin}/gcc-4.8",
-      "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].lib}/x86_64/libiberty-4.8.a",
+      "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].lib}/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DLIBEVENT_LIB=#{Formula['libeventfb'].lib}/libevent.dylib",
@@ -149,6 +149,18 @@ class Hhvm < Formula
           $ sudo rm /usr/X11R6
           $ sudo ln -s /opt/X11 /usr/X11R6
     EOS
+  end
+
+  stable do
+    patch do
+      url "https://github.com/facebook/hhvm/pull/2089.diff"
+      sha1 "2e4b5db532f0da7e5bb6e536c27d8866ea519603"
+    end
+
+    patch do
+      url "https://github.com/facebook/hhvm/pull/2147.diff"
+      sha1 "4bea16fc99ccd6f49431a3c82a99c82ce5c4bba0"
+    end
   end
 
   def patches
