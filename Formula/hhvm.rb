@@ -11,7 +11,6 @@ class Hhvm < Formula
   option 'with-percona-server', 'Use percona-server as mysql package.'
   option 'with-system-mysql', 'Try to use the mysql package installed on your system.'
 
-
   depends_on 'cmake' => :build
   depends_on 'libtool' => :build
   depends_on 'autoconf' => :build
@@ -71,6 +70,7 @@ class Hhvm < Formula
   end
 
   def install
+
     args = [
       ".",
       "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
@@ -138,6 +138,26 @@ class Hhvm < Formula
     system "cmake", *args
     system "make", "-j#{ENV.make_jobs}"
     system "make install"
+    install_config
+  end
+
+  def install_config
+    ini = etc + "hhvm/php.ini"
+    ini.write default_php_ini unless File.exists? ini
+  end
+
+  def default_php_ini
+    <<-EOS.undent
+      ; php options
+      date.timezone = Europe/Paris
+
+      ; hhvm specific
+      hhvm.log.level = Warning
+      hhvm.log.always_log_unhandled_exceptions = true
+      hhvm.log.runtime_error_reporting_level = 8191
+      hhvm.mysql.typed_results = false
+      hhvm.eval.jit = false
+    EOS
   end
 
   def caveats
@@ -147,6 +167,9 @@ class Hhvm < Formula
         to successfully install HHVM.
           $ sudo rm /usr/X11R6
           $ sudo ln -s /opt/X11 /usr/X11R6
+
+      The php.ini file can be found in:
+          #{etc}/hhvm/php.ini
     EOS
   end
 
