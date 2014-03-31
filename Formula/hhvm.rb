@@ -33,7 +33,7 @@ class Hhvm < Formula
   depends_on 'icu4c'
   depends_on 'libmemcached'
   depends_on 'tbb'
-  depends_on 'boost'
+  depends_on 'boostfb'
   depends_on 'imagemagick'
   depends_on 'binutilsfb'
   depends_on 'ncurses'
@@ -90,8 +90,8 @@ class Hhvm < Formula
       "-DNCURSES_LIBRARY=#{Formula['ncurses'].opt_prefix}/lib/libncurses.dylib",
       "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_prefix}/include",
       "-DCURL_LIBRARY=#{Formula['curl'].opt_prefix}/lib/libcurl.dylib",
-      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_prefix}/include",
-      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_prefix}/lib",
+      "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].opt_prefix}/include",
+      "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].opt_prefix}/lib",
       "-DBoost_USE_STATIC_LIBS=ON",
       "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
       "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
