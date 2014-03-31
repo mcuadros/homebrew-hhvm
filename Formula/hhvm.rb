@@ -70,7 +70,6 @@ class Hhvm < Formula
   end
 
   def install
-
     args = [
       ".",
       "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
@@ -128,16 +127,22 @@ class Hhvm < Formula
       args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql"
     end
 
-    ENV['HPHP_HOME'] = Dir.pwd
+    src = prefix + "src"
+    src.install Dir['*']
 
-    if build.stable?
-      system "rm -rf hphp/submodules/folly"
-      system "ln -s #{Formula['folly'].opt_prefix} hphp/submodules/folly"
+    ENV['HPHP_HOME'] = src
+
+    cd src do
+      if build.stable?
+        system "rm -rf hphp/submodules/folly"
+        system "ln -s #{Formula['folly'].opt_prefix} hphp/submodules/folly"
+      end
+
+      system "cmake", *args
+      system "make", "-j#{ENV.make_jobs}"
+      system "make install"
     end
 
-    system "cmake", *args
-    system "make", "-j#{ENV.make_jobs}"
-    system "make install"
     install_config
   end
 
@@ -191,6 +196,19 @@ class Hhvm < Formula
 end
 
 __END__
+diff --git a/hphp/runtime/base/program-functions.cpp b/hphp/runtime/base/program-functions.cpp
+index ed71df2..90288ab 100644
+--- a/hphp/runtime/base/program-functions.cpp
++++ b/hphp/runtime/base/program-functions.cpp
+@@ -1144,7 +1144,7 @@ static int execute_program_impl(int argc, char** argv) {
+       return -1;
+     }
+     if (po.config.empty()) {
+-      auto default_config_file = "/etc/hhvm/php.ini";
++      auto default_config_file = "/usr/local/etc/hhvm/php.ini";
+       if (access(default_config_file, R_OK) != -1) {
+         Logger::Verbose("Using default config file: %s", default_config_file);
+         po.config.push_back(default_config_file);
 diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
 index e2a511b..c1a63be 100644
 --- a/hphp/runtime/ext/gd/libgd/gdft.cpp
