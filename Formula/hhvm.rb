@@ -6,11 +6,6 @@ class Hhvm < Formula
   sha1 'e1bc784ce475d115d601899d1e890959daa745de'
   head 'https://github.com/facebook/hhvm.git'
 
-  bottle do
-    root_url 'https://github.com/mcuadros/homebrew-hhvm/releases/download/v3.0.1/'
-    sha1 '96f40d0faf36cffd89bca5f385f567d299f67c27' => :mavericks
-  end
-
   option 'with-debug', 'Enable debug build.'
   option 'with-mariadb', 'Use mariadb as mysql package.'
   option 'with-percona-server', 'Use percona-server as mysql package.'
