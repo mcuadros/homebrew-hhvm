@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-3.0.0.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.0.0'
-  sha1 '1cfd1c409a892213f220a407c0dc2695382bd15f'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-3.0.1.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.0.1'
+  sha1 'e1bc784ce475d115d601899d1e890959daa745de'
   head 'https://github.com/facebook/hhvm.git'
 
   option 'with-debug', 'Enable debug build.'
@@ -60,12 +60,6 @@ class Hhvm < Formula
     depends_on 'percona-server'
   elsif build.without? 'system-mysql'
     depends_on 'mysql'
-    if MacOS.version < :mavericks
-      depends_on 'mysql-connector-c'
-    end
-  end
-
-  if build.without? 'system-mysql'
     depends_on 'mysql-connector-c++'
   end
 
