@@ -1,19 +1,18 @@
 language: objective-c
+
 before_install:
   - brew update
   - brew tap homebrew/dupes
   - brew tap homebrew/versions
+  
 install:
   - mkdir -p $(brew --repo)/Library/Taps
   - ln -s $PWD $(brew --repo)/Library/Taps/homebrew-hhvm
   - brew tap --repair
-env:
-  - MODULE=""
-  - MODULE="mariadb"
-  - MODULE="percona-server"
-  - MODULE="system-mysql"
+  
 script:
   - brew audit hhvm
-  - brew install -v hhvm --with-$MODULE
+  - brew install hhvm
+  
 matrix:
   fast_finish: true
