@@ -7,6 +7,7 @@ class Libdwarf < Formula
 
   depends_on :bsdmake => :build
   depends_on 'libarchive'
+  depends_on 'libelf'
 
   def patches
     { :p0 => [
