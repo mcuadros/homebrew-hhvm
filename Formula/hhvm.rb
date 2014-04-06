@@ -3,7 +3,7 @@ require 'formula'
 class Hhvm < Formula
   url 'https://github.com/facebook/hhvm/archive/HHVM-3.0.1.tar.gz'
   homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.0.1'
-  sha1 'e1bc784ce475d115d601899d1e890959daa745de'
+  sha1 'b4d76135ed38d3b410728ca8af6a030bccbfb6c7'
   head 'https://github.com/facebook/hhvm.git'
 
   option 'with-debug', 'Enable debug build.'
