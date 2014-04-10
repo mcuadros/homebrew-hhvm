@@ -115,10 +115,13 @@ class Hhvm < Formula
 
     if build.with? 'mariadb'
       args << "-DMYSQL_INCLUDE_DIR=#{Formula['mariadb'].opt_prefix}/include/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['mariadb'].opt_prefix}/lib"
     elsif build.with? 'percona-server'
       args << "-DMYSQL_INCLUDE_DIR=#{Formula['percona-server'].opt_prefix}/include/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['percona-server'].opt_prefix}/lib"
     elsif build.without? 'system-mysql'
       args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['mysql'].opt_prefix}/lib"
     end
 
     src = prefix + "src"
