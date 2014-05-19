@@ -16,7 +16,7 @@ class Hhvm < Formula
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'gcc48' => :build
+  depends_on 'gcc49' => :build
 
   #Standard packages
   depends_on 'binutilsfb'
@@ -65,9 +65,9 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_CXX_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/g++-4.9",
+      "-DCMAKE_C_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
+      "-DCMAKE_ASM_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
       "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
