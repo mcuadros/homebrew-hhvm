@@ -16,32 +16,31 @@ class Hhvm < Formula
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
+  depends_on 'gcc49' => :build
 
   #Standard packages
-  depends_on 'freetype'
-  depends_on 'gettext'
-  depends_on 'mcrypt'
-  depends_on 'glog'
-  depends_on 'oniguruma'
-  depends_on 're2c'
-  depends_on 'libelf'
-  depends_on 'readline'
-  depends_on 'pcre'
-  depends_on 'gd'
-  depends_on 'imagemagick'
-  depends_on 'icu4c'
-  depends_on 'libmemcached'
-  depends_on 'tbb'
-  depends_on 'boostfb'
-  depends_on 'imagemagick'
   depends_on 'binutilsfb'
-  depends_on 'ncurses'
-  depends_on 'libssh2'
+  depends_on 'boostfb'
   depends_on 'curl'
+  depends_on 'freetype'
+  depends_on 'gd'
+  depends_on 'gettext'
+  depends_on 'glog'
+  depends_on 'icu4c'
+  depends_on 'imagemagick'
   depends_on 'imap-uw'
-  depends_on 'gcc48'
   depends_on 'jpeg'
+  depends_on 'libelf'
+  depends_on 'libmemcached'
   depends_on 'libpng'
+  depends_on 'libssh2'
+  depends_on 'mcrypt'
+  depends_on 'ncurses'
+  depends_on 'oniguruma'
+  depends_on 'pcre'
+  depends_on 're2c'
+  depends_on 'readline'
+  depends_on 'tbb'
   depends_on 'unixodbc'
 
   #Custome packages
@@ -66,9 +65,9 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
-      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
-      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_CXX_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/g++-4.9",
+      "-DCMAKE_C_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
+      "-DCMAKE_ASM_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
       "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
