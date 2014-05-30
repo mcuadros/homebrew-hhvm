@@ -17,7 +17,7 @@ class Boostfb < Formula
   url 'https://downloads.sourceforge.net/project/boost/boost/1.55.0/boost_1_55_0.tar.bz2'
   sha1 'cef9a0cc7084b1d639e06cd3bc34e4251524c840'
 
-  depends_on 'gcc48'
+  depends_on 'gcc49'
 
   env :userpaths
 
@@ -26,9 +26,9 @@ class Boostfb < Formula
   def install
     # Force gcc 4.7 due to the following bug:
     # http://stackoverflow.com/questions/12470118/malloc-error-using-boost-with-osx
-    ENV['CC'] = "#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8"
-    ENV['LD'] = "#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8"
-    ENV['CXX'] = "#{Formula['gcc48'].opt_prefix}/bin/g++-4.8"
+    ENV['CC'] = "#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9"
+    ENV['LD'] = "#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9"
+    ENV['CXX'] = "#{Formula['gcc49'].opt_prefix}/bin/g++-4.9"
 
     # Adjust the name the libs are installed under to include the path to the
     # Homebrew lib directory so executables will work when installed to a

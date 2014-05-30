@@ -2,8 +2,8 @@ require 'formula'
 
 class Jemallocfb < Formula
   homepage 'http://www.canonware.com/jemalloc/download.html'
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.4.1.tar.bz2'
-  sha1 '9d5697a5601ddcd7183743588231b1323707737f'
+  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2'
+  sha1 '40c0892b172e5dc14a6cea6fe4edda7dea4f3a68'
 
   keg_only "We're just a patched version."
 
