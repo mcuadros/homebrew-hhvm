@@ -93,7 +93,7 @@ class Hhvm < Formula
       "-DDWARF_INCLUDE_DIR=#{Formula['libdwarf'].opt_prefix}/include",
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
       "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include",
-      "-DFBD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a",
+      "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a",
       "-DBINUTIL_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a",
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_prefix}/include/imap",
       "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_prefix}/include",
