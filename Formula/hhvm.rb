@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-3.0.1.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.0.1'
-  sha1 'b4d76135ed38d3b410728ca8af6a030bccbfb6c7'
+  url 'https://github.com/facebook/hhvm/archive/HHVM-3.2.0.tar.gz'
+  homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.2.0'
+  sha1 '039f97ae85244bdc5a06f0822f1f993f53badca5'
   head 'https://github.com/facebook/hhvm.git'
 
   option 'with-debug', 'Enable debug build.'
@@ -16,11 +16,13 @@ class Hhvm < Formula
   depends_on 'autoconf' => :build
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
-  depends_on 'gcc49' => :build
+  depends_on 'glog' => :build
+  depends_on 'boost' => :build
 
   #Standard packages
-  depends_on 'binutilsfb'
-  depends_on 'boostfb'
+  depends_on 'gcc48'
+  depends_on 'binutils'
+  depends_on 'boost'
   depends_on 'curl'
   depends_on 'freetype'
   depends_on 'gd'
@@ -42,6 +44,10 @@ class Hhvm < Formula
   depends_on 'readline'
   depends_on 'tbb'
   depends_on 'unixodbc'
+  depends_on 'git'
+  depends_on 'libxslt'
+  depends_on 'libevent'
+  depends_on 'sqlite'
 
   #Custome packages
   if build.stable?
@@ -50,7 +56,6 @@ class Hhvm < Formula
 
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
-  depends_on 'libeventfb'
 
   #MySQL packages
   if build.with? 'mariadb'
@@ -65,14 +70,14 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DCMAKE_CXX_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/g++-4.9",
-      "-DCMAKE_C_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
-      "-DCMAKE_ASM_COMPILER=#{Formula['gcc49'].opt_prefix}/bin/gcc-4.9",
-      "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a",
+      "-DCMAKE_CXX_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/g++-4.8",
+      "-DCMAKE_C_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DCMAKE_ASM_COMPILER=#{Formula['gcc48'].opt_prefix}/bin/gcc-4.8",
+      "-DLIBIBERTY_LIB=#{Formula['gcc48'].opt_prefix}/lib/x86_64/libiberty-4.8.a",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
-      "-DLIBEVENT_LIB=#{Formula['libeventfb'].opt_prefix}/lib/libevent.dylib",
-      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libeventfb'].opt_prefix}/include",
+      "-DLIBEVENT_LIB=#{Formula['libevent'].opt_prefix}/lib/libevent.dylib",
+      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libevent'].opt_prefix}/include",
       "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_prefix}/include",
       "-DICU_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicuuc.dylib",
       "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicui18n.dylib",
@@ -82,19 +87,25 @@ class Hhvm < Formula
       "-DNCURSES_LIBRARY=#{Formula['ncurses'].opt_prefix}/lib/libncurses.dylib",
       "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_prefix}/include",
       "-DCURL_LIBRARY=#{Formula['curl'].opt_prefix}/lib/libcurl.dylib",
-      "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].opt_prefix}/include",
-      "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].opt_prefix}/lib",
+      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_prefix}/include",
+      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_prefix}/lib",
       "-DBoost_USE_STATIC_LIBS=ON",
       "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
       "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
       "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_prefix}/lib/libintl.dylib",
       "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_prefix}/lib/libdwarf.3.dylib",
-      "-DDWARF_INCLUDE_DIR=#{Formula['libdwarf'].opt_prefix}/include",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_prefix}/include",
+      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_prefix}/include/ImageMagick-6",
+      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_prefix}/lib/libMagickWand-6.Q16.dylib",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_prefix}/include/freetype2/",
+      "-DFREETYPE_LIBRARIES=#{Formula['freetype'].opt_prefix}/lib/libfreetype.dylib",
+      "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_prefix}/include",
+      "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_prefix}/lib/libsqlite3.0.dylib",
+      "-DCMAKE_INSTALL_PREFIX=#{prefix}",
+
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
-      "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include",
-      "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a",
-      "-DBINUTIL_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a",
+
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_prefix}/include/imap",
       "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_prefix}/include",
       "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_prefix}/include",
@@ -105,11 +116,7 @@ class Hhvm < Formula
       "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_prefix}/include",
       "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
       "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_prefix}/include",
-      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include",
-      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_prefix}/include/freetype2",
-      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_prefix}/include/ImageMagick-6",
-      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_prefix}/lib/libMagickWand-6.Q16.dylib",
-      "-DCMAKE_INSTALL_PREFIX=#{prefix}"
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include"
     ]
 
     if build.with? 'mariadb'
@@ -129,10 +136,8 @@ class Hhvm < Formula
     ENV['HPHP_HOME'] = src
 
     cd src do
-      if build.stable?
-        system "rm -rf hphp/submodules/folly"
-        system "ln -s #{Formula['folly'].opt_prefix} hphp/submodules/folly"
-      end
+      system "rm -rf third-party"
+      system "ln -s #{Formula['hhvm-third-party'].opt_prefix} third-party"
 
       system "cmake", *args
       system "make", "-j#{ENV.make_jobs}"
@@ -169,21 +174,14 @@ class Hhvm < Formula
           $ sudo rm /usr/X11R6
           $ sudo ln -s /opt/X11 /usr/X11R6
 
+
+      If you are getting errors like 'Undefined symbols for architecture x86_64:',
+      related to google or boost, execute:
+        $ brew reinstall --build-from-source --cc=gcc-4.8 boost gflags glog
+
       The php.ini file can be found in:
           #{etc}/hhvm/php.ini
     EOS
-  end
-
-  stable do
-    patch do
-      url "https://github.com/facebook/hhvm/pull/2089.diff"
-      sha1 "2e4b5db532f0da7e5bb6e536c27d8866ea519603"
-    end
-
-    patch do
-      url "https://github.com/facebook/hhvm/pull/2147.diff"
-      sha1 "4bea16fc99ccd6f49431a3c82a99c82ce5c4bba0"
-    end
   end
 
   def patches
@@ -192,44 +190,16 @@ class Hhvm < Formula
 end
 
 __END__
-diff --git a/hphp/runtime/base/program-functions.cpp b/hphp/runtime/base/program-functions.cpp
-index ed71df2..90288ab 100644
---- a/hphp/runtime/base/program-functions.cpp
-+++ b/hphp/runtime/base/program-functions.cpp
-@@ -1144,7 +1144,7 @@ static int execute_program_impl(int argc, char** argv) {
-       return -1;
-     }
-     if (po.config.empty()) {
--      auto default_config_file = "/etc/hhvm/php.ini";
-+      auto default_config_file = "/usr/local/etc/hhvm/php.ini";
-       if (access(default_config_file, R_OK) != -1) {
-         Logger::Verbose("Using default config file: %s", default_config_file);
-         po.config.push_back(default_config_file);
 diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
-index e2a511b..c1a63be 100644
+index 6e7d609..1cf5fe1 100644
 --- a/hphp/runtime/ext/gd/libgd/gdft.cpp
 +++ b/hphp/runtime/ext/gd/libgd/gdft.cpp
-@@ -61,7 +61,7 @@
- #else
-
+@@ -63,7 +63,7 @@ gdImageStringFT (gdImage * im, int *brect, int fg, char *fontlist,
  #include "gdcache.h"
--#include <freetype/config/ftheader.h>
-+#include <ft2build.h>
- #include FT_FREETYPE_H
- #include FT_GLYPH_H
 
-diff --git a/CMake/HPHPFindLibs.cmake b/CMake/HPHPFindLibs.cmake
-index 2a1905c..429514d 100644
---- a/CMake/HPHPFindLibs.cmake
-+++ b/CMake/HPHPFindLibs.cmake
-@@ -27,6 +27,10 @@ if (LIBDL_INCLUDE_DIRS)
-  endif()
- endif()
-
-+foreach(path ${CMAKE_INCLUDE_PATH})
-+  include_directories(${path})
-+endforeach()
-+
- # boost checks
- find_package(Boost 1.49.0 COMPONENTS system program_options filesystem regex REQUIRED)
- include_directories(${Boost_INCLUDE_DIRS})
+ #ifndef HAVE_FT2BUILD
+-# include <freetype/config/ftheader.h>
++# include <freetype2/config/ftheader.h>
+ #else
+ # include <ft2build.h>
+ #endif
