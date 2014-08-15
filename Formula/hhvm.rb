@@ -50,10 +50,8 @@ class Hhvm < Formula
   depends_on 'sqlite'
 
   #Custome packages
-  if build.stable?
-    depends_on 'folly'
-  end
-
+  depends_on 'folly'
+  depends_on 'hhvm-third-party'
   depends_on 'jemallocfb'
   depends_on 'libdwarf'
 
