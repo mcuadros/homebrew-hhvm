@@ -2,9 +2,9 @@ require 'formula'
 
 class HhvmThirdParty < Formula
   homepage 'https://github.com/hhvm/hhvm-third-party'
-  url 'https://github.com/hhvm/hhvm-third-party/archive/b9463da0d286a6f070803bdaa01df47309d508b7.tar.gz'
-  sha1 '4105be9132230b7cfabc613ca9eff9c27ff259e7'
-  version 'b9463d'
+  url 'https://github.com/hhvm/hhvm-third-party/archive/f391aa6bca9b9ed000ba54864bcb87fabf52e56d.tar.gz'
+  sha1 '876c7b10a995bb8154351d0a4b2e9dafa99aa515'
+  version 'f391aa'
 
   depends_on 'folly'
 
