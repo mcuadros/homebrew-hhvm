@@ -183,23 +183,4 @@ class Hhvm < Formula
           #{etc}/hhvm/php.ini
     EOS
   end
-
-  def patches
-    DATA
-  end
 end
-
-__END__
-diff --git a/hphp/runtime/ext/gd/libgd/gdft.cpp b/hphp/runtime/ext/gd/libgd/gdft.cpp
-index 6e7d609..1cf5fe1 100644
---- a/hphp/runtime/ext/gd/libgd/gdft.cpp
-+++ b/hphp/runtime/ext/gd/libgd/gdft.cpp
-@@ -63,7 +63,7 @@ gdImageStringFT (gdImage * im, int *brect, int fg, char *fontlist,
- #include "gdcache.h"
-
- #ifndef HAVE_FT2BUILD
--# include <freetype/config/ftheader.h>
-+# include <freetype2/config/ftheader.h>
- #else
- # include <ft2build.h>
- #endif
