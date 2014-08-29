@@ -44,7 +44,6 @@ class Hhvm < Formula
   depends_on 'readline'
   depends_on 'tbb'
   depends_on 'unixodbc'
-  depends_on 'git'
   depends_on 'libxslt'
   depends_on 'libevent'
   depends_on 'sqlite'
@@ -184,6 +183,7 @@ class Hhvm < Formula
 
   bottle do
     root_url 'https://github.com/mcuadros/homebrew-hhvm/releases/download/v3.3.0-dev'
-    sha1 "4ef565ad48daf12d42a53a79108f2815033af0cd" => :mavericks
+    revision 1
+    sha1 "2cbc1a4d8f463500838a71696d1a163764b0d887" => :mavericks
   end
 end
