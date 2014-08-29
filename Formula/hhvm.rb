@@ -181,4 +181,9 @@ class Hhvm < Formula
           #{etc}/hhvm/php.ini
     EOS
   end
+
+  bottle do
+    root_url 'https://github.com/mcuadros/homebrew-hhvm/releases/download/v3.3.0-dev'
+    sha1 "4ef565ad48daf12d42a53a79108f2815033af0cd" => :mavericks
+  end
 end
