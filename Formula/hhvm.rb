@@ -1,9 +1,9 @@
 require 'formula'
 
 class Hhvm < Formula
-  url 'https://github.com/facebook/hhvm/archive/HHVM-3.2.0.tar.gz'
-  homepage 'https://github.com/facebook/hhvm/tree/HHVM-3.2.0'
-  sha1 '039f97ae85244bdc5a06f0822f1f993f53badca5'
+  url 'https://github.com/mcuadros/hhvm/archive/HHVM-3.3.0-dev.tar.gz'
+  homepage 'https://github.com/facebook/hhvm-third-party'
+  sha1 '94dc4b62b834802bf201bc19ba59d8e57b4791cc'
   head 'https://github.com/facebook/hhvm.git'
 
   option 'with-debug', 'Enable debug build.'
@@ -183,7 +183,7 @@ class Hhvm < Formula
   end
 
   bottle do
-    root_url 'https://github.com/mcuadros/homebrew-hhvm/releases/download/v3.2.0/'
-    sha1 "99e61efe50ae22a84701123748425131d85a4d4d" => :mavericks
+    root_url 'https://github.com/mcuadros/homebrew-hhvm/releases/download/v3.3.0-dev'
+    sha1 "4ef565ad48daf12d42a53a79108f2815033af0cd" => :mavericks
   end
 end
