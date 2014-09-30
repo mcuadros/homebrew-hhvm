@@ -8,9 +8,7 @@ class Jemallocfb < Formula
   keg_only "We're just a patched version."
 
   # __GLIBC__ is not defined, but we still want hooks!
-  def patches
-    DATA
-  end
+  patch :DATA
 
   def install
     # don't use a prefix
