@@ -66,11 +66,7 @@ class Hhvm < Formula
 
   # Standard packages
   depends_on 'boost'
-  if build.with? 'gcc'
-    depends_on 'binutils'
-  else
-    depends_on 'binutilsfb'
-  end
+  depends_on 'binutilsfb'
   depends_on 'curl'
   depends_on 'freetype'
   depends_on 'gd'
@@ -165,9 +161,9 @@ class Hhvm < Formula
       args << "-DCMAKE_C_COMPILER=#{Formula['gcc'].opt_prefix}/bin/gcc-4.9"
       args << "-DCMAKE_ASM_COMPILER=#{Formula['gcc'].opt_prefix}/bin/gcc-4.9"
       args << "-DBoost_USE_STATIC_LIBS=ON"
-      args << "-DBFD_LIB=#{Formula['binutils'].opt_prefix}/lib/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutils'].opt_prefix}/include"
-      args << "-DLIBIBERTY_LIB=#{Formula['gcc'].opt_prefix}/lib/x86_64/libiberty-4.9.a"
+      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
+      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
+      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a"
     else
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
       args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
