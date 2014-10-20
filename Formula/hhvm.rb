@@ -84,6 +84,7 @@ class Hhvm < Formula
   depends_on 'libpng'
   depends_on 'libssh2'
   depends_on 'libxslt'
+  depends_on 'libzip'
   depends_on 'mcrypt'
   depends_on 'objective-caml'
   depends_on 'oniguruma'
@@ -139,6 +140,9 @@ class Hhvm < Formula
       "-DLIBPNG_INCLUDE_DIRS=#{Formula['libpng'].opt_prefix}/include",
       "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_prefix}/include",
       "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_prefix}/lib/libsqlite3.0.dylib",
+      "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_prefix}/include",
+      "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_prefix}/lib/libzip/include",
+      "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_prefix}/lib/libzip.dylib",
       "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_prefix}/include",
       "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
