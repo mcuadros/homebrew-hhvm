@@ -151,15 +151,23 @@ class Hhvm < Formula
     ]
 
     if build.with? 'gcc'
+      gcc = Formula["gcc"]
+      # Force compilation with gcc-4.9
+      ENV['CC'] = "#{gcc.bin}/gcc-#{gcc.version_suffix}"
+      ENV['LD'] = "#{gcc.bin}/gcc-#{gcc.version_suffix}"
+      ENV['CXX'] = "#{gcc.bin}/g++-#{gcc.version_suffix}"
+      # Compiler complains about link compatibility with otherwise
+      ENV.delete('CFLAGS')
+      ENV.delete('CXXFLAGS')
       # Support GCC/LLVM stack-smashing protection: http://git.io/5Kzu3A
       # Preprocessor gcc performance regressions: http://git.io/4r7VCQ
       if build.devel?
         args << "-DCMAKE_C_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
         args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
       end
-      args << "-DCMAKE_CXX_COMPILER=#{Formula['gcc'].opt_prefix}/bin/g++-4.9"
-      args << "-DCMAKE_C_COMPILER=#{Formula['gcc'].opt_prefix}/bin/gcc-4.9"
-      args << "-DCMAKE_ASM_COMPILER=#{Formula['gcc'].opt_prefix}/bin/gcc-4.9"
+      args << "-DCMAKE_CXX_COMPILER=#{gcc.bin}/g++-#{gcc.version_suffix}"
+      args << "-DCMAKE_C_COMPILER=#{gcc.bin}/gcc-#{gcc.version_suffix}"
+      args << "-DCMAKE_ASM_COMPILER=#{gcc.bin}/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
       args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
