@@ -17,12 +17,6 @@ Requirements
 Installation
 ------------
 
-Tap additional repositories:
-
-```sh
-brew tap homebrew/dupes
-```
-
 And now tap this repository:
 
 ```sh
