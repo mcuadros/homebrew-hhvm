@@ -25,7 +25,6 @@ class Hhvm < Formula
   stable do
     url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.0.tar.gz'
     sha1 'ba911fbc9d06e418ec18e68f3736d69f79075ee5'
-    version '3.3.0'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party/archive/fdef620998ce599280904416263968b59ef21794.tar.gz'
       sha1 '10066e1faca7f3ceba8a5ad9c2d18b0670dc4fc8'
@@ -53,7 +52,7 @@ class Hhvm < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gcc' => :optional
   depends_on 'libressl' => :optional
-  depends_on 'openssl' unless build.with? 'libressl'
+  depends_on 'openssl' if build.without? 'libressl'
 
   # Standard packages
   depends_on 'boost'
@@ -277,13 +276,9 @@ class Hhvm < Formula
   end
 
   def caveats_gcc;
-    if build.with? 'gcc'
-      cc_ver = 'gcc-4.9'
-    end
     <<-EOS.undent
-
       If you are getting errors like 'Undefined symbols for architecture x86_64:' execute:
-        $ brew reinstall --build-from-source --cc=#{cc_ver} boost gflags glog
+        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog
     EOS
   end
 
