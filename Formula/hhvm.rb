@@ -301,4 +301,34 @@ class Hhvm < Formula
     s << caveats_gcc if build.with? 'gcc'
     s
   end
+
+  plist_options :manual => "hhvm #{HOMEBREW_PREFIX}/etc/hhvm/server.ini"
+
+  def plist; <<-EOS.undent
+    <?xml version="1.0" encoding="UTF-8"?>
+    <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+    <plist version="1.0">
+      <dict>
+        <key>Label</key>
+        <string>#{plist_name}</string>
+        <key>KeepAlive</key>
+        <true/>
+        <key>ProgramArguments</key>
+        <array>
+            <string>#{opt_bin}/hhvm</string>
+            <string>-m daemon</string>
+            <string>-c #{etc}/hhvm/server.ini</string>
+        </array>
+        <key>RunAtLoad</key>
+        <true/>
+        <key>WorkingDirectory</key>
+        <string>#{HOMEBREW_PREFIX}</string>
+        <key>StandardErrorPath</key>
+        <string>/dev/null</string>
+        <key>StandardOutPath</key>
+        <string>/dev/null</string>
+      </dict>
+    </plist>
+    EOS
+  end
 end
