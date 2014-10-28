@@ -239,22 +239,40 @@ class Hhvm < Formula
   end
 
   def install_config
-    ini = etc + "hhvm/php.ini"
-    ini.write default_php_ini unless File.exists? ini
+    ini_php = etc + "hhvm/php.ini"
+    ini_php.write default_php_ini unless File.exists? ini
+    ini_server = etc + "hhvm/server.ini"
+    ini_server.write default_server_ini unless File.exists? ini
   end
 
+  # https://gist.github.com/denji/1a2ff183a671efcabedf
   def default_php_ini
     <<-EOS.undent
       ; php options
-      date.timezone = Europe/London
+      session.save_handler = files
+      session.save_path = /tmp
+      session.gc_maxlifetime = 1440
 
       ; hhvm specific
-      ; example: https://gist.github.com/denji/1a2ff183a671efcabedf
       hhvm.log.level = Warning
       hhvm.log.always_log_unhandled_exceptions = true
       hhvm.log.runtime_error_reporting_level = 8191
       hhvm.mysql.typed_results = false
-      hhvm.eval.jit = false
+    EOS
+  end
+
+  def default_server_ini
+    <<-EOS.undent
+      ; php options
+      pid = #{var}/run/hhvm/pid
+
+      ; hhvm specific
+      hhvm.server.port = 9000
+      hhvm.server.type = fastcgi
+      hhvm.server.default_document = index.php
+      hhvm.log.use_log_file = true
+      hhvm.log.file = #{var}/log/hhvm/error.log
+      hhvm.repo.central.path = #{var}/run/hhvm/hhvm.hhbc
     EOS
   end
 
