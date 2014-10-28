@@ -59,7 +59,7 @@ Uninstall tap
 ------------
 
 ```sh
-rm -rf /usr/local/Library/Taps/mcuadros-hhvm
+brew untap mcuadros/homebrew-hhvm
 brew cleanup -s --force
 brew prune
 ```
