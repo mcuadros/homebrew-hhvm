@@ -1,6 +1,6 @@
 # Homebrew-HHVM
 
-A repository with all formulas related to install [HHVM](https://github.com/facebook/hhvm).
+A repository with all formulas related to install [HHVM](https://github.com/facebook/hhvm).  
 Based on [Building and installing HHVM on OSX 10.8](https://github.com/facebook/hhvm/wiki/Building-and-installing-HHVM-on-OSX-10.8) by [Daniel Sloof](https://github.com/danslo)
 
 Supported OSX

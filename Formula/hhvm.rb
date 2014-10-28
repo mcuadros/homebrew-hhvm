@@ -14,6 +14,12 @@ class Hhvm < Formula
     #resource 'thrift' do
     #  url 'https://github.com/facebook/fbthrift.git'
     #end
+
+    # FB broken selectable path http://git.io/EqkkMA
+    patch do
+      url "https://github.com/facebook/hhvm/pull/3517.diff"
+      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
+    end
   end
 
   stable do
