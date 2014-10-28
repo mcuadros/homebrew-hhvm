@@ -30,32 +30,15 @@ class Hhvm < Formula
     end
   end
 
-  devel do
-    url 'https://github.com/facebook/hhvm/archive/3543a709f64b6ae1848e63628ec058c4af113254.tar.gz'
-    sha1 '4c21ad80c229555adb72b176c2cdaf4ed818cad1'
-    version '3.3.1a'
-    resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party/archive/12acbba4c05d8cbe97fe2a94a4a833c0c80e8182.tar.gz'
-      sha1 '04ac53659b8ba1ee3d5e0681a71d779a276f6f06'
-    end
-    resource 'folly' do
-      url 'https://github.com/facebook/folly/archive/4ecd8cdd6396f2f4cbfc17c1063537884e3cd6b9.tar.gz'
-      sha1 'd8b0dc49ff7854da83a900276718e3b31176c468'
-    end
-    resource 'thrift' do
-      url 'https://github.com/facebook/fbthrift/archive/378e954ac82a00ba056e6fccd5e1fa3e76803cc8.tar.gz'
-      sha1 '1a26eb22b0e36fe1823343c32ec79544cf1556d4'
-    end
-  end
-
-  option 'with-cotire', 'Speed up the build by precompiling headers.'
-  option 'with-debug', 'Enable debug build (default Release).'
-  option 'with-gcc', 'Build with gcc-4.9 compiler.'
-  option 'with-mariadb', 'Use mariadb as mysql package.'
-  option 'with-minsizerel', 'Enable minimal size release build.'
-  option 'with-percona-server', 'Use percona-server as mysql package.'
-  option 'with-release-debug', 'Enable release with debug build.'
-  option 'with-system-mysql', 'Try to use the mysql package installed on your system.'
+  option 'with-cotire', 'Speed up the build by precompiling headers'
+  option 'with-debug', 'Enable debug build (default Release)'
+  option 'with-gcc', 'Build with gcc-4.9 compiler'
+  option 'with-mariadb', 'Use mariadb as mysql package'
+  option 'with-minsizerel', 'Enable minimal size release build'
+  option 'with-percona-server', 'Use percona-server as mysql package'
+  option 'with-release-debug', 'Enable release with debug build'
+  option 'with-system-mysql', 'Try to use the mysql package installed on your system'
+  option 'with-libressl', 'To use an alternate version of SSL (LibreSSL)'
 
   depends_on 'cmake' => :build
   depends_on 'libtool' => :build
@@ -63,6 +46,8 @@ class Hhvm < Formula
   depends_on 'automake' => :build
   depends_on 'pkg-config' => :build
   depends_on 'gcc' => :optional
+  depends_on 'libressl' => :optional
+  depends_on 'openssl' unless build.with? 'libressl'
 
   # Standard packages
   depends_on 'boost'
@@ -157,9 +142,9 @@ class Hhvm < Formula
     if build.with? 'gcc'
       gcc = Formula["gcc"]
       # Force compilation with gcc-4.9
-      ENV['CC'] = "#{gcc.bin}/gcc-#{gcc.version_suffix}"
-      ENV['LD'] = "#{gcc.bin}/gcc-#{gcc.version_suffix}"
-      ENV['CXX'] = "#{gcc.bin}/g++-#{gcc.version_suffix}"
+      ENV['CC'] = "#{gcc.opt_prefix}/gcc-#{gcc.version_suffix}"
+      ENV['LD'] = "#{gcc.opt_prefix}/gcc-#{gcc.version_suffix}"
+      ENV['CXX'] = "#{gcc.opt_prefix}/g++-#{gcc.version_suffix}"
       # Compiler complains about link compatibility with otherwise
       ENV.delete('CFLAGS')
       ENV.delete('CXXFLAGS')
@@ -169,9 +154,9 @@ class Hhvm < Formula
         args << "-DCMAKE_C_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
         args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
       end
-      args << "-DCMAKE_CXX_COMPILER=#{gcc.bin}/g++-#{gcc.version_suffix}"
-      args << "-DCMAKE_C_COMPILER=#{gcc.bin}/gcc-#{gcc.version_suffix}"
-      args << "-DCMAKE_ASM_COMPILER=#{gcc.bin}/gcc-#{gcc.version_suffix}"
+      args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/g++-#{gcc.version_suffix}"
+      args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/gcc-#{gcc.version_suffix}"
+      args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
       args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
@@ -203,6 +188,16 @@ class Hhvm < Formula
     elsif build.without? 'system-mysql'
       args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql"
       args << "-DMYSQL_LIB_DIR=#{Formula['mysql'].opt_prefix}/lib"
+    end
+
+    if build.with? 'libressl'
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['libressl'].opt_prefix}/lib/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['libressl'].opt_prefix}/include"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['libressl'].opt_prefix}/lib/libcrypto.dylib"
+    else
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['openssl'].opt_prefix}/lib/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['openssl'].opt_prefix}/include"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['openssl'].opt_prefix}/lib/libcrypto.dylib"
     end
 
     #Custome packages
