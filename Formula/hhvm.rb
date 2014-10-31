@@ -23,8 +23,8 @@ class Hhvm < Formula
   end
 
   stable do
-    url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.0.tar.gz'
-    sha1 'ba911fbc9d06e418ec18e68f3736d69f79075ee5'
+    url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.1.tar.gz'
+    sha1 'd9a61153ea33f72ea2def49bb7bee41e04d760f2'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party/archive/fdef620998ce599280904416263968b59ef21794.tar.gz'
       sha1 '10066e1faca7f3ceba8a5ad9c2d18b0670dc4fc8'
