@@ -227,6 +227,17 @@ class Hhvm < Formula
       end
     end
 
+    # Fix Traits.h std::* declarations conflict with libc++
+    # https://github.com/facebook/folly/pull/81
+    if build.without? 'gcc'
+      inreplace third_party_buildpath/'folly/src/folly/Traits.h',
+        "FOLLY_NAMESPACE_STD_BEGIN",
+        "#ifndef _LIBCPP_VERSION\n\nFOLLY_NAMESPACE_STD_BEGIN"
+      inreplace third_party_buildpath/'folly/src/folly/Traits.h',
+        "FOLLY_NAMESPACE_STD_END",
+        "FOLLY_NAMESPACE_STD_END\n\n$else\n\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n\n#endif\n"
+    end
+
     src = prefix + "src"
     src.install Dir['*']
 
