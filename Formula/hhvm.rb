@@ -115,8 +115,9 @@ class Hhvm < Formula
       "-DICU_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicuuc.dylib",
       "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
       "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
+      "-DLBER_LIBRARIES=/usr/lib/liblber.dylib",
       "-DLDAP_INCLUDE_DIR=/usr/include",
-      "-DLDAP_LIBRARIES=/usr/lib",
+      "-DLDAP_LIBRARIES=/usr/lib/libldap.dylib",
       "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_prefix}/include",
       "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_prefix}/lib/libdwarf.3.dylib",
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
@@ -134,7 +135,7 @@ class Hhvm < Formula
       "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_prefix}/include",
       "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_prefix}/lib/libsqlite3.0.dylib",
       "-DLIBVPX_INCLUDE_DIRS=#{Formula['libvpx'].opt_prefix}/include",
-      "-DLIBVPX_LIBRARIES=#{Formula['libvpx'].opt_prefix}/lib",
+      "-DLIBVPX_LIBRARIES=#{Formula['libvpx'].opt_prefix}/lib/libvpx.a",
       "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_prefix}/include",
       "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_prefix}/lib/libzip/include",
       "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_prefix}/lib/libzip.dylib",
@@ -232,10 +233,10 @@ class Hhvm < Formula
     if build.without? 'gcc'
       inreplace third_party_buildpath/'folly/src/folly/Traits.h',
         "FOLLY_NAMESPACE_STD_BEGIN",
-        "#ifndef _LIBCPP_VERSION\n\nFOLLY_NAMESPACE_STD_BEGIN"
+        "#if 0\nFOLLY_NAMESPACE_STD_BEGIN"
       inreplace third_party_buildpath/'folly/src/folly/Traits.h',
         "FOLLY_NAMESPACE_STD_END",
-        "FOLLY_NAMESPACE_STD_END\n\n$else\n\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n\n#endif\n"
+        "FOLLY_NAMESPACE_STD_END\n#else\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n#endif\n"
     end
 
     src = prefix + "src"
