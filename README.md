@@ -25,7 +25,7 @@ brew tap mcuadros/homebrew-hhvm
 Usage
 -----
 
-Install the last stable version (3.3.0)
+Install the last stable version (3.3.1)
 
 ```sh
 brew install hhvm
@@ -51,9 +51,9 @@ HHVM no longer supports the built-in webserver as of 3.0.0.
     Please use your own webserver (nginx or apache)
     talking to HHVM over [fastcgi](https://github.com/facebook/hhvm/wiki/FastCGI).
 
-Extension, **mysqli broken**. This extension was broken in 3.0.0 and is fixed in 3.0.1.
+RAND_egd() has been depreciated in libressl
 
-    Make sure to upgrade if you were having remove the Eval.CheckReturnTypeHints workaround if you were using it.
+    https://github.com/facebook/hhvm/issues/4118
 
 Uninstall tap
 ------------

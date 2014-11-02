@@ -150,6 +150,8 @@ class Hhvm < Formula
     ]
 
     if build.with? 'gcc'
+      opoo caveats_gcc
+
       gcc = Formula["gcc"]
       # Force compilation with gcc-4.9
       ENV['CC'] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
@@ -279,8 +281,10 @@ class Hhvm < Formula
 
   def caveats_gcc;
     <<-EOS.undent
+
       If you are getting errors like 'Undefined symbols for architecture x86_64:' execute:
-        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog
+        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog libvpx
+
     EOS
   end
 
