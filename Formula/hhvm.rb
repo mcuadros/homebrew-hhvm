@@ -255,9 +255,9 @@ class Hhvm < Formula
 
   def install_config
     ini_php = etc + "hhvm/php.ini"
-    ini_php.write default_php_ini unless File.exists? ini
+    ini_php.write default_php_ini unless File.exists? ini_php
     ini_server = etc + "hhvm/server.ini"
-    ini_server.write default_server_ini unless File.exists? ini
+    ini_server.write default_server_ini unless File.exists? ini_server
   end
 
   # https://gist.github.com/denji/1a2ff183a671efcabedf
@@ -315,7 +315,7 @@ class Hhvm < Formula
     s
   end
 
-  plist_options :manual => "hhvm #{HOMEBREW_PREFIX}/etc/hhvm/server.ini"
+  plist_options :manual => "hhvm"
 
   def plist; <<-EOS.undent
     <?xml version="1.0" encoding="UTF-8"?>
@@ -330,7 +330,8 @@ class Hhvm < Formula
         <array>
             <string>#{opt_bin}/hhvm</string>
             <string>-m daemon</string>
-            <string>-c #{etc}/hhvm/server.ini</string>
+            <string>--config=#{etc}/hhvm/server.ini</string>
+            <string>-c #{etc}/hhvm/php.ini</string>
         </array>
         <key>RunAtLoad</key>
         <true/>
