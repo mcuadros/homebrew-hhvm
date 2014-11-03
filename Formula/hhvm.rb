@@ -25,6 +25,7 @@ class Hhvm < Formula
   stable do
     url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.1.tar.gz'
     sha1 'd9a61153ea33f72ea2def49bb7bee41e04d760f2'
+    revision 1
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party/archive/fdef620998ce599280904416263968b59ef21794.tar.gz'
       sha1 '10066e1faca7f3ceba8a5ad9c2d18b0670dc4fc8'
@@ -33,6 +34,11 @@ class Hhvm < Formula
       url 'https://github.com/facebook/folly/archive/6e46d468cf2876dd59c7a4dddcb4e37abf070b7a.tar.gz'
       sha1 'ca1d03214085a02783d06c5ab6886e5a13e451f0'
     end
+    # Force the linker to keep symbols in lowmem on MacOSX
+    patch do
+      url "https://github.com/facebook/hhvm/commit/4f9ae98b00fb68e1b3d1836b3e1271348e02e0e1.diff"
+      sha1 "8981eb857bf2d86f532fd5f64addbc4409c1ceac"
+    end 
   end
 
   option 'with-cotire', 'Speed up the build by precompiling headers'
