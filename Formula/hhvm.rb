@@ -295,7 +295,7 @@ class Hhvm < Formula
     <<-EOS.undent
 
       If you are getting errors like 'Undefined symbols for architecture x86_64:' execute:
-        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog libvpx
+        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog
 
     EOS
   end

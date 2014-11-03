@@ -46,14 +46,12 @@ But you can also use `--with-mariadb` or `--with-percona-server` to compile alte
 Known Problems
 -----
 
-HHVM no longer supports the built-in webserver as of 3.0.0.
+* HHVM no longer supports the built-in webserver as of 3.0.0.  
+  Please use your own webserver (nginx or apache) talking to HHVM over [fastcgi](https://github.com/facebook/hhvm/wiki/FastCGI).
 
-    Please use your own webserver (nginx or apache)
-    talking to HHVM over [fastcgi](https://github.com/facebook/hhvm/wiki/FastCGI).
+* [RAND_egd() has been depreciated in libressl](https://github.com/facebook/hhvm/issues/4118)
 
-RAND_egd() has been depreciated in libressl
-
-    https://github.com/facebook/hhvm/issues/4118
+* Recompilation of libraries using `gcc` can break most of the other things from the Homebrew which depend on `boost` `gflags` `glog`
 
 Uninstall tap
 ------------
