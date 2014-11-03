@@ -2,6 +2,7 @@ require 'formula'
 
 class Hhvm < Formula
   homepage 'http://hhvm.com/'
+  revision 1
 
   head do
     url 'https://github.com/facebook/hhvm.git'
@@ -25,7 +26,6 @@ class Hhvm < Formula
   stable do
     url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.1.tar.gz'
     sha1 'd9a61153ea33f72ea2def49bb7bee41e04d760f2'
-    revision 1
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party/archive/fdef620998ce599280904416263968b59ef21794.tar.gz'
       sha1 '10066e1faca7f3ceba8a5ad9c2d18b0670dc4fc8'
