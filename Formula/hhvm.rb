@@ -38,7 +38,17 @@ class Hhvm < Formula
     patch do
       url "https://github.com/facebook/hhvm/commit/4f9ae98b00fb68e1b3d1836b3e1271348e02e0e1.diff"
       sha1 "8981eb857bf2d86f532fd5f64addbc4409c1ceac"
-    end 
+    end
+    # Don't crash when trying to do array-vtable calls
+    patch do
+      url "https://github.com/facebook/hhvm/commit/54a4b3293e5e60b8bc53e443ef761a475325a31e.diff"
+      sha1 "26d3aab26f6614f4befe631645e46f77f7803dd8"
+    end
+    # Support openssl replacements which don't export RAND_egd()
+    patch do
+      url "https://github.com/facebook/hhvm/commit/df1ac0a7371c818d3d4b5c85859905e373145446.diff"
+      sha1 "d2f5235da22e5c80c9570dfb7fe2db94bb5d11d5"
+    end
   end
 
   option 'with-cotire', 'Speed up the build by precompiling headers'
