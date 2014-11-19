@@ -47,6 +47,11 @@ class Hhvm < Formula
       url "https://github.com/facebook/hhvm/pull/3517.diff"
       sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
     end
+    # Improve segaddr fixing for 32-bit destructors
+    patch do
+      url "https://github.com/facebook/hhvm/commit/d65448c.diff"
+      sha1 "d735bb7012c748fed65fdebfe9d2e9ee9bf19649"
+    end
   end
 
   option 'with-cotire', 'Speed up the build by precompiling headers'
