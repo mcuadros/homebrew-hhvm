@@ -25,7 +25,7 @@ brew tap mcuadros/homebrew-hhvm
 Usage
 -----
 
-Install the last stable version (3.3.1)
+Install the last stable version (3.4.0)
 
 ```sh
 brew install hhvm

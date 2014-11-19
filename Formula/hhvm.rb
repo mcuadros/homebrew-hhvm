@@ -2,7 +2,6 @@ require 'formula'
 
 class Hhvm < Formula
   homepage 'http://hhvm.com/'
-  revision 1
 
   head do
     url 'https://github.com/facebook/hhvm.git'
@@ -24,30 +23,29 @@ class Hhvm < Formula
   end
 
   stable do
-    url 'https://github.com/facebook/hhvm/archive/HHVM-3.3.1.tar.gz'
-    sha1 'd9a61153ea33f72ea2def49bb7bee41e04d760f2'
+    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.0.tar.gz'
+    sha1 '7f5ddb96c0099480b3172aadf2945b5f99b43e16'
     resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party/archive/fdef620998ce599280904416263968b59ef21794.tar.gz'
-      sha1 '10066e1faca7f3ceba8a5ad9c2d18b0670dc4fc8'
+      url 'https://github.com/hhvm/hhvm-third-party/archive/38af35db27a4d962adaefde343dc6dcfc495c8b5.tar.gz'
+      sha1 'b3cec06a05944366bf14e27d94535e8eefc44387'
     end
     resource 'folly' do
-      url 'https://github.com/facebook/folly/archive/6e46d468cf2876dd59c7a4dddcb4e37abf070b7a.tar.gz'
-      sha1 'ca1d03214085a02783d06c5ab6886e5a13e451f0'
+      url 'https://github.com/facebook/folly/archive/acc54589227951293f8d3943911f4311468605c9.tar.gz'
+      sha1 '081127a73c11b2cbf413883748a2519fcac30337'
     end
-    # Force the linker to keep symbols in lowmem on MacOSX
-    patch do
-      url "https://github.com/facebook/hhvm/commit/4f9ae98b00fb68e1b3d1836b3e1271348e02e0e1.diff"
-      sha1 "8981eb857bf2d86f532fd5f64addbc4409c1ceac"
-    end
-    # Don't crash when trying to do array-vtable calls
-    patch do
-      url "https://github.com/facebook/hhvm/commit/54a4b3293e5e60b8bc53e443ef761a475325a31e.diff"
-      sha1 "26d3aab26f6614f4befe631645e46f77f7803dd8"
+    resource 'thrift' do
+      url 'https://github.com/facebook/fbthrift/archive/378e954ac82a00ba056e6fccd5e1fa3e76803cc8.tar.gz'
+      sha1 '1a26eb22b0e36fe1823343c32ec79544cf1556d4'
     end
     # Support openssl replacements which don't export RAND_egd()
     patch do
       url "https://github.com/facebook/hhvm/commit/df1ac0a7371c818d3d4b5c85859905e373145446.diff"
       sha1 "d2f5235da22e5c80c9570dfb7fe2db94bb5d11d5"
+    end
+    # FB broken selectable path http://git.io/EqkkMA
+    patch do
+      url "https://github.com/facebook/hhvm/pull/3517.diff"
+      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
     end
   end
 
@@ -159,9 +157,10 @@ class Hhvm < Formula
       "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
       "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_prefix}/include",
-      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
       "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_prefix}/include",
       "-DREADLINE_LIBRARY=#{Formula['readline'].opt_prefix}/lib/libreadline.dylib",
+      "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
+      "-DSYSTEM_PCRE_LIBRARY=#{Formula['pcre'].opt_prefix}/lib/libpcre.dylib",
       "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_prefix}/include",
       "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include",
     ]
@@ -177,12 +176,12 @@ class Hhvm < Formula
       # Compiler complains about link compatibility with otherwise
       ENV.delete('CFLAGS')
       ENV.delete('CXXFLAGS')
+
       # Support GCC/LLVM stack-smashing protection: http://git.io/5Kzu3A
       # Preprocessor gcc performance regressions: http://git.io/4r7VCQ
-      if build.devel? or build.head?
-        args << "-DCMAKE_C_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
-        args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
-      end
+      args << "-DCMAKE_C_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
+      args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
+
       args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
       args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
@@ -237,11 +236,9 @@ class Hhvm < Formula
       rm_rf 'third-party/folly/src'
       folly_buildpath = buildpath/'third-party/folly/src'
       folly_buildpath.install resource('folly')
-      if build.devel?
-        rm_rf 'third-party/thrift/src'
-        thrift_buildpath = buildpath/'third-party/thrift/src'
-        thrift_buildpath.install resource('thrift')
-      end
+      rm_rf 'third-party/thrift/src'
+      thrift_buildpath = buildpath/'third-party/thrift/src'
+      thrift_buildpath.install resource('thrift')
     end
 
     # Fix Traits.h std::* declarations conflict with libc++
