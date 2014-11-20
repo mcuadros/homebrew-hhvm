@@ -57,6 +57,8 @@ class Hhvm < Formula
   depends_on 'libressl' => :optional
   depends_on 'ninja' => :optional
   depends_on 'openssl' if build.without? 'libressl'
+  depends_on 'yasm' => :build
+  #depends_on 'nasm' => :build
 
   # Standard packages
   depends_on 'boost'
@@ -200,7 +202,10 @@ class Hhvm < Formula
       args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
 
       args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
-      args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
+    #  args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
+      args << "-DCMAKE_ASM_COMPILER=#{Formula['yasm'].opt_prefix}/bin/yasm"
+    #  args << "-DCMAKE_ASM_COMPILER=/usr/bin/nasm"
+    #  args << "-DCMAKE_ASM_COMPILER=#{Formula['nasm'].opt_prefix}/bin/nasm"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
