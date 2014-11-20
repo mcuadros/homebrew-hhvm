@@ -78,6 +78,7 @@ class Hhvm < Formula
   depends_on 'libvpx'
   depends_on 'libxslt'
   depends_on 'libzip'
+  depends_on 'lz4'
   depends_on 'mcrypt'
   depends_on 'objective-caml'
   depends_on 'oniguruma'
@@ -163,6 +164,8 @@ class Hhvm < Formula
       "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_prefix}/include",
       "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_prefix}/lib/libzip/include",
       "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_prefix}/lib/libzip.dylib",
+      "-DLZ4_INCLUDE_DIR=#{Formula['lz4'].opt_prefix}/include",
+      "-DLZ4_LIBRARY=#{Formula['lz4'].opt_prefix}/lib/liblz4.dylib",
       "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_prefix}/include",
       "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
