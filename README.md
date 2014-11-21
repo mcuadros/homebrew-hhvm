@@ -31,6 +31,12 @@ Install the last stable version (3.4.0)
 brew install hhvm
 ```
 
+or the current branch
+
+```sh
+brew install hhvm --devel
+```
+
 or the current master
 
 ```sh

@@ -2,55 +2,38 @@ require 'formula'
 
 class Hhvm < Formula
   homepage 'http://hhvm.com/'
+  stable do
+    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.0.tar.gz'
+    sha1 '7f5ddb96c0099480b3172aadf2945b5f99b43e16'
+    resource 'third-party' do
+      url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
+    end
+    resource 'folly' do
+      url 'https://github.com/facebook/folly.git', :revision => "acc54589227951293f8d3943911f4311468605c9"
+    end
+    resource 'thrift' do
+      url 'https://github.com/facebook/fbthrift.git', :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
+    end
+  end
+
+  devel do
+    url 'https://github.com/facebook/hhvm.git', :branch => "HHVM-3.4"
+    version 'hhvm-3.4dev'
+    resource 'third-party' do
+      url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
+    end
+    resource 'folly' do
+      url 'https://github.com/facebook/folly.git', :revision => "acc54589227951293f8d3943911f4311468605c9"
+    end
+    resource 'thrift' do
+      url 'https://github.com/facebook/fbthrift.git', :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
+    end
+  end
 
   head do
     url 'https://github.com/facebook/hhvm.git'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party.git'
-    end
-    #resource 'folly' do
-    #  url 'https://github.com/facebook/folly.git'
-    #end
-    #resource 'thrift' do
-    #  url 'https://github.com/facebook/fbthrift.git'
-    #end
-
-    # FB broken selectable path http://git.io/EqkkMA
-    patch do
-      url "https://github.com/facebook/hhvm/pull/3517.diff"
-      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
-    end
-  end
-
-  stable do
-    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.0.tar.gz'
-    sha1 '7f5ddb96c0099480b3172aadf2945b5f99b43e16'
-    resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party/archive/38af35db27a4d962adaefde343dc6dcfc495c8b5.tar.gz'
-      sha1 'b3cec06a05944366bf14e27d94535e8eefc44387'
-    end
-    resource 'folly' do
-      url 'https://github.com/facebook/folly/archive/acc54589227951293f8d3943911f4311468605c9.tar.gz'
-      sha1 '081127a73c11b2cbf413883748a2519fcac30337'
-    end
-    resource 'thrift' do
-      url 'https://github.com/facebook/fbthrift/archive/378e954ac82a00ba056e6fccd5e1fa3e76803cc8.tar.gz'
-      sha1 '1a26eb22b0e36fe1823343c32ec79544cf1556d4'
-    end
-    # Support openssl replacements which don't export RAND_egd()
-    patch do
-      url "https://github.com/facebook/hhvm/commit/df1ac0a7371c818d3d4b5c85859905e373145446.diff"
-      sha1 "d2f5235da22e5c80c9570dfb7fe2db94bb5d11d5"
-    end
-    # FB broken selectable path http://git.io/EqkkMA
-    patch do
-      url "https://github.com/facebook/hhvm/pull/3517.diff"
-      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
-    end
-    # Improve segaddr fixing for 32-bit destructors
-    patch do
-      url "https://github.com/facebook/hhvm/commit/d65448c.diff"
-      sha1 "d735bb7012c748fed65fdebfe9d2e9ee9bf19649"
     end
   end
 
@@ -113,6 +96,28 @@ class Hhvm < Formula
   elsif build.without? 'system-mysql'
     depends_on 'mysql'
     depends_on 'mysql-connector-c++'
+  end
+
+  # Hotfix patches
+  if build.stable? or build.devel? or build.head?
+    if build.stable? or build.devel?
+      # Support openssl replacements which don't export RAND_egd()
+      patch do
+        url "https://github.com/facebook/hhvm/commit/df1ac0a7371c818d3d4b5c85859905e373145446.diff"
+        sha1 "d2f5235da22e5c80c9570dfb7fe2db94bb5d11d5"
+      end
+      # Improve segaddr fixing for 32-bit destructors
+      patch do
+        url "https://github.com/facebook/hhvm/commit/d65448c.diff"
+        sha1 "d735bb7012c748fed65fdebfe9d2e9ee9bf19649"
+      end
+    end
+
+    # FB broken selectable path http://git.io/EqkkMA
+    patch do
+      url "https://github.com/facebook/hhvm/pull/3517.diff"
+      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
+    end
   end
 
   def install
