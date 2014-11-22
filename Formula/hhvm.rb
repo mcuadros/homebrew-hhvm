@@ -213,6 +213,8 @@ class Hhvm < Formula
 
       args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
       args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
+      args << "-DDCMAKE_AR=#{gcc.opt_prefix}/bin/gcc-ar-#{gcc.version_suffix}"
+      args << "-DDCMAKE_RANLIB=#{gcc.opt_prefix}/bin/gcc-ranlib-#{gcc.version_suffix}"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
       args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
