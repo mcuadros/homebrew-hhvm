@@ -170,6 +170,8 @@ class Hhvm < Formula
       "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
       "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_prefix}/include",
+      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
+      "-DPCRE_LIBRARY=#{Formula['pcre'].opt_prefix}/lib/libpcre.dylib",
       "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_prefix}/include",
       "-DREADLINE_LIBRARY=#{Formula['readline'].opt_prefix}/lib/libreadline.dylib",
       "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
