@@ -18,7 +18,7 @@ class Hhvm < Formula
 
   devel do
     url 'https://github.com/facebook/hhvm.git', :branch => "HHVM-3.4"
-    version 'hhvm-3.4dev'
+    version 'hhvm-3.4-dev'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
@@ -124,60 +124,60 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_prefix}/include",
-      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_prefix}/lib",
-      "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_prefix}/include/imap",
+      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_include}",
+      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_lib}",
+      "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_include}/imap",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
-      "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_prefix}/include",
-      "-DCURL_LIBRARY=#{Formula['curl'].opt_prefix}/lib/libcurl.dylib",
-      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_prefix}/include/freetype2",
-      "-DFREETYPE_LIBRARIES=#{Formula['freetype'].opt_prefix}/lib/libfreetype.dylib",
-      "-DICU_DATA_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicudata.dylib",
-      "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicui18n.dylib",
-      "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_prefix}/include",
-      "-DICU_LIBRARY=#{Formula['icu4c'].opt_prefix}/lib/libicuuc.dylib",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_prefix}/include",
-      "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_prefix}/lib/libjemalloc.dylib",
+      "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_include}",
+      "-DCURL_LIBRARY=#{Formula['curl'].opt_lib}/libcurl.dylib",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_include}/freetype2",
+      "-DFREETYPE_LIBRARIES=#{Formula['freetype'].opt_lib}/libfreetype.dylib",
+      "-DICU_DATA_LIBRARY=#{Formula['icu4c'].opt_lib}/libicudata.dylib",
+      "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_lib}/libicui18n.dylib",
+      "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_include}",
+      "-DICU_LIBRARY=#{Formula['icu4c'].opt_lib}/libicuuc.dylib",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_include}",
+      "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_lib}/libjemalloc.dylib",
       "-DLBER_LIBRARIES=/usr/lib/liblber.dylib",
       "-DLDAP_INCLUDE_DIR=/usr/include",
       "-DLDAP_LIBRARIES=/usr/lib/libldap.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_prefix}/include",
-      "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_prefix}/lib/libdwarf.3.dylib",
-      "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_prefix}/include/libelf",
-      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libevent'].opt_prefix}/include",
-      "-DLIBEVENT_LIB=#{Formula['libevent'].opt_prefix}/lib/libevent.dylib",
-      "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_prefix}/include",
-      "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_prefix}/include",
-      "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_prefix}/lib/libintl.dylib",
-      "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_prefix}/include",
-      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_prefix}/include/ImageMagick-6",
-      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_prefix}/lib/libMagickWand-6.Q16.dylib",
-      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula['libmemcached'].opt_prefix}/include",
-      "-DLIBODBC_INCLUDE_DIRS=#{Formula['unixodbc'].opt_prefix}/include",
-      "-DLIBPNG_INCLUDE_DIRS=#{Formula['libpng'].opt_prefix}/include",
-      "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_prefix}/include",
-      "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_prefix}/lib/libsqlite3.0.dylib",
-      "-DLIBVPX_INCLUDE_DIRS=#{Formula['libvpx'].opt_prefix}/include",
-      "-DLIBVPX_LIBRARIES=#{Formula['libvpx'].opt_prefix}/lib/libvpx.a",
-      "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_prefix}/include",
-      "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_prefix}/lib/libzip/include",
-      "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_prefix}/lib/libzip.dylib",
-      "-DLZ4_INCLUDE_DIR=#{Formula['lz4'].opt_prefix}/include",
-      "-DLZ4_LIBRARY=#{Formula['lz4'].opt_prefix}/lib/liblz4.dylib",
-      "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_prefix}/include",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_include}",
+      "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_lib}/libdwarf.3.dylib",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_include}/libelf",
+      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libevent'].opt_include}",
+      "-DLIBEVENT_LIB=#{Formula['libevent'].opt_lib}/libevent.dylib",
+      "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_include}",
+      "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_include}",
+      "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_lib}/libintl.dylib",
+      "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_include}",
+      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_include}/ImageMagick-6",
+      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_lib}/libMagickWand-6.Q16.dylib",
+      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula['libmemcached'].opt_include}",
+      "-DLIBODBC_INCLUDE_DIRS=#{Formula['unixodbc'].opt_include}",
+      "-DLIBPNG_INCLUDE_DIRS=#{Formula['libpng'].opt_include}",
+      "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_include}",
+      "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_lib}/libsqlite3.0.dylib",
+      "-DLIBVPX_INCLUDE_DIRS=#{Formula['libvpx'].opt_include}",
+      "-DLIBVPX_LIBRARIES=#{Formula['libvpx'].opt_lib}/libvpx.a",
+      "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_include}",
+      "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_lib}/libzip/include",
+      "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_lib}/libzip.dylib",
+      "-DLZ4_INCLUDE_DIR=#{Formula['lz4'].opt_include}",
+      "-DLZ4_LIBRARY=#{Formula['lz4'].opt_lib}/liblz4.dylib",
+      "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_include}",
       "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
-      "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_prefix}/include",
-      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
-      "-DPCRE_LIBRARY=#{Formula['pcre'].opt_prefix}/lib/libpcre.dylib",
-      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_prefix}/include",
-      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_prefix}/lib/libreadline.dylib",
-      "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula['pcre'].opt_prefix}/include",
-      "-DSYSTEM_PCRE_LIBRARY=#{Formula['pcre'].opt_prefix}/lib/libpcre.dylib",
-      "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_prefix}/include",
-      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_prefix}/include",
+      "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_include}",
+      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_include}",
+      "-DPCRE_LIBRARY=#{Formula['pcre'].opt_lib}/libpcre.dylib",
+      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_include}",
+      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_lib}/libreadline.dylib",
+      "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula['pcre'].opt_include}",
+      "-DSYSTEM_PCRE_LIBRARY=#{Formula['pcre'].opt_lib}/libpcre.dylib",
+      "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_include}",
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_include}",
     ]
 
     if build.with? 'gcc'
@@ -201,13 +201,13 @@ class Hhvm < Formula
       args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
-      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
-      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a"
+      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
+      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
+      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
     else
-      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_prefix}/include"
-      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_prefix}/lib/x86_64/libiberty.a"
+      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
+      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
+      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
     end
 
     if build.with? 'cotire'
@@ -223,24 +223,24 @@ class Hhvm < Formula
     end
 
     if build.with? 'mariadb'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mariadb'].opt_prefix}/include/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['mariadb'].opt_prefix}/lib"
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mariadb'].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['mariadb'].opt_lib}"
     elsif build.with? 'percona-server'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['percona-server'].opt_prefix}/include/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['percona-server'].opt_prefix}/lib"
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['percona-server'].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['percona-server'].opt_lib}"
     elsif build.without? 'system-mysql'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_prefix}/include/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['mysql'].opt_prefix}/lib"
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula['mysql'].opt_lib}"
     end
 
     if build.with? 'libressl'
-      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['libressl'].opt_prefix}/lib/libssl.dylib"
-      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['libressl'].opt_prefix}/include"
-      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['libressl'].opt_prefix}/lib/libcrypto.dylib"
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['libressl'].opt_lib}/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['libressl'].opt_include}"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['libressl'].opt_lib}/libcrypto.dylib"
     else
-      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['openssl'].opt_prefix}/lib/libssl.dylib"
-      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['openssl'].opt_prefix}/include"
-      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['openssl'].opt_prefix}/lib/libcrypto.dylib"
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['openssl'].opt_lib}/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['openssl'].opt_include}"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['openssl'].opt_lib}/libcrypto.dylib"
     end
 
     #Custome packages
