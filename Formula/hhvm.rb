@@ -46,6 +46,7 @@ class Hhvm < Formula
   option 'with-release-debug', 'Enable release with debug build'
   option 'with-system-mysql', 'Try to use the mysql package installed on your system'
   option 'with-libressl', 'To use an alternate version of SSL (LibreSSL)'
+  option 'with-ninja', 'To use ninja for building'
 
   depends_on 'cmake' => :build
   depends_on 'libtool' => :build
@@ -54,6 +55,7 @@ class Hhvm < Formula
   depends_on 'pkg-config' => :build
   depends_on 'gcc' => :optional
   depends_on 'libressl' => :optional
+  depends_on 'ninja' => :optional
   depends_on 'openssl' if build.without? 'libressl'
 
   # Standard packages
@@ -273,6 +275,7 @@ class Hhvm < Formula
     ENV['HPHP_HOME'] = src
 
     cd src do
+      args << "-GNinja" if build.with? 'ninja'
       system "cmake", *args
       system "make", "-j#{ENV.make_jobs}"
       system "make install"
