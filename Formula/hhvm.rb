@@ -18,7 +18,7 @@ class Hhvm < Formula
 
   devel do
     url 'https://github.com/facebook/hhvm.git', :branch => "HHVM-3.4"
-    version 'hhvm-3.4-dev'
+    version '3.4-dev'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end

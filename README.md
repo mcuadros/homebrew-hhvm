@@ -25,6 +25,17 @@ brew tap mcuadros/homebrew-hhvm
 Usage
 -----
 
+**Note**: For a list of available configuration options run:
+
+    brew options hhvm
+    brew info hhvm
+    brew uses hhvm
+
+HHVM requires MySQL to compile, by default will use `mysql` formula.  
+
+> If mysql is already installed, you can use `--with-system-mysql`.  
+> But you can also use `--with-mariadb` or `--with-percona-server` to compile alternative versions of mysql.  
+
 Install the last stable version (3.4.0)
 
 ```sh
@@ -42,12 +53,6 @@ or the current master
 ```sh
 brew install hhvm --HEAD
 ```
-
-HHVM requires MySQL to compile, by default will use `mysql` formula.
-
-If mysql is already installed, you can use `--with-system-mysql`.
-
-But you can also use `--with-mariadb` or `--with-percona-server` to compile alternative versions of mysql.
 
 Known Problems
 -----
