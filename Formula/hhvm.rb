@@ -277,8 +277,13 @@ class Hhvm < Formula
     cd src do
       args << "-GNinja" if build.with? 'ninja'
       system "cmake", *args
-      system "make", "-j#{ENV.make_jobs}"
-      system "make install"
+      if build.with? 'ninja'
+        system "ninja", "-j#{ENV.make_jobs}"
+        system "ninja install"
+      else
+        system "make", "-j#{ENV.make_jobs}"
+        system "make install"
+      end
     end
 
     install_config
