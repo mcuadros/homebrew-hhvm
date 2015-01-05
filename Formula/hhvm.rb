@@ -3,8 +3,8 @@ require 'formula'
 class Hhvm < Formula
   homepage 'http://hhvm.com/'
   stable do
-    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.1.tar.gz'
-    sha1 'ac58fdbd249340f440a53d544ca4b63dc9514ce4'
+    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.2.tar.gz'
+    sha1 'fa0f60b5e517c55f3698738f18a4529f3f60b18f'
     resource 'third-party' do
       url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
