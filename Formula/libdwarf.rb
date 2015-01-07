@@ -1,13 +1,11 @@
-require 'formula'
-
 class Libdwarf < Formula
-  homepage 'http://sourceforge.net/apps/trac/elftoolchain/'
-  url 'https://downloads.sourceforge.net/project/elftoolchain/Sources/elftoolchain-0.6.1/elftoolchain-0.6.1.tgz'
-  sha1 '023d40f5ef618c9910389880a5df65970d88fc0b'
+  homepage "http://sourceforge.net/apps/trac/elftoolchain/"
+  url "https://downloads.sourceforge.net/project/elftoolchain/Sources/elftoolchain-0.6.1/elftoolchain-0.6.1.tgz"
+  sha1 "023d40f5ef618c9910389880a5df65970d88fc0b"
 
   depends_on :bsdmake => :build
-  depends_on 'libarchive'
-  depends_on 'libelf'
+  depends_on "libarchive"
+  depends_on "libelf"
 
   patch :p0 do
     url "https://trac.macports.org/browser/trunk/dports/devel/elftoolchain/files/patch-common-elftc.diff?rev=98117&format=raw"

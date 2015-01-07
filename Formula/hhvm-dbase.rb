@@ -1,5 +1,3 @@
-require "formula"
-
 class HhvmDbase < Formula
   homepage "https://github.com/skyfms/hhvm-ext_dbase"
   head "https://github.com/skyfms/hhvm-ext_dbase.git", :revision => "b36853ffb9ad446f1a7412a37d87ee1edc6150ad"

@@ -1,5 +1,3 @@
-require "formula"
-
 class HhvmGeoip < Formula
   homepage "https://github.com/vipsoft/hhvm-ext-geoip"
   head "https://github.com/vipsoft/hhvm-ext-geoip.git", :revision => "0a8e4f36755f76e730e7e784aa431885d2fd2eed"

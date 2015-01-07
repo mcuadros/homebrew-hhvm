@@ -1,5 +1,3 @@
-require 'formula'
-
 class Jemallocfb < Formula
   homepage 'http://www.canonware.com/jemalloc/download.html'
   url 'http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2'

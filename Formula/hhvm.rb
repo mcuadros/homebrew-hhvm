@@ -1,104 +1,102 @@
-require 'formula'
-
 class Hhvm < Formula
-  homepage 'http://hhvm.com/'
+  homepage "http://hhvm.com/"
   stable do
-    url 'https://github.com/facebook/hhvm/archive/HHVM-3.4.2.tar.gz'
-    sha1 'fa0f60b5e517c55f3698738f18a4529f3f60b18f'
+    url "https://github.com/facebook/hhvm/archive/HHVM-3.4.2.tar.gz"
+    sha1 "fa0f60b5e517c55f3698738f18a4529f3f60b18f"
     resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
+      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
-    resource 'folly' do
-      url 'https://github.com/facebook/folly.git', :revision => "acc54589227951293f8d3943911f4311468605c9"
+    resource "folly" do
+      url "https://github.com/facebook/folly.git", :revision => "acc54589227951293f8d3943911f4311468605c9"
     end
-    resource 'thrift' do
-      url 'https://github.com/facebook/fbthrift.git', :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
+    resource "thrift" do
+      url "https://github.com/facebook/fbthrift.git", :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
     end
   end
 
   devel do
-    url 'https://github.com/facebook/hhvm.git', :branch => "HHVM-3.4"
-    version '3.4-dev'
-    resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party.git', :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
+    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.4"
+    version "3.4-dev"
+    resource "third-party" do
+      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
-    resource 'folly' do
-      url 'https://github.com/facebook/folly.git', :revision => "acc54589227951293f8d3943911f4311468605c9"
+    resource "folly" do
+      url "https://github.com/facebook/folly.git", :revision => "acc54589227951293f8d3943911f4311468605c9"
     end
-    resource 'thrift' do
-      url 'https://github.com/facebook/fbthrift.git', :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
+    resource "thrift" do
+      url "https://github.com/facebook/fbthrift.git", :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
     end
   end
 
   head do
-    url 'https://github.com/facebook/hhvm.git'
-    resource 'third-party' do
-      url 'https://github.com/hhvm/hhvm-third-party.git'
+    url "https://github.com/facebook/hhvm.git"
+    resource "third-party" do
+      url "https://github.com/hhvm/hhvm-third-party.git"
     end
   end
 
-  option 'with-cotire', 'Speed up the build by precompiling headers'
-  option 'with-debug', 'Enable debug build (default Release)'
-  option 'with-gcc', 'Build with gcc-4.9 compiler'
-  option 'with-mariadb', 'Use mariadb as mysql package'
-  option 'with-minsizerel', 'Enable minimal size release build'
-  option 'with-percona-server', 'Use percona-server as mysql package'
-  option 'with-release-debug', 'Enable release with debug build'
-  option 'with-system-mysql', 'Try to use the mysql package installed on your system'
-  option 'with-libressl', 'To use an alternate version of SSL (LibreSSL)'
-  option 'with-ninja', 'To use ninja for building'
+  option "with-cotire", "Speed up the build by precompiling headers"
+  option "with-debug", "Enable debug build (default Release)"
+  option "with-gcc", "Build with gcc-4.9 compiler"
+  option "with-mariadb", "Use mariadb as mysql package"
+  option "with-minsizerel", "Enable minimal size release build"
+  option "with-percona-server", "Use percona-server as mysql package"
+  option "with-release-debug", "Enable release with debug build"
+  option "with-system-mysql", "Try to use the mysql package installed on your system"
+  option "with-libressl", "To use an alternate version of SSL (LibreSSL)"
+  option "with-ninja", "To use ninja for building"
 
-  depends_on 'cmake' => :build
-  depends_on 'libtool' => :build
-  depends_on 'autoconf' => :build
-  depends_on 'automake' => :build
-  depends_on 'pkg-config' => :build
-  depends_on 'gcc' => :optional
-  depends_on 'libressl' => :optional
-  depends_on 'ninja' => :optional
-  depends_on 'openssl' if build.without? 'libressl'
+  depends_on "cmake" => :build
+  depends_on "libtool" => :build
+  depends_on "autoconf" => :build
+  depends_on "automake" => :build
+  depends_on "pkg-config" => :build
+  depends_on "gcc" => :optional
+  depends_on "libressl" => :optional
+  depends_on "ninja" => :optional
+  depends_on "openssl" if build.without? "libressl"
 
   # Standard packages
-  depends_on 'boost'
-  depends_on 'binutilsfb'
-  depends_on 'curl'
-  depends_on 'freetype'
-  depends_on 'gd'
-  depends_on 'gettext'
-  depends_on 'glog'
-  depends_on 'icu4c'
-  depends_on 'imagemagick'
-  depends_on 'imap-uw'
-  depends_on 'jemallocfb'
-  depends_on 'jpeg'
-  depends_on 'libdwarf'
-  depends_on 'libelf'
-  depends_on 'libevent'
-  depends_on 'libmemcached'
-  depends_on 'libpng'
-  depends_on 'libssh2'
-  depends_on 'libvpx'
-  depends_on 'libxslt'
-  depends_on 'libzip'
-  depends_on 'lz4'
-  depends_on 'mcrypt'
-  depends_on 'objective-caml'
-  depends_on 'oniguruma'
-  depends_on 'pcre'
-  depends_on 're2c'
-  depends_on 'readline'
-  depends_on 'sqlite'
-  depends_on 'tbb'
-  depends_on 'unixodbc'
+  depends_on "boost"
+  depends_on "binutilsfb"
+  depends_on "curl"
+  depends_on "freetype"
+  depends_on "gd"
+  depends_on "gettext"
+  depends_on "glog"
+  depends_on "icu4c"
+  depends_on "imagemagick"
+  depends_on "imap-uw"
+  depends_on "jemallocfb"
+  depends_on "jpeg"
+  depends_on "libdwarf"
+  depends_on "libelf"
+  depends_on "libevent"
+  depends_on "libmemcached"
+  depends_on "libpng"
+  depends_on "libssh2"
+  depends_on "libvpx"
+  depends_on "libxslt"
+  depends_on "libzip"
+  depends_on "lz4"
+  depends_on "mcrypt"
+  depends_on "objective-caml"
+  depends_on "oniguruma"
+  depends_on "pcre"
+  depends_on "re2c"
+  depends_on "readline"
+  depends_on "sqlite"
+  depends_on "tbb"
+  depends_on "unixodbc"
 
   #MySQL packages
-  if build.with? 'mariadb'
-    depends_on 'mariadb'
-  elsif build.with? 'percona-server'
-    depends_on 'percona-server'
-  elsif build.without? 'system-mysql'
-    depends_on 'mysql'
-    depends_on 'mysql-connector-c++'
+  if build.with? "mariadb"
+    depends_on "mariadb"
+  elsif build.with? "percona-server"
+    depends_on "percona-server"
+  elsif build.without? "system-mysql"
+    depends_on "mysql"
+    depends_on "mysql-connector-c++"
   end
 
   # Hotfix patches

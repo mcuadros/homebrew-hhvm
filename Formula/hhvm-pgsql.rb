@@ -1,5 +1,3 @@
-require "formula"
-
 class HhvmPgsql < Formula
   homepage "https://github.com/PocketRent/hhvm-pgsql"
   head "https://github.com/PocketRent/hhvm-pgsql.git", :revision => "f86c2d2d2a033fe1bee76d344955d6e8befdb10d"
