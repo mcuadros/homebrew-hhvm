@@ -57,13 +57,15 @@ class Hhvm < Formula
   depends_on "openssl" if build.without? "libressl"
 
   # Standard packages
-  depends_on "boost"
+  depends_on "boost" if build.without? "gcc"
+  depends_on "boostfb" if build.with? "gcc"
   depends_on "binutilsfb"
   depends_on "curl"
   depends_on "freetype"
   depends_on "gd"
   depends_on "gettext"
-  depends_on "glog"
+  depends_on "glog" if build.without? "gcc"
+  depends_on "glogfb" if build.with? "gcc"
   depends_on "icu4c"
   depends_on "imagemagick"
   depends_on "imap-uw"
@@ -124,8 +126,6 @@ class Hhvm < Formula
   def install
     args = [
       ".",
-      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_include}",
-      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_lib}",
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_include}/imap",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
@@ -148,7 +148,6 @@ class Hhvm < Formula
       "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_include}/libelf",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula['libevent'].opt_include}",
       "-DLIBEVENT_LIB=#{Formula['libevent'].opt_lib}/libevent.dylib",
-      "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_include}",
       "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_include}",
       "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_lib}/libintl.dylib",
       "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_include}",
@@ -200,13 +199,18 @@ class Hhvm < Formula
       args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
       args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      args << "-DBoost_USE_STATIC_LIBS=ON"
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
+      args << "-DBOOST_INCLUDEDIR=#{Formula['boostfb'].opt_include}"
+      args << "-DBOOST_LIBRARYDIR=#{Formula['boostfb'].opt_lib}"
       args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
+      args << "-DLIBGLOG_INCLUDE_DIR=#{Formula['glogfb'].opt_include}"
       args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
     else
       args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
+      args << "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_include}"
+      args << "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_lib}"
       args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
+      args << "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_include}"
       args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
     end
 

@@ -31,10 +31,10 @@ Usage
     brew info hhvm
     brew uses hhvm
 
-HHVM requires MySQL to compile, by default will use `mysql` formula.  
+HHVM requires MySQL to compile, by default will use `mysql` formula.
 
-> If mysql is already installed, you can use `--with-system-mysql`.  
-> But you can also use `--with-mariadb` or `--with-percona-server` to compile alternative versions of mysql.  
+> If mysql is already installed, you can use `--with-system-mysql`.
+> But you can also use `--with-mariadb` or `--with-percona-server` to compile alternative versions of mysql.
 
 Install the last stable version (3.4.0)
 
@@ -58,11 +58,7 @@ Known Problems
 -----
 
 * Building using clang broken, need to use flag `--with-gcc` and rebuild packages using gcc (issues: [#122](https://github.com/mcuadros/homebrew-hhvm/issues/122), [#137](https://github.com/mcuadros/homebrew-hhvm/issues/137))
-* If you are getting errors like `Undefined symbols for architecture x86_64:` execute:  
-  `brew reinstall --build-from-source --cc=gcc-4.9 boost gflags glog`  
-
-  *Warning: Recompilation of libraries using `gcc` can break most of the other things from the Homebrew which depend on `boost` `gflags` `glog`*
-* HHVM no longer supports the built-in webserver as of 3.0.0.  
+* HHVM no longer supports the built-in webserver as of 3.0.0.
   Please use your own webserver (nginx or apache) talking to HHVM over [fastcgi](https://github.com/facebook/hhvm/wiki/FastCGI).
 * If you have XQuartz (X11) installed, you have to temporarily remove a symbolic link at '/usr/X11R6' in order to successfully install HHVM.
   You can use the following command: `sudo rm /usr/X11R6`
