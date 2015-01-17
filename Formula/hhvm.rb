@@ -123,13 +123,14 @@ class Hhvm < Formula
 
   def install
     args = [
-      ".",
       "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_include}",
       "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_lib}",
       "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_include}/imap",
+      "-DCMAKE_FIND_FRAMEWORK=LAST",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
+      "-DCMAKE_VERBOSE_MAKEFILE=ON",
       "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_include}",
       "-DCURL_LIBRARY=#{Formula['curl'].opt_lib}/libcurl.dylib",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_include}/freetype2",
@@ -178,6 +179,7 @@ class Hhvm < Formula
       "-DSYSTEM_PCRE_LIBRARY=#{Formula['pcre'].opt_lib}/libpcre.dylib",
       "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_include}",
       "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_include}",
+      "-Wno-dev",
     ]
 
     if build.with? 'gcc'
@@ -274,7 +276,7 @@ class Hhvm < Formula
 
     cd src do
       args << "-GNinja" if build.with? 'ninja'
-      system "cmake", *args
+      system "cmake", ".", *args
       if build.with? 'ninja'
         system "ninja", "-j#{ENV.make_jobs}"
         system "ninja install"
