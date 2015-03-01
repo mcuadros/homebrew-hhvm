@@ -19,7 +19,8 @@ class Binutilsfb < Formula
                           "--enable-64-bit-bfd",
                           "--enable-install-libiberty",
                           "--enable-targets=all"
-    system "make", "install"
+    system "make"
+    system "make install"
   end
 
   test do
