@@ -7,7 +7,7 @@ class Hhvm < Formula
       url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
     resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "acc54589227951293f8d3943911f4311468605c9"
+      url "https://github.com/facebook/folly.git", :revision => "7d2497f0e57fb14b6ea43a5a2d180604d7e1e7e5"
     end
     resource "thrift" do
       url "https://github.com/facebook/fbthrift.git", :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
@@ -22,7 +22,7 @@ class Hhvm < Formula
       url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
     resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "acc54589227951293f8d3943911f4311468605c9"
+      url "https://github.com/facebook/folly.git", :revision => "7d2497f0e57fb14b6ea43a5a2d180604d7e1e7e5"
     end
     resource "thrift" do
       url "https://github.com/facebook/fbthrift.git", :revision => "378e954ac82a00ba056e6fccd5e1fa3e76803cc8"
