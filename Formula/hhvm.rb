@@ -14,6 +14,7 @@ class Hhvm < Formula
     end
   end
 
+  # --devel (HHVM-3.4 stable OSX)
   devel do
     url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.4"
     version "3.4-dev"
@@ -28,6 +29,7 @@ class Hhvm < Formula
     end
   end
 
+  # --HEAD (HHVM-3.7 unstable)
   head do
     url "https://github.com/facebook/hhvm.git"
     resource "third-party" do
@@ -54,7 +56,7 @@ class Hhvm < Formula
   depends_on "gcc" => :optional
   depends_on "libressl" => :optional
   depends_on "ninja" => :optional
-  depends_on "openssl" if build.without? "libressl"
+  depends_on "openssl" if build.without?("libressl")
 
   # Standard packages
   depends_on "boost"
@@ -89,7 +91,7 @@ class Hhvm < Formula
   depends_on "tbb"
   depends_on "unixodbc"
 
-  #MySQL packages
+  # MySQL packages
   if build.with? "mariadb"
     depends_on "mariadb"
   elsif build.with? "percona-server"
@@ -123,76 +125,79 @@ class Hhvm < Formula
 
   def install
     args = [
-      "-DBOOST_INCLUDEDIR=#{Formula['boost'].opt_include}",
-      "-DBOOST_LIBRARYDIR=#{Formula['boost'].opt_lib}",
-      "-DCCLIENT_INCLUDE_PATH=#{Formula['imap-uw'].opt_include}/imap",
+      "-DBOOST_INCLUDEDIR=#{Formula["boost"].opt_include}",
+      "-DBOOST_LIBRARYDIR=#{Formula["boost"].opt_lib}",
+      "-DCCLIENT_INCLUDE_PATH=#{Formula["imap-uw"].opt_include}/imap",
       "-DCMAKE_FIND_FRAMEWORK=LAST",
       "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
       "-DCMAKE_VERBOSE_MAKEFILE=ON",
-      "-DCURL_INCLUDE_DIR=#{Formula['curl'].opt_include}",
-      "-DCURL_LIBRARY=#{Formula['curl'].opt_lib}/libcurl.dylib",
-      "-DFREETYPE_INCLUDE_DIRS=#{Formula['freetype'].opt_include}/freetype2",
-      "-DFREETYPE_LIBRARIES=#{Formula['freetype'].opt_lib}/libfreetype.dylib",
-      "-DICU_DATA_LIBRARY=#{Formula['icu4c'].opt_lib}/libicudata.dylib",
-      "-DICU_I18N_LIBRARY=#{Formula['icu4c'].opt_lib}/libicui18n.dylib",
-      "-DICU_INCLUDE_DIR=#{Formula['icu4c'].opt_include}",
-      "-DICU_LIBRARY=#{Formula['icu4c'].opt_lib}/libicuuc.dylib",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula['jemallocfb'].opt_include}",
-      "-DJEMALLOC_LIB=#{Formula['jemallocfb'].opt_lib}/libjemalloc.dylib",
+      "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
+      "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
+      "-DFREETYPE_INCLUDE_DIRS=#{Formula["freetype"].opt_include}/freetype2",
+      "-DFREETYPE_LIBRARIES=#{Formula["freetype"].opt_lib}/libfreetype.dylib",
+      "-DICU_DATA_LIBRARY=#{Formula["icu4c"].opt_lib}/libicudata.dylib",
+      "-DICU_I18N_LIBRARY=#{Formula["icu4c"].opt_lib}/libicui18n.dylib",
+      "-DICU_INCLUDE_DIR=#{Formula["icu4c"].opt_include}",
+      "-DICU_LIBRARY=#{Formula["icu4c"].opt_lib}/libicuuc.dylib",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula["jemallocfb"].opt_include}",
+      "-DJEMALLOC_LIB=#{Formula["jemallocfb"].opt_lib}/libjemalloc.dylib",
       "-DLBER_LIBRARIES=/usr/lib/liblber.dylib",
       "-DLDAP_INCLUDE_DIR=/usr/include",
       "-DLDAP_LIBRARIES=/usr/lib/libldap.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula['libdwarf'].opt_include}",
-      "-DLIBDWARF_LIBRARIES=#{Formula['libdwarf'].opt_lib}/libdwarf.3.dylib",
-      "-DLIBELF_INCLUDE_DIRS=#{Formula['libelf'].opt_include}/libelf",
-      "-DLIBEVENT_INCLUDE_DIR=#{Formula['libevent'].opt_include}",
-      "-DLIBEVENT_LIB=#{Formula['libevent'].opt_lib}/libevent.dylib",
-      "-DLIBGLOG_INCLUDE_DIR=#{Formula['glog'].opt_include}",
-      "-DLIBINTL_INCLUDE_DIR=#{Formula['gettext'].opt_include}",
-      "-DLIBINTL_LIBRARIES=#{Formula['gettext'].opt_lib}/libintl.dylib",
-      "-DLIBJPEG_INCLUDE_DIRS=#{Formula['jpeg'].opt_include}",
-      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula['imagemagick'].opt_include}/ImageMagick-6",
-      "-DLIBMAGICKWAND_LIBRARIES=#{Formula['imagemagick'].opt_lib}/libMagickWand-6.Q16.dylib",
-      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula['libmemcached'].opt_include}",
-      "-DLIBODBC_INCLUDE_DIRS=#{Formula['unixodbc'].opt_include}",
-      "-DLIBPNG_INCLUDE_DIRS=#{Formula['libpng'].opt_include}",
-      "-DLIBSQLITE3_INCLUDE_DIR=#{Formula['sqlite'].opt_include}",
-      "-DLIBSQLITE3_LIBRARY=#{Formula['sqlite'].opt_lib}/libsqlite3.0.dylib",
-      "-DLIBVPX_INCLUDE_DIRS=#{Formula['libvpx'].opt_include}",
-      "-DLIBVPX_LIBRARIES=#{Formula['libvpx'].opt_lib}/libvpx.a",
-      "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula['libzip'].opt_include}",
-      "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula['libzip'].opt_lib}/libzip/include",
-      "-DLIBZIP_LIBRARY=#{Formula['libzip'].opt_lib}/libzip.dylib",
-      "-DLZ4_INCLUDE_DIR=#{Formula['lz4'].opt_include}",
-      "-DLZ4_LIBRARY=#{Formula['lz4'].opt_lib}/liblz4.dylib",
-      "-DMcrypt_INCLUDE_DIR=#{Formula['mcrypt'].opt_include}",
-      "-DOCAMLC_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc",
-      "-DOCAMLC_OPT_EXECUTABLE=#{Formula['objective-caml'].opt_prefix}/bin/ocamlc.opt",
-      "-DONIGURUMA_INCLUDE_DIR=#{Formula['oniguruma'].opt_include}",
-      "-DPCRE_INCLUDE_DIR=#{Formula['pcre'].opt_include}",
-      "-DPCRE_LIBRARY=#{Formula['pcre'].opt_lib}/libpcre.dylib",
-      "-DREADLINE_INCLUDE_DIR=#{Formula['readline'].opt_include}",
-      "-DREADLINE_LIBRARY=#{Formula['readline'].opt_lib}/libreadline.dylib",
-      "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula['pcre'].opt_include}",
-      "-DSYSTEM_PCRE_LIBRARY=#{Formula['pcre'].opt_lib}/libpcre.dylib",
-      "-DTBB_INCLUDE_DIRS=#{Formula['tbb'].opt_include}",
-      "-DTEST_TBB_INCLUDE_DIR=#{Formula['tbb'].opt_include}",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula["libdwarf"].opt_include}",
+      "-DLIBDWARF_LIBRARIES=#{Formula["libdwarf"].opt_lib}/libdwarf.3.dylib",
+      "-DLIBELF_INCLUDE_DIRS=#{Formula["libelf"].opt_include}/libelf",
+      "-DLIBEVENT_INCLUDE_DIR=#{Formula["libevent"].opt_include}",
+      "-DLIBEVENT_LIB=#{Formula["libevent"].opt_lib}/libevent.dylib",
+      "-DLIBGLOG_INCLUDE_DIR=#{Formula["glog"].opt_include}",
+      "-DLIBINTL_INCLUDE_DIR=#{Formula["gettext"].opt_include}",
+      "-DLIBINTL_LIBRARIES=#{Formula["gettext"].opt_lib}/libintl.dylib",
+      "-DLIBJPEG_INCLUDE_DIRS=#{Formula["jpeg"].opt_include}",
+      "-DLIBMAGICKWAND_INCLUDE_DIRS=#{Formula["imagemagick"].opt_include}/ImageMagick-6",
+      "-DLIBMAGICKWAND_LIBRARIES=#{Formula["imagemagick"].opt_lib}/libMagickWand-6.Q16.dylib",
+      "-DLIBMEMCACHED_INCLUDE_DIR=#{Formula["libmemcached"].opt_include}",
+      "-DLIBODBC_INCLUDE_DIRS=#{Formula["unixodbc"].opt_include}",
+      "-DLIBPNG_INCLUDE_DIRS=#{Formula["libpng"].opt_include}",
+      "-DLIBSQLITE3_INCLUDE_DIR=#{Formula["sqlite"].opt_include}",
+      "-DLIBSQLITE3_LIBRARY=#{Formula["sqlite"].opt_lib}/libsqlite3.0.dylib",
+      "-DLIBVPX_INCLUDE_DIRS=#{Formula["libvpx"].opt_include}",
+      "-DLIBVPX_LIBRARIES=#{Formula["libvpx"].opt_lib}/libvpx.a",
+      "-DLIBZIP_INCLUDE_DIR_ZIP=#{Formula["libzip"].opt_include}",
+      "-DLIBZIP_INCLUDE_DIR_ZIPCONF=#{Formula["libzip"].opt_lib}/libzip/include",
+      "-DLIBZIP_LIBRARY=#{Formula["libzip"].opt_lib}/libzip.dylib",
+      "-DLZ4_INCLUDE_DIR=#{Formula["lz4"].opt_include}",
+      "-DLZ4_LIBRARY=#{Formula["lz4"].opt_lib}/liblz4.dylib",
+      "-DMcrypt_INCLUDE_DIR=#{Formula["mcrypt"].opt_include}",
+      "-DOCAMLC_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc",
+      "-DOCAMLC_OPT_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc.opt",
+      "-DONIGURUMA_INCLUDE_DIR=#{Formula["oniguruma"].opt_include}",
+      "-DPCRE_INCLUDE_DIR=#{Formula["pcre"].opt_include}",
+      "-DPCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
+      "-DREADLINE_INCLUDE_DIR=#{Formula["readline"].opt_include}",
+      "-DREADLINE_LIBRARY=#{Formula["readline"].opt_lib}/libreadline.dylib",
+      "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula["pcre"].opt_include}",
+      "-DSYSTEM_PCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
+      "-DTBB_INCLUDE_DIRS=#{Formula["tbb"].opt_include}",
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula["tbb"].opt_include}",
       "-Wno-dev",
     ]
 
-    if build.with? 'gcc'
+    # To use ninja for building
+    args << "-GNinja" if build.with?("ninja")
+
+    if build.with?("gcc")
       opoo caveats_gcc
 
       gcc = Formula["gcc"]
       # Force compilation with gcc-4.9
-      ENV['CC'] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      ENV['LD'] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      ENV['CXX'] = "#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
+      ENV["CC"] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
+      ENV["LD"] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
+      ENV["CXX"] = "#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
       # Compiler complains about link compatibility with otherwise
-      ENV.delete('CFLAGS')
-      ENV.delete('CXXFLAGS')
+      ENV.delete("CFLAGS")
+      ENV.delete("CXXFLAGS")
 
       # Support GCC/LLVM stack-smashing protection: http://git.io/5Kzu3A
       # Preprocessor gcc performance regressions: http://git.io/4r7VCQ
@@ -203,81 +208,80 @@ class Hhvm < Formula
       args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
       args << "-DBoost_USE_STATIC_LIBS=ON"
-      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
-      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
+      args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
+      args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
+      args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
     else
-      args << "-DBFD_LIB=#{Formula['binutilsfb'].opt_lib}/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula['binutilsfb'].opt_include}"
-      args << "-DLIBIBERTY_LIB=#{Formula['binutilsfb'].opt_lib}/x86_64/libiberty.a"
+      args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
+      args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
+      args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
     end
 
-    if build.with? 'cotire'
+    if build.with?("cotire")
       args << "-DENABLE_COTIRE=ON"
     end
 
-    if build.with? 'debug'
-      args << '-DCMAKE_BUILD_TYPE=Debug'
-    elsif build.with? 'release-debug'
-      args << '-DCMAKE_BUILD_TYPE=RelWithDebInfo'
-    elsif build.with? 'minsizerel'
-      args << '-DCMAKE_BUILD_TYPE=MinSizeRel'
+    if build.with?("debug")
+      args << "-DCMAKE_BUILD_TYPE=Debug"
+    elsif build.with?("release-debug")
+      args << "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
+    elsif build.with?("minsizerel")
+      args << "-DCMAKE_BUILD_TYPE=MinSizeRel"
     end
 
-    if build.with? 'mariadb'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mariadb'].opt_include}/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['mariadb'].opt_lib}"
-    elsif build.with? 'percona-server'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['percona-server'].opt_include}/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['percona-server'].opt_lib}"
-    elsif build.without? 'system-mysql'
-      args << "-DMYSQL_INCLUDE_DIR=#{Formula['mysql'].opt_include}/mysql"
-      args << "-DMYSQL_LIB_DIR=#{Formula['mysql'].opt_lib}"
+    if build.with?("mariadb")
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula["mariadb"].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula["mariadb"].opt_lib}"
+    elsif build.with?("percona-server")
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula["percona-server"].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula["percona-server"].opt_lib}"
+    elsif build.without?("system-mysql")
+      args << "-DMYSQL_INCLUDE_DIR=#{Formula["mysql"].opt_include}/mysql"
+      args << "-DMYSQL_LIB_DIR=#{Formula["mysql"].opt_lib}"
     end
 
-    if build.with? 'libressl'
-      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['libressl'].opt_lib}/libssl.dylib"
-      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['libressl'].opt_include}"
-      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['libressl'].opt_lib}/libcrypto.dylib"
+    if build.with?("libressl")
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula["libressl"].opt_lib}/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula["libressl"].opt_include}"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula["libressl"].opt_lib}/libcrypto.dylib"
     else
-      args << "-DOPENSSL_SSL_LIBRARY=#{Formula['openssl'].opt_lib}/libssl.dylib"
-      args << "-DOPENSSL_INCLUDE_DIR=#{Formula['openssl'].opt_include}"
-      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula['openssl'].opt_lib}/libcrypto.dylib"
+      args << "-DOPENSSL_SSL_LIBRARY=#{Formula["openssl"].opt_lib}/libssl.dylib"
+      args << "-DOPENSSL_INCLUDE_DIR=#{Formula["openssl"].opt_include}"
+      args << "-DOPENSSL_CRYPTO_LIBRARY=#{Formula["openssl"].opt_lib}/libcrypto.dylib"
     end
 
-    #Custome packages
-    rm_rf 'third-party'
-    third_party_buildpath = buildpath/'third-party'
-    third_party_buildpath.install resource('third-party')
+    # 3rd packages
+    rm_rf "third-party"
+    third_party_buildpath = buildpath/"third-party"
+    third_party_buildpath.install resource("third-party")
     if build.stable? or build.devel?
-      rm_rf 'third-party/folly/src'
-      folly_buildpath = buildpath/'third-party/folly/src'
-      folly_buildpath.install resource('folly')
-      rm_rf 'third-party/thrift/src'
-      thrift_buildpath = buildpath/'third-party/thrift/src'
-      thrift_buildpath.install resource('thrift')
+      rm_rf "third-party/folly/src"
+      folly_buildpath = buildpath/"third-party/folly/src"
+      folly_buildpath.install resource("folly")
+      rm_rf "third-party/thrift/src"
+      thrift_buildpath = buildpath/"third-party/thrift/src"
+      thrift_buildpath.install resource("thrift")
     end
 
     # Fix Traits.h std::* declarations conflict with libc++
     # https://github.com/facebook/folly/pull/81
-    if build.without? 'gcc'
-      inreplace third_party_buildpath/'folly/src/folly/Traits.h',
+    if build.without?("gcc")
+      inreplace third_party_buildpath/"folly/src/folly/Traits.h",
         "FOLLY_NAMESPACE_STD_BEGIN",
         "#if 0\nFOLLY_NAMESPACE_STD_BEGIN"
-      inreplace third_party_buildpath/'folly/src/folly/Traits.h',
+      inreplace third_party_buildpath/"folly/src/folly/Traits.h",
         "FOLLY_NAMESPACE_STD_END",
         "FOLLY_NAMESPACE_STD_END\n#else\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n#endif\n"
     end
 
     src = prefix + "src"
-    src.install Dir['*']
+    src.install Dir["*"]
 
-    ENV['HPHP_HOME'] = src
+    ENV["HPHP_HOME"] = src
 
     cd src do
-      args << "-GNinja" if build.with? 'ninja'
       system "cmake", ".", *args
-      if build.with? 'ninja'
+      if build.with?("ninja")
         system "ninja", "-j#{ENV.make_jobs}"
         system "ninja install"
       else
@@ -330,8 +334,8 @@ class Hhvm < Formula
   def caveats_gcc;
     <<-EOS.undent
 
-      If you are getting errors like 'Undefined symbols for architecture x86_64:' execute:
-        $ brew reinstall --build-from-source --cc=gcc-#{Formula['gcc'].version_suffix} boost gflags glog
+      If you are getting errors like "Undefined symbols for architecture x86_64:" execute:
+        $ brew reinstall --build-from-source --cc=gcc-#{Formula["gcc"].version_suffix} boost gflags glog
 
     EOS
   end
@@ -339,7 +343,7 @@ class Hhvm < Formula
   def caveats
     s = <<-EOS.undent
       If you have XQuartz (X11) installed,
-      to temporarily remove a symbolic link at '/usr/X11R6'
+      to temporarily remove a symbolic link at "/usr/X11R6"
       in order to successfully install HHVM.
         $ sudo rm /usr/X11R6
         $ sudo ln -s /opt/X11 /usr/X11R6
@@ -347,7 +351,7 @@ class Hhvm < Formula
       The php.ini file can be found in:
         #{etc}/hhvm/php.ini
     EOS
-    s << caveats_gcc if build.with? 'gcc'
+    s << caveats_gcc if build.with? "gcc"
     s
   end
 

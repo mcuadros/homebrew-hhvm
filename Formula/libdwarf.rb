@@ -25,13 +25,13 @@ class Libdwarf < Formula
   end
 
   def install
-    inreplace 'mk/elftoolchain.prog.mk', '@PREFIX@', prefix
-    system 'bsdmake libdwarf'
+    inreplace "mk/elftoolchain.prog.mk", "@PREFIX@", prefix
+    system "bsdmake libdwarf"
 
     # bsdmake rules are not reliable enough for this.
-    lib.install Dir['libdwarf/*.a']
-    lib.install Dir['libdwarf/*.dylib']
-    include.install Dir['libdwarf/*.h']
+    lib.install Dir["libdwarf/*.a"]
+    lib.install Dir["libdwarf/*.dylib"]
+    include.install Dir["libdwarf/*.h"]
   end
 
 end

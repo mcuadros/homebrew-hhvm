@@ -1,7 +1,7 @@
 class Jemallocfb < Formula
-  homepage 'http://www.canonware.com/jemalloc/download.html'
-  url 'http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2'
-  sha1 '40c0892b172e5dc14a6cea6fe4edda7dea4f3a68'
+  homepage "http://www.canonware.com/jemalloc/download.html"
+  url "http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2"
+  sha1 "40c0892b172e5dc14a6cea6fe4edda7dea4f3a68"
 
   keg_only "We're just a patched version."
 
@@ -10,8 +10,8 @@ class Jemallocfb < Formula
 
   def install
     # don't use a prefix
-    system './configure', '--disable-debug', "--prefix=#{prefix}", "--with-jemalloc-prefix="
-    system 'make install'
+    system "./configure", "--disable-debug", "--prefix=#{prefix}", "--with-jemalloc-prefix="
+    system "make", "install"
 
     # This otherwise conflicts with google-perftools
     mv "#{bin}/pprof", "#{bin}/jemalloc-pprof"
