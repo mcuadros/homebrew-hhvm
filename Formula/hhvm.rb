@@ -7,10 +7,10 @@ class Hhvm < Formula
       url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
     resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "7d2497f0e57fb14b6ea43a5a2d180604d7e1e7e5"
+      url "https://github.com/facebook/folly.git", :revision => "88fb213fe19af92f50ee851a477c73a103dbcfe1"
     end
     resource "thrift" do
-      url "https://github.com/facebook/fbthrift.git", :revision => "d30280a33ed2c67672b0295872397e5affb60f8c"
+      url "https://github.com/facebook/fbthrift.git", :revision => "b9389429aa71b6b4d2876134c8f50143a044d653"
     end
   end
 
@@ -22,10 +22,10 @@ class Hhvm < Formula
       url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
     resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "7d2497f0e57fb14b6ea43a5a2d180604d7e1e7e5"
+      url "https://github.com/facebook/folly.git", :revision => "88fb213fe19af92f50ee851a477c73a103dbcfe1"
     end
     resource "thrift" do
-      url "https://github.com/facebook/fbthrift.git", :revision => "d30280a33ed2c67672b0295872397e5affb60f8c"
+      url "https://github.com/facebook/fbthrift.git", :revision => "b9389429aa71b6b4d2876134c8f50143a044d653"
     end
   end
 
