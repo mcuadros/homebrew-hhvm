@@ -2,8 +2,8 @@ class Hhvm < Formula
   homepage "http://hhvm.com/"
   stable do
     url "https://github.com/facebook/hhvm/archive/HHVM-3.4.2.tar.gz"
-    sha1 "fa0f60b5e517c55f3698738f18a4529f3f60b18f"
-    resource 'third-party' do
+    sha256 "dee0d127eebed48835d6f27c4381f5e60fa3539eef4697f38822cfa0f5367cae"
+    resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
     end
     resource "folly" do
@@ -102,24 +102,31 @@ class Hhvm < Formula
   end
 
   # Hotfix patches
-  if build.stable? or build.devel? or build.head?
-    if build.stable? or build.devel?
+  if build.stable? || build.devel? || build.head?
+    if build.stable? || build.devel?
       # Support openssl replacements which don't export RAND_egd()
       patch do
-        url "https://github.com/facebook/hhvm/commit/df1ac0a7371c818d3d4b5c85859905e373145446.diff"
-        sha1 "d2f5235da22e5c80c9570dfb7fe2db94bb5d11d5"
+        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/check_rand-egd.patch"
+        sha256 "b309d4117f3ba4aba01df96d95fe02fa627ba0d88e97d40af27618fe4ea32d56"
       end
       # Improve segaddr fixing for 32-bit destructors
       patch do
-        url "https://github.com/facebook/hhvm/commit/d65448c.diff"
-        sha1 "d735bb7012c748fed65fdebfe9d2e9ee9bf19649"
+        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/segaddr-32bit.diff"
+        sha256 "4cb98ff600860a67dc0352ffb8515c8451f233211c4294e08d7cd7d647a5bb52"
+      end
+      # FB broken selectable path http://git.io/EqkkMA
+      patch do
+        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/userland_path.diff"
+        sha256 "a7ebe733f584027a5131a04b0dc037c259743a1f07931530475951ff9e697853"
       end
     end
 
-    # FB broken selectable path http://git.io/EqkkMA
-    patch do
-      url "https://github.com/facebook/hhvm/pull/3517.diff"
-      sha1 "ba8c3dbf1e75957b6733aaf52207d4e55f1d286a"
+    if build.head?
+      # FB broken selectable path http://git.io/EqkkMA
+      patch do
+        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/head/userland_path.diff"
+        sha256 "cd2be78a9beba55a2deb61915ebc2752c060608fc663d2e93b81f2989d352d5d"
+      end
     end
   end
 
@@ -254,7 +261,7 @@ class Hhvm < Formula
     rm_rf "third-party"
     third_party_buildpath = buildpath/"third-party"
     third_party_buildpath.install resource("third-party")
-    if build.stable? or build.devel?
+    if build.stable? || build.devel?
       rm_rf "third-party/folly/src"
       folly_buildpath = buildpath/"third-party/folly/src"
       folly_buildpath.install resource("folly")
@@ -295,9 +302,9 @@ class Hhvm < Formula
 
   def install_config
     ini_php = etc + "hhvm/php.ini"
-    ini_php.write default_php_ini unless File.exists? ini_php
+    ini_php.write default_php_ini unless File.exist? ini_php
     ini_server = etc + "hhvm/server.ini"
-    ini_server.write default_server_ini unless File.exists? ini_server
+    ini_server.write default_server_ini unless File.exist? ini_server
   end
 
   # https://gist.github.com/denji/1a2ff183a671efcabedf
@@ -331,7 +338,7 @@ class Hhvm < Formula
     EOS
   end
 
-  def caveats_gcc;
+  def caveats_gcc
     <<-EOS.undent
 
       If you are getting errors like "Undefined symbols for architecture x86_64:" execute:

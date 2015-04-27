@@ -1,0 +1,31 @@
+diff --git a/hphp/runtime/base/emulate-zend.cpp b/hphp/runtime/base/emulate-zend.cpp
+index 2d89168..21690c2 100644
+--- a/hphp/runtime/base/emulate-zend.cpp
++++ b/hphp/runtime/base/emulate-zend.cpp
+@@ -234,8 +234,8 @@ int emulate_zend(int argc, char** argv) {
+       newargv.push_back("-c");
+       newargv.push_back(filename);
+     };
+-    add_default_config_files_globbed("/etc/hhvm/php*.ini", cb);
+-    add_default_config_files_globbed("/etc/hhvm/config*.hdf", cb);
++    add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini", cb);
++    add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf", cb);
+   }
+ 
+   if (cnt < argc && strcmp(argv[cnt], "--") == 0) cnt++;
+diff --git a/hphp/runtime/base/program-functions.cpp b/hphp/runtime/base/program-functions.cpp
+index a8cf975..7576785 100644
+--- a/hphp/runtime/base/program-functions.cpp
++++ b/hphp/runtime/base/program-functions.cpp
+@@ -1345,9 +1345,9 @@ static int execute_program_impl(int argc, char** argv) {
+           Logger::Verbose("Using default config file: %s", filename);
+           po.config.push_back(filename);
+         };
+-        add_default_config_files_globbed("/etc/hhvm/php*.ini",
++        add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini",
+                                          file_callback);
+-        add_default_config_files_globbed("/etc/hhvm/config*.hdf",
++        add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf",
+                                          file_callback);
+       }
+ // When we upgrade boost, we can remove this and also get rid of the parent
