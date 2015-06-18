@@ -9,7 +9,6 @@ class Hhvm < Formula
     end
   end
 
-  # --devel (HHVM-3.4 stable OSX)
   devel do
     url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.7"
     version "3.7-dev"
@@ -18,7 +17,6 @@ class Hhvm < Formula
     end
   end
 
-  # --HEAD (HHVM-3.7 unstable)
   head do
     url "https://github.com/facebook/hhvm.git"
     resource "third-party" do
@@ -27,19 +25,21 @@ class Hhvm < Formula
   end
 
   option "with-cotire", "Speed up the build by precompiling headers"
-  option "with-debug", "Enable debug build (default release)"
-  option "with-mariadb", "Use mariadb as mysql package"
-  option "with-minsizerel", "Enable minimal size release build"
-  option "with-percona-server", "Use percona-server as mysql package"
-  option "with-release-debug", "Enable release with debug build"
-  option "with-system-mysql", "Use system the MySQL package installed"
-  option "with-libressl", "To use an alternative SSL version of libressl"
-  option "with-ninja", "Use ninja for building"
+  option "with-debug", "Build with debug (default Release)"
+  option "with-mariadb", "Build with MariaDB instead of MySQL or Percona Server"
+  option "with-minsizerel", "Build with minimal size release"
+  option "with-percona-server", "Build with Percona-Server instead of MySQL or MariaDB"
+  option "with-release-debug", "Build with Release+Debug build"
+  option "with-system-mysql", "Build with system installed MySQL package"
+  option "with-libressl", "Build with LibreSSL instead of Secure Transport or OpenSSL"
+  option "with-ninja", "Compile with ninja instead of GNU Make"
+  option "with-llvm", "Use Homebrew's version of Clang compiler"
 
   depends_on "cmake" => :build
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "llvm"  => [:build, :optional, "with-clang", "with-rtti"]
   depends_on "pkg-config" => :build
   depends_on "libressl" => :optional
   depends_on "ninja" => :optional
@@ -200,6 +200,14 @@ class Hhvm < Formula
     rm_rf "third-party"
     third_party_buildpath = buildpath/"third-party"
     third_party_buildpath.install resource("third-party")
+
+    # Fix Traits.h std::* declarations conflict with libc++
+    # https://github.com/facebook/folly/pull/81
+    inreplace third_party_buildpath/"folly/src/folly/Traits.h",
+      "FOLLY_NAMESPACE_STD_BEGIN", "#if 0\nFOLLY_NAMESPACE_STD_BEGIN"
+    inreplace third_party_buildpath/"folly/src/folly/Traits.h",
+      "FOLLY_NAMESPACE_STD_END",
+      "FOLLY_NAMESPACE_STD_END\n#else\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n#endif\n"
 
     src = prefix + "src"
     src.install Dir["*"]
