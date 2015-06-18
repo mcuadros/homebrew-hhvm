@@ -1,9 +1,10 @@
 # Homebrew-HHVM
 
-A repository with all formulas related to install [HHVM](https://github.com/facebook/hhvm).
+Repository with all the formulas to install [HHVM](https://github.com/facebook/hhvm)
 
 Supported OSX
 ------------
+* 10.11 El Capitan
 * 10.10 Yosemite
 * 10.9 Mavericks
 * 10.8 Mountain Lion
@@ -11,16 +12,14 @@ Supported OSX
 Requirements
 ------------
 
-* Homebrew
+* [Homebrew](http://brew.sh)
 
 Installation
 ------------
 
 And now tap this repository:
 
-```sh
-brew tap mcuadros/homebrew-hhvm
-```
+    brew tap mcuadros/homebrew-hhvm
 
 Usage
 -----
@@ -31,43 +30,38 @@ Usage
     brew info hhvm
     brew uses hhvm
 
-HHVM requires MySQL to compile, by default will use `mysql` formula.  
+##### Install the last stable release 3.7.2:
 
-> If mysql is already installed, you can use `--with-system-mysql`.  
-> But you can also use `--with-mariadb` or `--with-percona-server` to compile alternative versions of mysql.  
+    brew install hhvm
 
-Install the last stable version (3.4.0)
+HHVM requires MySQL to compile, by default will use mysql formula.  
+If mysql is already installed, you can use `--with-system-mysql`.
 
-```sh
-brew install hhvm
-```
+###### But you can also use to compile alternative versions of mysql:
 
-or the current branch
+- MariaDB `--with-mariadb`
+- Percona Server `--with-percona-server`
 
-```sh
-brew install hhvm --devel
-```
+##### Install the stable branch:
 
-or the current master
+    brew install hhvm --devel
 
-```sh
-brew install hhvm --HEAD
-```
+
+##### Install the current master:
+
+    brew install hhvm --HEAD
 
 Known Problems
 -----
 
-* Building using clang broken, need to use flag `--with-gcc` and rebuild packages using gcc (issues: [#122](https://github.com/mcuadros/homebrew-hhvm/issues/122), [#137](https://github.com/mcuadros/homebrew-hhvm/issues/137))
-* If you are getting errors like `Undefined symbols for architecture x86_64:` execute:  
-  `brew reinstall --build-from-source --cc=gcc-4.9 boost gflags glog`  
+* HHVM no longer supports the built-in webserver as of 3.0.0.
+  - Please use [FastCGI](https://github.com/facebook/hhvm/wiki/FastCGI) own webserver (nginx or apache).
+  - [HHVM builtin Webserver on Go](https://github.com/beberlei/hhvm-serve)
 
-  *Warning: Recompilation of libraries using `gcc` can break most of the other things from the Homebrew which depend on `boost` `gflags` `glog`*
-* HHVM no longer supports the built-in webserver as of 3.0.0.  
-  Please use your own webserver (nginx or apache) talking to HHVM over [fastcgi](https://github.com/facebook/hhvm/wiki/FastCGI).
-* If you have XQuartz (X11) installed, you have to temporarily remove a symbolic link at '/usr/X11R6' in order to successfully install HHVM.
-  You can use the following command: `sudo rm /usr/X11R6`
-  After the install, you could return it with the command: `sudo ln -s /opt/X11 /usr/X11R6`
-  For full reference, please see the issue [#28](https://github.com/mcuadros/homebrew-hhvm/issues/28).
+* If you have XQuartz (X11) installed, you will have to temporarily remove a symbolic link to/usr/X11R6` in order to successfully install HHVM.
+  - You can use the following command: `sudo rm /usr/X11R6`
+  - After the install, you could return it with the command: `sudo ln -s /opt/X11 /usr/X11R6`
+  - For full reference, please see the issue #28.
 
 Uninstall tap
 ------------
