@@ -1,31 +1,20 @@
 class Hhvm < Formula
+  desc "HHVM virtual machine, runtime, and JIT for the PHP language"
   homepage "http://hhvm.com/"
   stable do
-    url "https://github.com/facebook/hhvm/archive/HHVM-3.4.2.tar.gz"
-    sha256 "dee0d127eebed48835d6f27c4381f5e60fa3539eef4697f38822cfa0f5367cae"
+    url "https://github.com/facebook/hhvm/archive/HHVM-3.7.2.tar.gz"
+    sha256 "4f1ee67a7e848002361ec628833adb89b78d450f1087f75dc69807ed0593dd7a"
     resource "third-party" do
-      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
-    end
-    resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "88fb213fe19af92f50ee851a477c73a103dbcfe1"
-    end
-    resource "thrift" do
-      url "https://github.com/facebook/fbthrift.git", :revision => "b9389429aa71b6b4d2876134c8f50143a044d653"
+      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "85da228178e69792b0798292b09cd7f4c6522522"
     end
   end
 
   # --devel (HHVM-3.4 stable OSX)
   devel do
-    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.4"
-    version "3.4-dev"
+    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.7"
+    version "3.7-dev"
     resource "third-party" do
-      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "38af35db27a4d962adaefde343dc6dcfc495c8b5"
-    end
-    resource "folly" do
-      url "https://github.com/facebook/folly.git", :revision => "88fb213fe19af92f50ee851a477c73a103dbcfe1"
-    end
-    resource "thrift" do
-      url "https://github.com/facebook/fbthrift.git", :revision => "b9389429aa71b6b4d2876134c8f50143a044d653"
+      url "https://github.com/hhvm/hhvm-third-party.git", :revision => "85da228178e69792b0798292b09cd7f4c6522522"
     end
   end
 
@@ -38,22 +27,20 @@ class Hhvm < Formula
   end
 
   option "with-cotire", "Speed up the build by precompiling headers"
-  option "with-debug", "Enable debug build (default Release)"
-  option "with-gcc", "Build with gcc-4.9 compiler"
+  option "with-debug", "Enable debug build (default release)"
   option "with-mariadb", "Use mariadb as mysql package"
   option "with-minsizerel", "Enable minimal size release build"
   option "with-percona-server", "Use percona-server as mysql package"
   option "with-release-debug", "Enable release with debug build"
-  option "with-system-mysql", "Try to use the mysql package installed on your system"
-  option "with-libressl", "To use an alternate version of SSL (LibreSSL)"
-  option "with-ninja", "To use ninja for building"
+  option "with-system-mysql", "Use system the MySQL package installed"
+  option "with-libressl", "To use an alternative SSL version of libressl"
+  option "with-ninja", "Use ninja for building"
 
   depends_on "cmake" => :build
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
   depends_on "pkg-config" => :build
-  depends_on "gcc" => :optional
   depends_on "libressl" => :optional
   depends_on "ninja" => :optional
   depends_on "openssl" if build.without?("libressl")
@@ -101,34 +88,8 @@ class Hhvm < Formula
     depends_on "mysql-connector-c++"
   end
 
-  # Hotfix patches
-  if build.stable? || build.devel? || build.head?
-    if build.stable? || build.devel?
-      # Support openssl replacements which don't export RAND_egd()
-      patch do
-        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/check_rand-egd.patch"
-        sha256 "b309d4117f3ba4aba01df96d95fe02fa627ba0d88e97d40af27618fe4ea32d56"
-      end
-      # Improve segaddr fixing for 32-bit destructors
-      patch do
-        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/segaddr-32bit.diff"
-        sha256 "4cb98ff600860a67dc0352ffb8515c8451f233211c4294e08d7cd7d647a5bb52"
-      end
-      # FB broken selectable path http://git.io/EqkkMA
-      patch do
-        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/3.4.x/userland_path.diff"
-        sha256 "a7ebe733f584027a5131a04b0dc037c259743a1f07931530475951ff9e697853"
-      end
-    end
-
-    if build.head?
-      # FB broken selectable path http://git.io/EqkkMA
-      patch do
-        url "https://rawgit.com/mcuadros/homebrew-hhvm/master/patches/head/userland_path.diff"
-        sha256 "cd2be78a9beba55a2deb61915ebc2752c060608fc663d2e93b81f2989d352d5d"
-      end
-    end
-  end
+  # FB broken selectable path http://git.io/EqkkMA
+  patch :DATA
 
   def install
     args = [
@@ -142,6 +103,8 @@ class Hhvm < Formula
       "-DCMAKE_VERBOSE_MAKEFILE=ON",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
+      "-DDISABLE_SHARED=ON",
+      "-DENABLE_MCROUTER=OFF",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula["freetype"].opt_include}/freetype2",
       "-DFREETYPE_LIBRARIES=#{Formula["freetype"].opt_lib}/libfreetype.dylib",
       "-DICU_DATA_LIBRARY=#{Formula["icu4c"].opt_lib}/libicudata.dylib",
@@ -177,6 +140,7 @@ class Hhvm < Formula
       "-DLZ4_INCLUDE_DIR=#{Formula["lz4"].opt_include}",
       "-DLZ4_LIBRARY=#{Formula["lz4"].opt_lib}/liblz4.dylib",
       "-DMcrypt_INCLUDE_DIR=#{Formula["mcrypt"].opt_include}",
+      "-DMYSQL_UNIX_SOCK_ADDR=/dev/null",
       "-DOCAMLC_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc.opt",
       "-DONIGURUMA_INCLUDE_DIR=#{Formula["oniguruma"].opt_include}",
@@ -188,41 +152,16 @@ class Hhvm < Formula
       "-DSYSTEM_PCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
       "-DTBB_INCLUDE_DIRS=#{Formula["tbb"].opt_include}",
       "-DTEST_TBB_INCLUDE_DIR=#{Formula["tbb"].opt_include}",
+      "-DWITHOUT_SERVER=ON",
       "-Wno-dev",
     ]
 
     # To use ninja for building
     args << "-GNinja" if build.with?("ninja")
 
-    if build.with?("gcc")
-      opoo caveats_gcc
-
-      gcc = Formula["gcc"]
-      # Force compilation with gcc-4.9
-      ENV["CC"] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      ENV["LD"] = "#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      ENV["CXX"] = "#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
-      # Compiler complains about link compatibility with otherwise
-      ENV.delete("CFLAGS")
-      ENV.delete("CXXFLAGS")
-
-      # Support GCC/LLVM stack-smashing protection: http://git.io/5Kzu3A
-      # Preprocessor gcc performance regressions: http://git.io/4r7VCQ
-      args << "-DCMAKE_C_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
-      args << "-DCMAKE_CXX_FLAGS=-ftrack-macro-expansion=0 -fno-builtin-memcmp -pie -fPIC -fstack-protector-strong --param=ssp-buffer-size=4"
-
-      args << "-DCMAKE_CXX_COMPILER=#{gcc.opt_prefix}/bin/g++-#{gcc.version_suffix}"
-      args << "-DCMAKE_C_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      args << "-DCMAKE_ASM_COMPILER=#{gcc.opt_prefix}/bin/gcc-#{gcc.version_suffix}"
-      args << "-DBoost_USE_STATIC_LIBS=ON"
-      args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
-      args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
-    else
-      args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
-      args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
-      args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
-    end
+    args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
+    args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
+    args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
 
     if build.with?("cotire")
       args << "-DENABLE_COTIRE=ON"
@@ -261,25 +200,6 @@ class Hhvm < Formula
     rm_rf "third-party"
     third_party_buildpath = buildpath/"third-party"
     third_party_buildpath.install resource("third-party")
-    if build.stable? || build.devel?
-      rm_rf "third-party/folly/src"
-      folly_buildpath = buildpath/"third-party/folly/src"
-      folly_buildpath.install resource("folly")
-      rm_rf "third-party/thrift/src"
-      thrift_buildpath = buildpath/"third-party/thrift/src"
-      thrift_buildpath.install resource("thrift")
-    end
-
-    # Fix Traits.h std::* declarations conflict with libc++
-    # https://github.com/facebook/folly/pull/81
-    if build.without?("gcc")
-      inreplace third_party_buildpath/"folly/src/folly/Traits.h",
-        "FOLLY_NAMESPACE_STD_BEGIN",
-        "#if 0\nFOLLY_NAMESPACE_STD_BEGIN"
-      inreplace third_party_buildpath/"folly/src/folly/Traits.h",
-        "FOLLY_NAMESPACE_STD_END",
-        "FOLLY_NAMESPACE_STD_END\n#else\n#include <utility>\n#include <string>\n#include <vector>\n#include <deque>\n#include <list>\n#include <set>\n#include <map>\n#include <memory>\n#endif\n"
-    end
 
     src = prefix + "src"
     src.install Dir["*"]
@@ -289,11 +209,9 @@ class Hhvm < Formula
     cd src do
       system "cmake", ".", *args
       if build.with?("ninja")
-        system "ninja", "-j#{ENV.make_jobs}"
-        system "ninja install"
+        system "ninja", "install"
       else
-        system "make", "-j#{ENV.make_jobs}"
-        system "make install"
+        system "make", "install"
       end
     end
 
@@ -308,8 +226,7 @@ class Hhvm < Formula
   end
 
   # https://gist.github.com/denji/1a2ff183a671efcabedf
-  def default_php_ini
-    <<-EOS.undent
+  def default_php_ini; <<-EOS.undent
       ; php options
       session.save_handler = files
       session.save_path = /tmp
@@ -323,8 +240,7 @@ class Hhvm < Formula
     EOS
   end
 
-  def default_server_ini
-    <<-EOS.undent
+  def default_server_ini; <<-EOS.undent
       ; php options
       pid = #{var}/run/hhvm/pid
 
@@ -338,17 +254,7 @@ class Hhvm < Formula
     EOS
   end
 
-  def caveats_gcc
-    <<-EOS.undent
-
-      If you are getting errors like "Undefined symbols for architecture x86_64:" execute:
-        $ brew reinstall --build-from-source --cc=gcc-#{Formula["gcc"].version_suffix} boost gflags glog
-
-    EOS
-  end
-
-  def caveats
-    s = <<-EOS.undent
+  def caveats; <<-EOS.undent
       If you have XQuartz (X11) installed,
       to temporarily remove a symbolic link at "/usr/X11R6"
       in order to successfully install HHVM.
@@ -358,8 +264,6 @@ class Hhvm < Formula
       The php.ini file can be found in:
         #{etc}/hhvm/php.ini
     EOS
-    s << caveats_gcc if build.with? "gcc"
-    s
   end
 
   plist_options :manual => "hhvm"
@@ -393,3 +297,36 @@ class Hhvm < Formula
     EOS
   end
 end
+
+__END__
+diff --git a/hphp/runtime/base/emulate-zend.cpp b/hphp/runtime/base/emulate-zend.cpp
+index 2d89168..21690c2 100644
+--- a/hphp/runtime/base/emulate-zend.cpp
++++ b/hphp/runtime/base/emulate-zend.cpp
+@@ -234,8 +234,8 @@ int emulate_zend(int argc, char** argv) {
+       newargv.push_back("-c");
+       newargv.push_back(filename);
+     };
+-    add_default_config_files_globbed("/etc/hhvm/php*.ini", cb);
+-    add_default_config_files_globbed("/etc/hhvm/config*.hdf", cb);
++    add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini", cb);
++    add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf", cb);
+   }
+ 
+   if (cnt < argc && strcmp(argv[cnt], "--") == 0) cnt++;
+diff --git a/hphp/runtime/base/program-functions.cpp b/hphp/runtime/base/program-functions.cpp
+index a8cf975..7576785 100644
+--- a/hphp/runtime/base/program-functions.cpp
++++ b/hphp/runtime/base/program-functions.cpp
+@@ -1345,9 +1345,9 @@ static int execute_program_impl(int argc, char** argv) {
+           Logger::Verbose("Using default config file: %s", filename);
+           po.config.push_back(filename);
+         };
+-        add_default_config_files_globbed("/etc/hhvm/php*.ini",
++        add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini",
+                                          file_callback);
+-        add_default_config_files_globbed("/etc/hhvm/config*.hdf",
++        add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf",
+                                          file_callback);
+       }
+ // When we upgrade boost, we can remove this and also get rid of the parent
