@@ -1,4 +1,4 @@
-class Binutilsfb < Formula
+class BinutilsFb < Formula
   desc "FSF Binutils for native development"
   homepage "https://www.gnu.org/software/binutils/binutils.html"
   url "http://ftpmirror.gnu.org/binutils/binutils-2.25.tar.gz"

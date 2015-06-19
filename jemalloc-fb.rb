@@ -1,4 +1,4 @@
-class Jemallocfb < Formula
+class JemallocFb < Formula
   desc "malloc implementation emphasizing fragmentation avoidance"
   homepage "http://www.canonware.com/jemalloc/download.html"
   url "http://www.canonware.com/download/jemalloc/jemalloc-3.6.0.tar.bz2"

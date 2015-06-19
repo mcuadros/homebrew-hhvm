@@ -25,21 +25,22 @@ class Hhvm < Formula
   end
 
   option "with-cotire", "Speed up the build by precompiling headers"
-  option "with-debug", "Build with debug (default Release)"
   option "with-mariadb", "Build with MariaDB instead of MySQL or Percona Server"
-  option "with-minsizerel", "Build with minimal size release"
-  option "with-percona-server", "Build with Percona-Server instead of MySQL or MariaDB"
-  option "with-release-debug", "Build with Release+Debug build"
+  option "with-percona-server", "Build with Percona Server instead of MySQL or MariaDB"
   option "with-system-mysql", "Build with system installed MySQL package"
   option "with-libressl", "Build with LibreSSL instead of Secure Transport or OpenSSL"
-  option "with-ninja", "Compile with ninja instead of GNU Make"
-  option "with-llvm", "Use Homebrew's version of Clang compiler"
+  option "with-ninja", "Compile with Ninja instead of GNU Make"
+
+  needs :cxx11
+
+  # FB broken selectable path http://git.io/EqkkMA
+  patch :DATA
 
   depends_on "cmake" => :build
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
-  depends_on "llvm"  => [:build, :optional, "with-clang", "with-rtti"]
+  depends_on "llvm"  => [:build, "with-clang", "with-rtti", "with-lld"]
   depends_on "pkg-config" => :build
   depends_on "libressl" => :optional
   depends_on "ninja" => :optional
@@ -47,7 +48,7 @@ class Hhvm < Formula
 
   # Standard packages
   depends_on "boost"
-  depends_on "binutilsfb"
+  depends_on "binutils-fb"
   depends_on "curl"
   depends_on "freetype"
   depends_on "gd"
@@ -56,9 +57,9 @@ class Hhvm < Formula
   depends_on "icu4c"
   depends_on "imagemagick"
   depends_on "imap-uw"
-  depends_on "jemallocfb"
+  depends_on "jemalloc-fb"
   depends_on "jpeg"
-  depends_on "libdwarf"
+  depends_on "libdwarf-fb"
   depends_on "libelf"
   depends_on "libevent"
   depends_on "libmemcached"
@@ -77,7 +78,6 @@ class Hhvm < Formula
   depends_on "sqlite"
   depends_on "tbb"
   depends_on "unixodbc"
-
   # MySQL packages
   if build.with? "mariadb"
     depends_on "mariadb"
@@ -88,36 +88,30 @@ class Hhvm < Formula
     depends_on "mysql-connector-c++"
   end
 
-  # FB broken selectable path http://git.io/EqkkMA
-  patch :DATA
-
   def install
+    ENV.cxx11
     args = [
       "-DBOOST_INCLUDEDIR=#{Formula["boost"].opt_include}",
       "-DBOOST_LIBRARYDIR=#{Formula["boost"].opt_lib}",
       "-DCCLIENT_INCLUDE_PATH=#{Formula["imap-uw"].opt_include}/imap",
-      "-DCMAKE_FIND_FRAMEWORK=LAST",
-      "-DCMAKE_INCLUDE_PATH=\"#{HOMEBREW_PREFIX}/include:/usr/include\"",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
-      "-DCMAKE_LIBRARY_PATH=\"#{HOMEBREW_PREFIX}/lib:/usr/lib\"",
-      "-DCMAKE_VERBOSE_MAKEFILE=ON",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
-      "-DDISABLE_SHARED=ON",
       "-DENABLE_MCROUTER=OFF",
+      "-DENABLE_PROXYGEN_SERVER=OFF",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula["freetype"].opt_include}/freetype2",
       "-DFREETYPE_LIBRARIES=#{Formula["freetype"].opt_lib}/libfreetype.dylib",
       "-DICU_DATA_LIBRARY=#{Formula["icu4c"].opt_lib}/libicudata.dylib",
       "-DICU_I18N_LIBRARY=#{Formula["icu4c"].opt_lib}/libicui18n.dylib",
       "-DICU_INCLUDE_DIR=#{Formula["icu4c"].opt_include}",
       "-DICU_LIBRARY=#{Formula["icu4c"].opt_lib}/libicuuc.dylib",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula["jemallocfb"].opt_include}",
-      "-DJEMALLOC_LIB=#{Formula["jemallocfb"].opt_lib}/libjemalloc.dylib",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula["jemalloc-fb"].opt_include}",
+      "-DJEMALLOC_LIB=#{Formula["jemalloc-fb"].opt_lib}/libjemalloc.dylib",
       "-DLBER_LIBRARIES=/usr/lib/liblber.dylib",
       "-DLDAP_INCLUDE_DIR=/usr/include",
       "-DLDAP_LIBRARIES=/usr/lib/libldap.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula["libdwarf"].opt_include}",
-      "-DLIBDWARF_LIBRARIES=#{Formula["libdwarf"].opt_lib}/libdwarf.3.dylib",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula["libdwarf-fb"].opt_include}",
+      "-DLIBDWARF_LIBRARIES=#{Formula["libdwarf-fb"].opt_lib}/libdwarf.3.dylib",
       "-DLIBELF_INCLUDE_DIRS=#{Formula["libelf"].opt_include}/libelf",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula["libevent"].opt_include}",
       "-DLIBEVENT_LIB=#{Formula["libevent"].opt_lib}/libevent.dylib",
@@ -152,27 +146,31 @@ class Hhvm < Formula
       "-DSYSTEM_PCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
       "-DTBB_INCLUDE_DIRS=#{Formula["tbb"].opt_include}",
       "-DTEST_TBB_INCLUDE_DIR=#{Formula["tbb"].opt_include}",
-      "-DWITHOUT_SERVER=ON",
-      "-Wno-dev",
-    ]
+    ] + std_cmake_args
 
     # To use ninja for building
     args << "-GNinja" if build.with?("ninja")
 
-    args << "-DBFD_LIB=#{Formula["binutilsfb"].opt_lib}/libbfd.a"
-    args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutilsfb"].opt_include}"
-    args << "-DLIBIBERTY_LIB=#{Formula["binutilsfb"].opt_lib}/libiberty.a"
+    # Force compilation with homebrew-clang
+    ENV["CC"] = "#{Formula["llvm"].opt_bin}/clang"
+    ENV["LD"] = "#{Formula["llvm"].opt_prefix}/bin/lld"
+    ENV["CXX"] = "#{Formula["llvm"].opt_bin}/clang++"
+    args << "-DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang"
+    args << "-DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++"
+    args << "-DCMAKE_ASM_COMPILER=#{Formula["llvm"].opt_bin}/clang"
+    #args << "-DCMAKE_LINKER=#{Formula["llvm"].opt_bin}/lld"
+    #args << "-DCMAKE_AR=#{Formula["llvm"].opt_bin}/llvm-ar"
+    #args << "-DCMAKE_RANLIB=#{Formula["llvm"].opt_bin}/llvm-ranlib"
+    # Compiler complains about link compatibility with otherwise
+    ENV.delete("CFLAGS")
+    ENV.delete("CXXFLAGS")
+
+    args << "-DBFD_LIB=#{Formula["binutils-fb"].opt_lib}/libbfd.a"
+    args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutils-fb"].opt_include}"
+    args << "-DLIBIBERTY_LIB=#{Formula["binutils-fb"].opt_lib}/libiberty.a"
 
     if build.with?("cotire")
       args << "-DENABLE_COTIRE=ON"
-    end
-
-    if build.with?("debug")
-      args << "-DCMAKE_BUILD_TYPE=Debug"
-    elsif build.with?("release-debug")
-      args << "-DCMAKE_BUILD_TYPE=RelWithDebInfo"
-    elsif build.with?("minsizerel")
-      args << "-DCMAKE_BUILD_TYPE=MinSizeRel"
     end
 
     if build.with?("mariadb")

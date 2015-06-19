@@ -1,4 +1,4 @@
-class Libdwarf < Formula
+class LibdwarfFb < Formula
   desc "compilation tools (nm, ar, as, ld, etc.) for the ELF object format"
   homepage "http://sourceforge.net/apps/trac/elftoolchain/"
   url "https://downloads.sourceforge.net/project/elftoolchain/Sources/elftoolchain-0.6.1/elftoolchain-0.6.1.tgz"
