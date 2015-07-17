@@ -42,7 +42,7 @@ If mysql is already installed, you can use `--with-system-mysql`.
 - MariaDB `--with-mariadb`
 - Percona Server `--with-percona-server`
 
-##### Install the stable branch:
+##### Install the devel branch:
 
     brew install hhvm --devel
 
