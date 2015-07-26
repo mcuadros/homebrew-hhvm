@@ -2,8 +2,8 @@ class Hhvm < Formula
   desc "HHVM virtual machine, runtime, and JIT for the PHP language"
   homepage "http://hhvm.com/"
   stable do
-    url "https://github.com/facebook/hhvm/archive/HHVM-3.7.3.tar.gz"
-    sha256 "43af00d94ffe0d2cff64acef788a947acab6bbad9eb83c0e9c3f821458928664"
+    url "https://github.com/facebook/hhvm/archive/HHVM-3.8.0.tar.gz"
+    sha256 "a484fe758bcf8f09105df54d88fc5f1e31c5a5eab64685418cdf6f54a8ea76c9"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
           :revision => "a66f5c24db253e5c89ddb4e21d726b3b10c5fa7f"
@@ -11,8 +11,8 @@ class Hhvm < Formula
   end
 
   devel do
-    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.7"
-    version "3.7-dev"
+    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.8"
+    version "3.8-dev"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
           :revision => "a66f5c24db253e5c89ddb4e21d726b3b10c5fa7f"
