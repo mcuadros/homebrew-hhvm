@@ -6,7 +6,7 @@ class Hhvm < Formula
     sha256 "a484fe758bcf8f09105df54d88fc5f1e31c5a5eab64685418cdf6f54a8ea76c9"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
-          :revision => "a66f5c24db253e5c89ddb4e21d726b3b10c5fa7f"
+          :revision => "85da228178e69792b0798292b09cd7f4c6522522"
     end
   end
 
@@ -15,7 +15,7 @@ class Hhvm < Formula
     version "3.8-dev"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
-          :revision => "a66f5c24db253e5c89ddb4e21d726b3b10c5fa7f"
+          :revision => "85da228178e69792b0798292b09cd7f4c6522522"
     end
   end
 
@@ -99,6 +99,7 @@ class Hhvm < Formula
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
+      "-DENABLE_EXTENSION_MCROUTER=OFF",
       "-DENABLE_MCROUTER=OFF",
       "-DENABLE_PROXYGEN_SERVER=OFF",
       "-DFREETYPE_INCLUDE_DIRS=#{Formula["freetype"].opt_include}/freetype2",
