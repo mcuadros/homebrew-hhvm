@@ -9,7 +9,7 @@ Supported OSX
 * 10.11 El Capitan
 * 10.10 Yosemite
 * 10.9 Mavericks
-* 10.8 Mountain Lion
+* ~~10.8 Mountain Lion~~, Needs libdispatch APIs only available in Mavericks and newer.
 
 Requirements
 ------------
