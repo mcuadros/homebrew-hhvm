@@ -2,20 +2,20 @@ class Hhvm < Formula
   desc "HHVM virtual machine, runtime, and JIT for the PHP language"
   homepage "http://hhvm.com/"
   stable do
-    url "https://github.com/facebook/hhvm/archive/HHVM-3.8.0.tar.gz"
-    sha256 "a484fe758bcf8f09105df54d88fc5f1e31c5a5eab64685418cdf6f54a8ea76c9"
+    url "https://github.com/facebook/hhvm/archive/HHVM-3.9.0.tar.gz"
+    sha256 "a1d0713b19b615e6008f9c35d7e219fb6030559bbb8baa7c44d92730263aa4aa"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
-          :revision => "85da228178e69792b0798292b09cd7f4c6522522"
+          :revision => "5cfbd0ea334de25115546a08a9dbd2954c6f5ed5"
     end
   end
 
   devel do
-    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.8"
-    version "3.8-dev"
+    url "https://github.com/facebook/hhvm.git", :branch => "HHVM-3.9"
+    version "3.9-dev"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
-          :revision => "85da228178e69792b0798292b09cd7f4c6522522"
+          :revision => "5cfbd0ea334de25115546a08a9dbd2954c6f5ed5"
     end
   end
 
@@ -35,8 +35,11 @@ class Hhvm < Formula
 
   needs :cxx11
 
-  # FB broken selectable path http://git.io/EqkkMA
-  patch :DATA
+  # Allow overriding the location to find the default php.ini
+  patch do
+    url "https://github.com/facebook/hhvm/commit/ed1ec181734a2826d2fd1e49d12b1d51f2785061.patch"
+    sha256 "3b8b4c75181fa7c3154e41530040d061b2f1a6c1357101a43eb65bf307875cf3"
+  end unless build.head?
 
   depends_on "cmake" => :build
   depends_on "libtool" => :build
@@ -101,6 +104,7 @@ class Hhvm < Formula
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
+      "-DDEFAULT_CONFIG_DIR=#{etc}"
       "-DENABLE_EXTENSION_MCROUTER=OFF",
       "-DENABLE_MCROUTER=OFF",
       "-DENABLE_PROXYGEN_SERVER=OFF",
@@ -308,36 +312,3 @@ class Hhvm < Formula
     EOS
   end
 end
-
-__END__
-diff --git a/hphp/runtime/base/emulate-zend.cpp b/hphp/runtime/base/emulate-zend.cpp
-index 2d89168..21690c2 100644
---- a/hphp/runtime/base/emulate-zend.cpp
-+++ b/hphp/runtime/base/emulate-zend.cpp
-@@ -234,8 +234,8 @@ int emulate_zend(int argc, char** argv) {
-       newargv.push_back("-c");
-       newargv.push_back(filename);
-     };
--    add_default_config_files_globbed("/etc/hhvm/php*.ini", cb);
--    add_default_config_files_globbed("/etc/hhvm/config*.hdf", cb);
-+    add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini", cb);
-+    add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf", cb);
-   }
- 
-   if (cnt < argc && strcmp(argv[cnt], "--") == 0) cnt++;
-diff --git a/hphp/runtime/base/program-functions.cpp b/hphp/runtime/base/program-functions.cpp
-index a8cf975..7576785 100644
---- a/hphp/runtime/base/program-functions.cpp
-+++ b/hphp/runtime/base/program-functions.cpp
-@@ -1345,9 +1345,9 @@ static int execute_program_impl(int argc, char** argv) {
-           Logger::Verbose("Using default config file: %s", filename);
-           po.config.push_back(filename);
-         };
--        add_default_config_files_globbed("/etc/hhvm/php*.ini",
-+        add_default_config_files_globbed("/usr/local/etc/hhvm/php*.ini",
-                                          file_callback);
--        add_default_config_files_globbed("/etc/hhvm/config*.hdf",
-+        add_default_config_files_globbed("/usr/local/etc/hhvm/config*.hdf",
-                                          file_callback);
-       }
- // When we upgrade boost, we can remove this and also get rid of the parent
