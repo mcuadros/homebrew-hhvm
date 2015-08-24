@@ -1,5 +1,7 @@
 # Homebrew-HHVM
 
+[![Join the chat at https://gitter.im/mcuadros/homebrew-hhvm](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/mcuadros/homebrew-hhvm?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 Repository with all the formulas to install [HHVM](https://github.com/facebook/hhvm)
 
 Supported OSX
