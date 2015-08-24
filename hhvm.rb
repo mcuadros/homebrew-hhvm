@@ -104,7 +104,7 @@ class Hhvm < Formula
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
-      "-DDEFAULT_CONFIG_DIR=#{etc}"
+      "-DDEFAULT_CONFIG_DIR=#{etc}",
       "-DENABLE_EXTENSION_MCROUTER=OFF",
       "-DENABLE_MCROUTER=OFF",
       "-DENABLE_PROXYGEN_SERVER=OFF",
