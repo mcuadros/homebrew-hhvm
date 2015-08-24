@@ -30,7 +30,7 @@ Usage
     brew info hhvm
     brew uses hhvm
 
-##### Install the last stable release 3.7.2:
+##### Install the last stable release 3.9.0:
 
     brew install hhvm
 
