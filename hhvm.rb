@@ -72,7 +72,7 @@ class Hhvm < Formula
   depends_on "libzip"
   depends_on "lz4"
   depends_on "mcrypt"
-  depends_on "objective-caml"
+  depends_on "ocaml"
   depends_on "oniguruma"
   depends_on "pcre"
   depends_on "re2c"
@@ -96,6 +96,8 @@ class Hhvm < Formula
       "-DBOOST_INCLUDEDIR=#{Formula["boost"].opt_include}",
       "-DBOOST_LIBRARYDIR=#{Formula["boost"].opt_lib}",
       "-DCCLIENT_INCLUDE_PATH=#{Formula["imap-uw"].opt_include}/imap",
+      "-DCMAKE_C_FLAGS=-I#{Formula["readline"].opt_include} -L#{Formula["readline"].opt_lib}",
+      "-DCMAKE_CXX_FLAGS=-I#{Formula["readline"].opt_include} -L#{Formula["readline"].opt_lib}",
       "-DCMAKE_INSTALL_PREFIX=#{prefix}",
       "-DCURL_INCLUDE_DIR=#{Formula["curl"].opt_include}",
       "-DCURL_LIBRARY=#{Formula["curl"].opt_lib}/libcurl.dylib",
@@ -138,8 +140,8 @@ class Hhvm < Formula
       "-DLZ4_LIBRARY=#{Formula["lz4"].opt_lib}/liblz4.dylib",
       "-DMcrypt_INCLUDE_DIR=#{Formula["mcrypt"].opt_include}",
       "-DMYSQL_UNIX_SOCK_ADDR=/dev/null",
-      "-DOCAMLC_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc",
-      "-DOCAMLC_OPT_EXECUTABLE=#{Formula["objective-caml"].opt_prefix}/bin/ocamlc.opt",
+      "-DOCAMLC_EXECUTABLE=#{Formula["ocaml"].opt_prefix}/bin/ocamlc",
+      "-DOCAMLC_OPT_EXECUTABLE=#{Formula["ocaml"].opt_prefix}/bin/ocamlc.opt",
       "-DONIGURUMA_INCLUDE_DIR=#{Formula["oniguruma"].opt_include}",
       "-DPCRE_INCLUDE_DIR=#{Formula["pcre"].opt_include}",
       "-DPCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
@@ -161,9 +163,9 @@ class Hhvm < Formula
     args << "-DCMAKE_C_COMPILER=#{Formula["llvm"].opt_bin}/clang"
     args << "-DCMAKE_CXX_COMPILER=#{Formula["llvm"].opt_bin}/clang++"
     args << "-DCMAKE_ASM_COMPILER=#{Formula["llvm"].opt_bin}/clang"
-    #args << "-DCMAKE_LINKER=#{Formula["llvm"].opt_bin}/lld"
-    #args << "-DCMAKE_AR=#{Formula["llvm"].opt_bin}/llvm-ar"
-    #args << "-DCMAKE_RANLIB=#{Formula["llvm"].opt_bin}/llvm-ranlib"
+    # args << "-DCMAKE_LINKER=#{Formula["llvm"].opt_bin}/lld"
+    # args << "-DCMAKE_AR=#{Formula["llvm"].opt_bin}/llvm-ar"
+    # args << "-DCMAKE_RANLIB=#{Formula["llvm"].opt_bin}/llvm-ranlib"
     # Compiler complains about link compatibility with otherwise
     ENV.delete("CFLAGS")
     ENV.delete("CXXFLAGS")
