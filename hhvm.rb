@@ -45,22 +45,24 @@ class Hhvm < Formula
   needs :cxx11
 
   # Packages which are only required to building
-  depends_on "cmake" => :build
-  depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  depends_on "cmake" => :build
+  depends_on "dwarfutils" => :build
+  depends_on "gawk" => :build
+  depends_on "libelf" => :build
+  depends_on "libtool" => :build
   # We need to build with upstream clang -- the version Apple ships doesn't
   # support TLS, which HHVM uses heavily. (And gcc compiles HHVM fine, but
   # causes ld to trip an assert and fail, for unclear reasons.)
   depends_on "llvm"  => [:build, "with-clang", "with-rtti", "with-lld"]
-  depends_on "pkg-config" => :build
-  depends_on "libressl" => :optional
+  depends_on "md5sha1sum" => :build
   depends_on "ninja" => :optional
-  depends_on "openssl" if build.without?("libressl")
+  depends_on "ocaml" => :build
+  depends_on "pkg-config" => :build
 
   # Standard packages
   depends_on "boost"
-  depends_on "binutils-fb"
   depends_on "curl"
   depends_on "freetype"
   depends_on "gd"
@@ -69,10 +71,8 @@ class Hhvm < Formula
   depends_on "icu4c"
   depends_on "imagemagick"
   depends_on "imap-uw"
-  depends_on "jemalloc-fb"
+  depends_on "jemalloc"
   depends_on "jpeg"
-  depends_on "libdwarf-fb"
-  depends_on "libelf"
   depends_on "libevent"
   depends_on "libmemcached"
   depends_on "libpng"
@@ -82,7 +82,6 @@ class Hhvm < Formula
   depends_on "libzip"
   depends_on "lz4"
   depends_on "mcrypt"
-  depends_on "ocaml"
   depends_on "oniguruma"
   depends_on "pcre"
   depends_on "re2c"
@@ -90,6 +89,9 @@ class Hhvm < Formula
   depends_on "sqlite"
   depends_on "tbb"
   depends_on "unixodbc"
+  # TLS/SSL library
+  depends_on "libressl" => :optional
+  depends_on "openssl" if build.without?("libressl")
   # MySQL packages
   if build.with? "mariadb"
     depends_on "mariadb"
@@ -121,14 +123,15 @@ class Hhvm < Formula
       "-DICU_I18N_LIBRARY=#{Formula["icu4c"].opt_lib}/libicui18n.dylib",
       "-DICU_INCLUDE_DIR=#{Formula["icu4c"].opt_include}",
       "-DICU_LIBRARY=#{Formula["icu4c"].opt_lib}/libicuuc.dylib",
-      "-DJEMALLOC_INCLUDE_DIR=#{Formula["jemalloc-fb"].opt_include}",
-      "-DJEMALLOC_LIB=#{Formula["jemalloc-fb"].opt_lib}/libjemalloc.dylib",
+      "-DJEMALLOC_INCLUDE_DIR=#{Formula["jemalloc"].opt_include}",
+      "-DJEMALLOC_LIB=#{Formula["jemalloc"].opt_lib}/libjemalloc.dylib",
       "-DLBER_LIBRARIES=/usr/lib/liblber.dylib",
       "-DLDAP_INCLUDE_DIR=/usr/include",
       "-DLDAP_LIBRARIES=/usr/lib/libldap.dylib",
-      "-DLIBDWARF_INCLUDE_DIRS=#{Formula["libdwarf-fb"].opt_include}",
-      "-DLIBDWARF_LIBRARIES=#{Formula["libdwarf-fb"].opt_lib}/libdwarf.3.dylib",
+      "-DLIBDWARF_INCLUDE_DIRS=#{Formula["dwarfutils"].opt_include}",
+      "-DLIBDWARF_LIBRARIES=#{Formula["dwarfutils"].opt_lib}/libdwarf.a",
       "-DLIBELF_INCLUDE_DIRS=#{Formula["libelf"].opt_include}/libelf",
+      "-DLIBELF_LIBRARIES=#{Formula["libelf"].opt_lib}/libelf.a",
       "-DLIBEVENT_INCLUDE_DIR=#{Formula["libevent"].opt_include}",
       "-DLIBEVENT_LIB=#{Formula["libevent"].opt_lib}/libevent.dylib",
       "-DLIBGLOG_INCLUDE_DIR=#{Formula["glog"].opt_include}",
@@ -150,7 +153,7 @@ class Hhvm < Formula
       "-DLZ4_INCLUDE_DIR=#{Formula["lz4"].opt_include}",
       "-DLZ4_LIBRARY=#{Formula["lz4"].opt_lib}/liblz4.dylib",
       "-DMcrypt_INCLUDE_DIR=#{Formula["mcrypt"].opt_include}",
-      "-DMYSQL_UNIX_SOCK_ADDR=/dev/null",
+      "-DMYSQL_UNIX_SOCK_ADDR=/tmp/mysql.sock",
       "-DOCAMLC_EXECUTABLE=#{Formula["ocaml"].opt_prefix}/bin/ocamlc",
       "-DOCAMLC_OPT_EXECUTABLE=#{Formula["ocaml"].opt_prefix}/bin/ocamlc.opt",
       "-DONIGURUMA_INCLUDE_DIR=#{Formula["oniguruma"].opt_include}",
@@ -161,7 +164,7 @@ class Hhvm < Formula
       "-DSYSTEM_PCRE_INCLUDE_DIR=#{Formula["pcre"].opt_include}",
       "-DSYSTEM_PCRE_LIBRARY=#{Formula["pcre"].opt_lib}/libpcre.dylib",
       "-DTBB_INCLUDE_DIRS=#{Formula["tbb"].opt_include}",
-      "-DTEST_TBB_INCLUDE_DIR=#{Formula["tbb"].opt_include}",
+      "-DTEST_TBB_INCLUDE_DIR=#{Formula["tbb"].opt_include}"
     ] + std_cmake_args
 
     # To use ninja for building
@@ -180,10 +183,6 @@ class Hhvm < Formula
     # Compiler complains about link compatibility with otherwise
     ENV.delete("CFLAGS")
     ENV.delete("CXXFLAGS")
-
-    args << "-DBFD_LIB=#{Formula["binutils-fb"].opt_lib}/libbfd.a"
-    args << "-DCMAKE_INCLUDE_PATH=#{Formula["binutils-fb"].opt_include}"
-    args << "-DLIBIBERTY_LIB=#{Formula["binutils-fb"].opt_lib}/libiberty.a"
 
     if build.with?("cotire")
       args << "-DENABLE_COTIRE=ON"
