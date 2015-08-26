@@ -1,6 +1,7 @@
 class Hhvm < Formula
-  desc "HHVM virtual machine, runtime, and JIT for the PHP language"
+  desc "JIT compiler and runtime for the PHP and Hack languages"
   homepage "http://hhvm.com/"
+
   stable do
     url "https://github.com/facebook/hhvm/archive/HHVM-3.9.0.tar.gz"
     sha256 "a1d0713b19b615e6008f9c35d7e219fb6030559bbb8baa7c44d92730263aa4aa"
@@ -26,6 +27,12 @@ class Hhvm < Formula
     end
   end
 
+  # Allow overriding the location to find the default php.ini
+  patch do
+    url "https://github.com/facebook/hhvm/commit/ed1ec181734a2826d2fd1e49d12b1d51f2785061.patch"
+    sha256 "3b8b4c75181fa7c3154e41530040d061b2f1a6c1357101a43eb65bf307875cf3"
+  end unless build.head?
+
   option "with-cotire", "Speed up the build by precompiling headers"
   option "with-mariadb", "Build with MariaDB instead of MySQL or Percona Server"
   option "with-percona-server", "Build with Percona Server instead of MySQL or MariaDB"
@@ -33,18 +40,18 @@ class Hhvm < Formula
   option "with-libressl", "Build with LibreSSL instead of Secure Transport or OpenSSL"
   option "with-ninja", "Compile with Ninja instead of GNU Make"
 
+  # Needs libdispatch APIs only available in Mavericks and newer.
+  depends_on :macos => :mavericks
   needs :cxx11
 
-  # Allow overriding the location to find the default php.ini
-  patch do
-    url "https://github.com/facebook/hhvm/commit/ed1ec181734a2826d2fd1e49d12b1d51f2785061.patch"
-    sha256 "3b8b4c75181fa7c3154e41530040d061b2f1a6c1357101a43eb65bf307875cf3"
-  end unless build.head?
-
+  # Packages which are only required to building
   depends_on "cmake" => :build
   depends_on "libtool" => :build
   depends_on "autoconf" => :build
   depends_on "automake" => :build
+  # We need to build with upstream clang -- the version Apple ships doesn't
+  # support TLS, which HHVM uses heavily. (And gcc compiles HHVM fine, but
+  # causes ld to trip an assert and fail, for unclear reasons.)
   depends_on "llvm"  => [:build, "with-clang", "with-rtti", "with-lld"]
   depends_on "pkg-config" => :build
   depends_on "libressl" => :optional
@@ -233,6 +240,26 @@ class Hhvm < Formula
     install_config
   end
 
+  def caveats; <<-EOS.undent
+      If you have XQuartz (X11) installed,
+      to temporarily remove a symbolic link at "/usr/X11R6"
+      in order to successfully install HHVM.
+        $ sudo rm /usr/X11R6
+        $ sudo ln -s /opt/X11 /usr/X11R6
+
+      The php.ini file can be found in:
+        #{etc}/hhvm/php.ini
+    EOS
+  end
+
+  test do
+    (testpath/"test.php").write <<-EOS.undent
+      <?php
+      exit(is_integer(HHVM_VERSION_ID) ? 0 : 1);
+    EOS
+    system "#{bin}/hhvm", testpath/"test.php"
+  end
+
   def install_config
     ini_php = etc + "hhvm/php.ini"
     ini_php.write default_php_ini unless File.exist? ini_php
@@ -240,7 +267,7 @@ class Hhvm < Formula
     ini_server.write default_server_ini unless File.exist? ini_server
   end
 
-  # https://gist.github.com/denji/1a2ff183a671efcabedf
+  # Examples http://git.io/vsxBh
   def default_php_ini; <<-EOS.undent
       ; php options
       session.save_handler = files
@@ -266,18 +293,6 @@ class Hhvm < Formula
       hhvm.log.use_log_file = true
       hhvm.log.file = #{var}/log/hhvm/error.log
       hhvm.repo.central.path = #{var}/run/hhvm/hhvm.hhbc
-    EOS
-  end
-
-  def caveats; <<-EOS.undent
-      If you have XQuartz (X11) installed,
-      to temporarily remove a symbolic link at "/usr/X11R6"
-      in order to successfully install HHVM.
-        $ sudo rm /usr/X11R6
-        $ sudo ln -s /opt/X11 /usr/X11R6
-
-      The php.ini file can be found in:
-        #{etc}/hhvm/php.ini
     EOS
   end
 
