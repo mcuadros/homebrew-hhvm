@@ -3,8 +3,8 @@ class Hhvm < Formula
   homepage "http://hhvm.com/"
 
   stable do
-    url "https://github.com/facebook/hhvm/archive/HHVM-3.9.0.tar.gz"
-    sha256 "a1d0713b19b615e6008f9c35d7e219fb6030559bbb8baa7c44d92730263aa4aa"
+    url "https://github.com/facebook/hhvm/archive/HHVM-3.9.1.tar.gz"
+    sha256 "b9e98bdea1923ed2bd36ecf9481f45f3afe1b1e57903437cae05273a019e4a62"
     resource "third-party" do
       url "https://github.com/hhvm/hhvm-third-party.git",
           :revision => "5cfbd0ea334de25115546a08a9dbd2954c6f5ed5"
